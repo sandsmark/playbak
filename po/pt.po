@@ -1,0 +1,1486 @@
+# Gil Filipe Martins de Castro, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: kmp\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-09-30 00:41+0100\n"
+"PO-Revision-Date: 2010-09-30 00:41+0100\n"
+"Last-Translator: Gil Filipe Martins de Castro\n"
+"Language-Team: Portuguese <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Language: pt_PT\n"
+
+#: build/src/ui_mainwindow.h:632
+#: src/ui/widgets/MediaInfoInteractivePage.cpp:108
+msgid "Today"
+msgstr "Hoje"
+
+#: build/src/ui_mainwindow.h:633
+#: src/ui/widgets/MediaInfoInteractivePage.cpp:109
+msgid "Score"
+msgstr "Pontuação"
+
+#: build/src/ui_mainwindow.h:634
+msgid "Play Times"
+msgstr "# Reproduções"
+
+#: build/src/ui_mainwindow.h:635
+msgid "Last Play"
+msgstr "Última Reprodução"
+
+#: build/src/ui_mainwindow.h:637
+msgid "Now Playing"
+msgstr "Em Reprodução"
+
+#: build/src/ui_mainwindow.h:638
+msgid "Media Information"
+msgstr "Informação"
+
+#: build/src/ui_mainwindow.h:639
+msgid "Collection"
+msgstr "Colecção"
+
+#: build/src/ui_mainwindow.h:640
+msgid "Internet"
+msgstr "Internet"
+
+#: build/src/ui_mainwindow.h:641
+msgid "Devices"
+msgstr "Dispositivos"
+
+#: build/src/ui_mainwindow.h:646
+msgid "0 media"
+msgstr "0 Itens"
+
+#: src/main.cpp:28
+msgid "A KDE 4 Application"
+msgstr "Uma Aplicação KDE 4"
+
+#: src/main.cpp:34
+msgid "PlaybaK"
+msgstr "PlaybaK"
+
+#: src/main.cpp:35
+msgid "(C) 2010 PlaybaK Development Team"
+msgstr "(C) 2010 Equipa de Desenvolvimento do PlaybaK"
+
+#: src/main.cpp:37
+msgid "Gil Castro"
+msgstr "Gil Castro"
+
+#: src/main.cpp:37
+msgid "Programmer and Portuguese translator"
+msgstr "Programador e tradutor Português"
+
+#: src/main.cpp:42
+msgid "Document to open"
+msgstr "Documento a abrir"
+
+#: src/ui/widgets/MediaInfoInteractivePage.cpp:106
+msgid "110"
+msgstr ""
+
+#: src/ui/widgets/MediaInfoInteractivePage.cpp:107
+msgid "7"
+msgstr ""
+
+#: src/ui/widgets/MediaInfoInteractivePage.cpp:110
+msgid "Play times"
+msgstr "# reproduções"
+
+#: src/ui/widgets/MediaInfoInteractivePage.cpp:111
+msgid "Last play"
+msgstr "Última reprodução"
+
+#, fuzzy
+#~ msgid "Programmer"
+#~ msgstr "Programador"
+
+#~ msgid "Information"
+#~ msgstr "Informação"
+
+#~ msgid "Add"
+#~ msgstr "Adicionar"
+
+#~ msgid "Random"
+#~ msgstr "Aleatório"
+
+#~ msgid "Random repeating"
+#~ msgstr "Repetir aleatóriamente"
+
+#~ msgid "Repeat one"
+#~ msgstr "Repetir uma"
+
+#~ msgid "Repeat all"
+#~ msgstr "Repetir"
+
+#, fuzzy
+#~ msgid "MainWindow"
+#~ msgstr "&Vídeo"
+
+#~ msgid "pre-amp"
+#~ msgstr "pré-amp"
+
+#~ msgid "Set as Default"
+#~ msgstr "Guardar como Predefinição"
+
+#~ msgid "Reset"
+#~ msgstr "Repôr"
+
+#~ msgid "Search the collection"
+#~ msgstr "Procurar na colecção"
+
+#~ msgid "Advanced"
+#~ msgstr "Avançado"
+
+#~ msgid "<b>Last Played</b>"
+#~ msgstr "<b>Últimas Reproduções</b>"
+
+#~ msgid "Type / Artist - Studio"
+#~ msgstr "Tipo / Artista - Estúdio"
+
+#~ msgid "Music"
+#~ msgstr "Música"
+
+#~ msgid "Music Videos"
+#~ msgstr "Videoclipes"
+
+#~ msgid "Movies"
+#~ msgstr "Filmes"
+
+#~ msgid "TV Shows"
+#~ msgstr "Programas de Televisão"
+
+#~ msgid "Personal Videos"
+#~ msgstr "Vídeos Pessoais"
+
+#~ msgid "Voice Clips"
+#~ msgstr "Clipes de Voz"
+
+#~ msgid "Photos"
+#~ msgstr "Fotos"
+
+#~ msgid "Media Item"
+#~ msgstr "Item Multimédia"
+
+#~ msgid "Write (or paste from a website) here the lyrics for this music."
+#~ msgstr "Escreva (ou cole a partir de um site) aqui a letra desta música."
+
+#~ msgid "Check this box to make KMP show lyrics synchronized with the song."
+#~ msgstr ""
+#~ "Marque este caixa para fazer o KMP mostrar as letras sincronizadas com a "
+#~ "música."
+
+#~ msgid "Timed Lyrics"
+#~ msgstr "Letra Temporizada"
+
+#~ msgid "Time to Show"
+#~ msgstr "Mostrar às:"
+
+#~ msgid ""
+#~ "Set the time for KMP to show the verse where the cursor is in the text."
+#~ msgstr ""
+#~ "Defina o tempo quando o KMP mostrará o verso onde o cursor está no texto."
+
+#~ msgid "<b>Brightness</b>"
+#~ msgstr "<b>Brilho</b>"
+
+#~ msgid "<b>Contrast</b>"
+#~ msgstr "<b>Contraste</b>"
+
+#~ msgid "<b>Hue</b>"
+#~ msgstr "<b>Tom</b>"
+
+#~ msgid "<b>Saturation</b>"
+#~ msgstr "<b>Saturação</b>"
+
+#~ msgid "Volume"
+#~ msgstr "Volume"
+
+#~ msgid "Startup Volume"
+#~ msgstr "Volume Inicial"
+
+#~ msgid "Remember last time"
+#~ msgstr "Lembrar a última vez"
+
+#~ msgid "General"
+#~ msgstr "Geral"
+
+#~ msgid ""
+#~ "These are the default settings to use when you play files but you can use "
+#~ "different settings for each file."
+#~ msgstr ""
+#~ "Estas serão as definições predefinidas quando reproduzir ficheiros mas "
+#~ "pode usar definições diferentes para cada ficheiro."
+
+#~ msgid "Equalizer"
+#~ msgstr "Equalizador"
+
+#~ msgid "System Tray"
+#~ msgstr "Bandeja do Sistema"
+
+#~ msgid "Notify when PlaybaK loads another file"
+#~ msgstr "Notificar quando o PlaybaK carrega outro ficheiro"
+
+#~ msgid "Hide main window when close button is clicked"
+#~ msgstr "Esconder a janela principal quando o botão de fechar é clicado"
+
+#~ msgid "Mouse Wheel"
+#~ msgstr "Roda do Rato"
+
+#~ msgid "Change volume"
+#~ msgstr "Mudar o volume"
+
+#~ msgid "Seek"
+#~ msgstr "Avançar/recuar no ficheiro"
+
+#~ msgid "Next/previous file in playlist"
+#~ msgstr "Próximo/anterior ficheiro na lista de reprodução"
+
+#~ msgid "Tooltip Appearance"
+#~ msgstr "Aparência das Dicas"
+
+#~ msgid "Tooltip text"
+#~ msgstr "Texto da dica"
+
+#~ msgid "Show associated picture (eg. thumbnail, DVD cover, etc.)"
+#~ msgstr "Mostrar imagem associada (ex. pré-visualização, capa do DVD, etc.)"
+
+#~ msgid "Save specific audio and video settings for each file"
+#~ msgstr "Guardar definições áudio e vídeo específicas de cada ficheiro"
+
+#~ msgid "Folders to Look for Multimedia Files"
+#~ msgstr "Pastas Onde Procurar Ficheiros Multimédia"
+
+#~ msgid "Remove"
+#~ msgstr "Remover"
+
+#~ msgid "Pictures"
+#~ msgstr "Imagens"
+
+#~ msgid "Vídeos"
+#~ msgstr "Vídeos"
+
+#~ msgid "Check subfolders"
+#~ msgstr "Verificar subpastas"
+
+#~ msgid "Rescan folders if they are modified"
+#~ msgstr "Verificar outra vez as pastas se forem modificadas"
+
+#~ msgid "Rescan when PlaybaK is open"
+#~ msgstr "Verificar sempre que o PlaybaK for aberto"
+
+#~ msgid "Default folder for dialogs"
+#~ msgstr "Pasta predefinida para janelas de diálogo"
+
+#~ msgid "Music folder"
+#~ msgstr "Pasta de música"
+
+#~ msgid "Videos folder"
+#~ msgstr "Pasta de vídeos"
+
+#~ msgid "Last open folder (it doesn't work well yet)"
+#~ msgstr "Última pasta aberta (ainda não funciona bem)"
+
+#~ msgid "Other:"
+#~ msgstr "Outra:"
+
+#~ msgid "Show basic media controls only in fullscreen and full window modes"
+#~ msgstr ""
+#~ "Mostrar os controlos básicos apenas em modo de ecrã inteiro e de janela "
+#~ "inteira"
+
+#~ msgid "Panels"
+#~ msgstr "Paineis"
+
+#~ msgid "Expand"
+#~ msgstr "Expandir"
+
+#~ msgid "No"
+#~ msgstr "Não"
+
+#~ msgid "Both"
+#~ msgstr "Ambos"
+
+#~ msgid "Horizontally"
+#~ msgstr "Horizontalmente"
+
+#~ msgid "Vertically"
+#~ msgstr "Verticalmente"
+
+#~ msgid "Alignment"
+#~ msgstr "Alinhamento"
+
+#~ msgid "Top left"
+#~ msgstr "Superior esquerdo"
+
+#~ msgid "Top center"
+#~ msgstr "Superior centrado"
+
+#~ msgid "Top right"
+#~ msgstr "Superior direito"
+
+#~ msgid "Middle left"
+#~ msgstr "A meio, esquerdo"
+
+#~ msgid "Bottom left"
+#~ msgstr "Inferior esquerdo"
+
+#~ msgid "Middle center"
+#~ msgstr "Centrado"
+
+#~ msgid "Middle right"
+#~ msgstr "A meio, direito"
+
+#~ msgid "Bottom center"
+#~ msgstr "Inferior centrado"
+
+#~ msgid "Bottom right"
+#~ msgstr "Inferior direito"
+
+#~ msgid "Limit video settings values by"
+#~ msgstr "Limitar valores das definições de vídeo em"
+
+#~ msgid "Limit audio settings values by"
+#~ msgstr "Limitar valores das definições de som em"
+
+#~ msgid "On-Video Controls"
+#~ msgstr "Controlos No Vídeo"
+
+#~ msgid "Visualization"
+#~ msgstr "Visualização"
+
+#~ msgid "Quality"
+#~ msgstr "Qualidade"
+
+#~ msgid "Performance"
+#~ msgstr "Desempenho"
+
+#~ msgid "Header"
+#~ msgstr "Cabeçalho"
+
+#~ msgid "Appearance"
+#~ msgstr "Aparência"
+
+#~ msgid "Simple"
+#~ msgstr "Simples"
+
+#~ msgid "Show playlist controls under it"
+#~ msgstr "Mostrar controlos da lista de reprodução debaixo desta"
+
+#~ msgid "Snapshots"
+#~ msgstr "Capturas de Vídeo"
+
+#~ msgid "Snapshots Folder"
+#~ msgstr "Pasta das Capturas"
+
+#~ msgid "Picture Format"
+#~ msgstr "Formato de Imagem"
+
+#~ msgid "Brightness"
+#~ msgstr "Brilho"
+
+#~ msgid "Contrast"
+#~ msgstr "Contraste"
+
+#~ msgid "Hue"
+#~ msgstr "Tom"
+
+#~ msgid "Saturation"
+#~ msgstr "Saturação"
+
+#~ msgid ""
+#~ "Equalizer wasn't found, probably you are using a backend that doesn't "
+#~ "support it.\n"
+#~ "Change to another backend (xine is supported) if you want to have "
+#~ "equalizer.\n"
+#~ "To change backend open system settings, click \"Multimedia\" and in the "
+#~ "page \"Backend\" you can choose another backend (if available)."
+#~ msgstr ""
+#~ "O equalizador não foi encontrado, provavelmente está a usar uma infra-"
+#~ "estrutura que não o suporta.\n"
+#~ "Mude para outra infra-estrutura (o xine é suportado) se quiser que o KDE "
+#~ "Media Player tenha equalizador.\n"
+#~ "Para mudar de infra-estrutura abra as configurações de sistema, clique "
+#~ "\"Multimédia\" e na página \"Infra-estrutura\" pode escolher outra infra-"
+#~ "estrutura (se houver disponível)."
+
+#~ msgid "Select a multimedia file to add"
+#~ msgstr "Seleccione um ficheiro multimédia a adicionar"
+
+#~ msgid "Repeat when Finished"
+#~ msgstr "Repetir quando Acabar"
+
+#~ msgid "Play After Current Track"
+#~ msgstr "Reproduzir a Seguir ao Ficheiro Actual"
+
+#~ msgid "Edit File Details... (not available yet)"
+#~ msgstr "Editar Detalhes do Ficheiro... (ainda não disponível)"
+
+#~ msgid "Pause"
+#~ msgstr "Pausar"
+
+#~ msgid "Play"
+#~ msgstr "Reproduzir"
+
+#~ msgid "Backward"
+#~ msgstr "Recuar"
+
+#~ msgid "Forward"
+#~ msgstr "Avançar"
+
+#~ msgid "Volume - Click to mute"
+#~ msgstr "Volume - Clique para pôr com/sem som"
+
+#~ msgid "Add files to playlist"
+#~ msgstr "Adicionar ficheiros à lista de reprodução"
+
+#~ msgid "Remove selected file(s)"
+#~ msgstr "Remover o(s) ficheiro(s) seleccionado(s)"
+
+#~ msgid "Open playlist (not available yet)"
+#~ msgstr "Abrir lista de reprodução (ainda não disponível)"
+
+#~ msgid "Save playlist (not available yet)"
+#~ msgstr "Guardar lista de reprodução (ainda não disponível)"
+
+#~ msgid "Stop After Playing this Track"
+#~ msgstr "Parar Depois deste Ficheiro"
+
+#~ msgid "Remove this Track from Playlist"
+#~ msgstr "Remover este Ficheiro da Lista"
+
+#~ msgid "Edit Lyrics..."
+#~ msgstr "Editar a Letra..."
+
+#~ msgid "Media"
+#~ msgstr "Multimédia"
+
+#~ msgid "Playlists"
+#~ msgstr "Listas de Reprodução"
+
+#~ msgid "Files"
+#~ msgstr "Ficheiros"
+
+#~ msgid "Unknown Artist"
+#~ msgstr "Artista Desconhecido"
+
+#~ msgid "instrumental"
+#~ msgstr "instrumental"
+
+#~ msgid "Processing files..."
+#~ msgstr "A processar os ficheiros..."
+
+#~ msgid "Adding files to list..."
+#~ msgstr "A adicionar os ficheiros..."
+
+#~ msgid "Adding artists to list..."
+#~ msgstr "A adicionar os artistas..."
+
+#~ msgid "Adding albums to list..."
+#~ msgstr "A adicionar os álbuns..."
+
+#~ msgid "Saving..."
+#~ msgstr "A guardar..."
+
+#~ msgid "Done, loading collection..."
+#~ msgstr "Concluído, a ler a colecção..."
+
+#~ msgid "Done"
+#~ msgstr "Concluído"
+
+#~ msgid "Updating collection..."
+#~ msgstr "A actualizar a colecção..."
+
+#~ msgid "Add to playlist"
+#~ msgstr "Adicionar à lista de reprodução"
+
+#~ msgid "Add the original song"
+#~ msgstr "Adicionar a música original"
+
+#~ msgid "Add the music video"
+#~ msgstr "Adicionar o videoclipe"
+
+#~ msgid "Add the instrumental version"
+#~ msgstr "Adicionar a versão instrumental"
+
+#~ msgid "Other remixes"
+#~ msgstr "Outros remixes"
+
+#~ msgid "Remixes"
+#~ msgstr "Remixes"
+
+#~ msgid "Edit file details..."
+#~ msgstr "Editar detalhes do ficheiro..."
+
+#~ msgid ""
+#~ "Welcome to PlaybaK.\n"
+#~ "You are using a pre-alpha version that is still not complete.\n"
+#~ "Therefore, there might be some bugs for which we apologise."
+#~ msgstr ""
+#~ "Bem-vindo(a) ao PlaybaK.\n"
+#~ "Está a usar uma versão pré-alpha que ainda não está completa.\n"
+#~ "Portanto, poderá encontrar vários erros pelos quais pedimos desculpa."
+
+#~ msgid "Welcome"
+#~ msgstr "Bem-vindo(a)"
+
+#~ msgid ""
+#~ "Welcome to PlaybaK version 0.0.7.\n"
+#~ "This version introduces some basic features, improved collection and "
+#~ "rating support. This version is more stable but don't expect it to be "
+#~ "perfect."
+#~ msgstr ""
+#~ "Bem-vindo(a) à versão 0.0.7 do PlaybaK.\n"
+#~ "Esta versão apresenta algumas funções básicas, colecção melhorada e "
+#~ "suporte a classificações. Esta versão é mais estável mas não espere que "
+#~ "seja perfeita."
+
+#~ msgid "<b>Now Playing</b> "
+#~ msgstr "<b>Em Reprodução</b> "
+
+#~ msgid "Title"
+#~ msgstr "Título"
+
+#~ msgid "Artist"
+#~ msgstr "Artista"
+
+#~ msgid "Album"
+#~ msgstr "Álbum"
+
+#~ msgid "%1 by %2"
+#~ msgstr "%1 por %2"
+
+#~ msgid "PlaybaK - Now Playing"
+#~ msgstr "PlaybaK - A Reproduzir"
+
+#~ msgid "Playlist finished"
+#~ msgstr "Lista de reprodução terminada"
+
+#~ msgid "Add Media..."
+#~ msgstr "Adicionar Ficheiros Multimédia..."
+
+#~ msgid "Interface"
+#~ msgstr "Interface"
+
+#~ msgid "Video"
+#~ msgstr "Vídeo"
+
+#~ msgid "Audio"
+#~ msgstr "Áudio"
+
+#~ msgid "Compact Mode"
+#~ msgstr "Modo Compacto"
+
+#~ msgid "Save Lyrics"
+#~ msgstr "Guardar Letra da Música"
+
+#~ msgid ""
+#~ "Lyrics Edition Mode\n"
+#~ "Press this button and then click the lyrics when that verse is said."
+#~ msgstr ""
+#~ "Modo de Edição da Letra\n"
+#~ "Pressione o botão e depois clique na letra quando certo verso for dito."
+
+#~ msgid "Return to Normal Mode"
+#~ msgstr "Voltar ao Modo Normal"
+
+#~ msgid "%1by%2"
+#~ msgstr "%1por%2"
+
+#~ msgid "Artist Info"
+#~ msgstr "Informação"
+
+#~ msgid "News"
+#~ msgstr "Notícias"
+
+#~ msgid "Videos"
+#~ msgstr "Vídeos"
+
+#~ msgid "Open in Browser"
+#~ msgstr "Abrir no Navegador"
+
+#~ msgid "Open Picture"
+#~ msgstr "Abrir Imagem"
+
+#~ msgid "Searching..."
+#~ msgstr "A procurar..."
+
+#~ msgid "http://en.wikipedia.org/"
+#~ msgstr "http://pt.wikipedia.org/"
+
+#~ msgid "Loading artist information..."
+#~ msgstr "A carregar a informação do artista..."
+
+#~ msgid "Wikipedia article not found"
+#~ msgstr "Artigo da Wikipédia não encontrado"
+
+#~ msgid "Discography"
+#~ msgstr "Discografia"
+
+#~ msgid "Other songs by %1"
+#~ msgstr "Outras músicas por %1"
+
+#~ msgctxt "Other songs from an album"
+#~ msgid "Other songs from %1"
+#~ msgstr "Outras músicas do álbum %1"
+
+#~ msgctxt "Other songs from a country"
+#~ msgid "Other songs from %1"
+#~ msgstr "Outras músicas de %1"
+
+#~ msgid ""
+#~ "Welcome to PlaybaK 0.0.7. This version is unstable and may not work as it "
+#~ "should work. On a future version this screen will show you your favorite "
+#~ "songs."
+#~ msgstr ""
+#~ "Bem-vindo(a) ao PlaybaK 0.0.7. Esta versão é instável e pode não "
+#~ "funcionar como devia. Numa futura versão, este ecrã mostrá-lhe-á as suas "
+#~ "músicas favoritas."
+
+#~ msgid ""
+#~ "Welcome to PlaybaK 0.0.7. Open PlaybaK's settings and add the folder(s) "
+#~ "you want it to scan for media."
+#~ msgstr ""
+#~ "Bem-vindo(a) ao PlaybaK 0.0.7. Abra as configurações do PlaybaK e "
+#~ "adicione a(s) pasta(s) onde deseja que o PlaybaK procure ficheiros "
+#~ "multimédia."
+
+#~ msgid "Error"
+#~ msgstr "Erro"
+
+#~ msgid ""
+#~ "The file was not found. Check if the file isn't in a flash drive you've "
+#~ "recently removed or search the file you wanted to play."
+#~ msgstr ""
+#~ "O ficheiro não foi encontrado. Verifique se o ficheiro não está numa "
+#~ "pendisk que removeu recentemente ou procure o ficheiro que queria "
+#~ "reproduzir."
+
+#~ msgid ""
+#~ "The file cannot be played. Check if you have the needed codecs installed "
+#~ "or if you added an invalid file."
+#~ msgstr ""
+#~ "O ficheiro não pode ser reproduzido. Verifique se tem os codecs "
+#~ "necessário instalados ou se adicionou um ficheiro inválido."
+
+#~ msgid "Unknown Album"
+#~ msgstr "Álbum Desconhecido"
+
+#~ msgid "Next"
+#~ msgstr "Próximo"
+
+#~ msgid "Back"
+#~ msgstr "Anterior"
+
+#, fuzzy
+#~ msgid ""
+#~ "Version from July 11, 2010.\n"
+#~ "\n"
+#~ "Watch videos, listen to music, view your photos and manage all your media "
+#~ "with PlaybaK.\n"
+#~ "\n"
+#~ "<b>WARNING</b> This version is very unstable and isn't complete.\n"
+#~ "\n"
+#~ "<b>Translators</b>\n"
+#~ "Czech - Pavel Fric\n"
+#~ "German - Fabian\n"
+#~ "Italian - Vincenzo Reale\n"
+#~ "Portuguese - Gil Castro\n"
+#~ "Russian - Виктор Шеленченко"
+#~ msgstr ""
+#~ "Versão de 10 de Julho de 2010.\n"
+#~ "\n"
+#~ "Assista a vídeos, ouça música, veja fotos e gire todos os seus ficheiros "
+#~ "multimédia com o PlaybaK.\n"
+#~ "\n"
+#~ "<b>AVISO</b> Esta versão é muito instável e não está completa.\n"
+#~ "\n"
+#~ "<b>Tradutores</b>\n"
+#~ "Checo - Pavel Fric\n"
+#~ "Alemão - Fabian\n"
+#~ "Italiano - Vincenzo Reale\n"
+#~ "Português - Gil Castro\n"
+#~ "Russian - Виктор Шеленченко"
+
+#~ msgid "(C) 2010 Gil Castro"
+#~ msgstr "(C) 2010 Gil Castro"
+
+#~ msgid "Antonios Dimopoulos"
+#~ msgstr "Antonios Dimopoulos"
+
+#~ msgid "Main GUI idea, PlaybaK's name and icon"
+#~ msgstr "Ideia principal da interface, nome do PlaybaK e ícone"
+
+#~ msgid "Léomike Hébert"
+#~ msgstr "Léomike Hébert"
+
+#~ msgid "Ideas"
+#~ msgstr "Ideias"
+
+#~ msgid "Inês Trigo"
+#~ msgstr "Inês Trigo"
+
+#~ msgid "Ideas and some texts"
+#~ msgstr "Ideias e alguns textos"
+
+#~ msgid "Multimedia file to play"
+#~ msgstr "Ficheiro multimédia a reproduzir"
+
+#~ msgid "Select a folder for KDE Media Player to look for files"
+#~ msgstr "Seleccione uma pasta para o KDE Media Player procurar ficheiros"
+
+#~ msgid "Notify when KDE Media Player loads another file"
+#~ msgstr "Notificar quando o KDE Media Player carrega outro ficheiro"
+
+#~ msgid "Rescan when KDE Media Player is open"
+#~ msgstr "Verificar sempre que o KMP for aberto"
+
+#~ msgid "Head"
+#~ msgstr "Cabeçalho"
+
+#~ msgid "&File"
+#~ msgstr "&Ficheiro"
+
+#~ msgid "&Playlist"
+#~ msgstr "&Lista de Reprodução"
+
+#~ msgid "&Settings"
+#~ msgstr "&Configuração"
+
+#~ msgid "&Help"
+#~ msgstr "&Ajuda"
+
+#~ msgid ""
+#~ "If the folders are modified (eg. adding new files) KMP will rescan them "
+#~ "so collection keeps updated"
+#~ msgstr ""
+#~ "Se as pastas forem modificadas (ex. adicionando novos ficheiros) o KMP "
+#~ "irá voltar a procurar ficheiros para manter a colecção actualizada"
+
+#~ msgid "Rescan when KMP is opened"
+#~ msgstr "Verificar sempre que o KMP for aberto"
+
+#~ msgid ""
+#~ "Welcome to KDE Media Player version 0.0.6.\n"
+#~ "This version introduces the collection which lets you access and manage "
+#~ "your multimedia files and has some bugs fixed as well.\n"
+#~ "But, KDE Media Player is still not complete and you may see even more "
+#~ "bugs than on last version.\n"
+#~ "Collection can't be managed yet, it only looks for files and organizes by "
+#~ "itself.\n"
+#~ "If you want to rebuild your collection delete the file %1."
+#~ msgstr ""
+#~ "Bem-vindo(a) à versão 0.0.6 do KDE Media Player. \n"
+#~ "Esta versão inclui a colecção, função que lhe permite aceder e gerir os "
+#~ "seus ficheiros multimédia e também inclui a correcção de alguns erros.\n"
+#~ "Mas, o KDE Media Player ainda não está completo e poderá ver ainda mais "
+#~ "erros do que na versão anterior.\n"
+#~ "A colecção ainda não pode ser gerida, o KDE Media Player simplesmente "
+#~ "procura os ficheiros e organiza-os por si próprio.\n"
+#~ "Se deseja reconstruir a colecção apague o ficheiro %1."
+
+#~ msgid "Main GUI idea"
+#~ msgstr "Ideia principal da interface"
+
+#~ msgid "Ideas and French translation"
+#~ msgstr "Ideias e tradução Francesa"
+
+#~ msgid "Collection can't be updated yet"
+#~ msgstr "Ainda não pode ser actualizada"
+
+#~ msgid "&Now Playing"
+#~ msgstr "&Em Reprodução"
+
+#~ msgid "&Media Information"
+#~ msgstr "&Informação Multimédia"
+
+#~ msgid "&Collection"
+#~ msgstr "&Colecção"
+
+#~ msgid "&Video"
+#~ msgstr "&Vídeo"
+
+#~ msgid "&Tools"
+#~ msgstr "&Ferramentas"
+
+#~ msgid "KDE Media Player"
+#~ msgstr "KDE Media Player"
+
+#~ msgid "&View"
+#~ msgstr "&Vídeo"
+
+#~ msgctxt "@title:menu"
+#~ msgid "View Mode"
+#~ msgstr "Pasta de vídeos"
+
+#~ msgctxt "@title:menu"
+#~ msgid "Additional Information"
+#~ msgstr "Informações"
+
+#~ msgctxt "@title:menu"
+#~ msgid "Panels"
+#~ msgstr "Paineis"
+
+#~ msgid "&Actions"
+#~ msgstr "&Colecção"
+
+#~ msgid "Views"
+#~ msgstr "Vídeos"
+
+#~ msgctxt "@title:menu for new-message and new-from-template"
+#~ msgid "New"
+#~ msgstr "Notícias"
+
+#~ msgctxt "@title:menu"
+#~ msgid "Tools"
+#~ msgstr "&Ferramentas"
+
+#~ msgid "&Folder"
+#~ msgstr "&Ficheiro"
+
+#~ msgid "View"
+#~ msgstr "Vídeo"
+
+#~ msgid "Settings"
+#~ msgstr "&Configuração"
+
+#~ msgid "Help"
+#~ msgstr "&Ajuda"
+
+#~ msgid "&Change Profile"
+#~ msgstr "Mudar o volume"
+
+#~ msgid "Word Completion"
+#~ msgstr "Colecção"
+
+#~ msgctxt "@title:menu Game move"
+#~ msgid "&Move"
+#~ msgstr "Filmes"
+
+#~ msgid "User Information"
+#~ msgstr "Informações"
+
+#~ msgid "Speed:"
+#~ msgstr "Avançar/recuar no ficheiro"
+
+#~ msgid "Speed"
+#~ msgstr "Avançar/recuar no ficheiro"
+
+#~ msgid "General Settings"
+#~ msgstr "&Configuração"
+
+#~ msgid "Policy"
+#~ msgstr "Reproduzir"
+
+#~ msgid "Change &Policy..."
+#~ msgstr "Mudar o volume"
+
+#~ msgid "Value:"
+#~ msgstr "Volume"
+
+#~ msgid "Domain"
+#~ msgstr "Concluído"
+
+#~ msgid "Use this login information."
+#~ msgstr "A carregar a informação sobre o artista..."
+
+#~ msgid "E&xceptions"
+#~ msgstr "&Configuração"
+
+#~ msgid "C&hange..."
+#~ msgstr "A guardar..."
+
+#~ msgid "Reject"
+#~ msgstr "Repôr"
+
+#~ msgid "Add operating system &version"
+#~ msgstr "Adicionar a versão instrumental"
+
+#~ msgid "Add lang&uage information"
+#~ msgstr "Informações"
+
+#~ msgid "Open &new tab after current tab"
+#~ msgstr "Reproduzir a seguir ao ficheiro actual"
+
+#~ msgid "Bac&kground:"
+#~ msgstr "Recuar"
+
+#~ msgid "<b>Images</b>"
+#~ msgstr "<b>Tom</b>"
+
+#~ msgid "Folders"
+#~ msgstr "Ficheiros"
+
+#~ msgid "&Remove"
+#~ msgstr "Remover"
+
+#~ msgid "&New"
+#~ msgstr "Notícias"
+
+#~ msgid "Do&wn"
+#~ msgstr "Concluído"
+
+#~ msgid "Value"
+#~ msgstr "Volume"
+
+#~ msgid "System Configuration"
+#~ msgstr "Saturação"
+
+#~ msgctxt "@action:button New session"
+#~ msgid "New..."
+#~ msgstr "Notícias"
+
+#~ msgid "Filter:"
+#~ msgstr "&Ficheiro"
+
+#~ msgid "Edit..."
+#~ msgstr "Editar letras..."
+
+#~ msgid "Tab Titles"
+#~ msgstr "Título"
+
+#~ msgid "New..."
+#~ msgstr "Notícias"
+
+#~ msgid "Edit Font..."
+#~ msgstr "Editar letras..."
+
+#~ msgid "Mouse Interaction"
+#~ msgstr "Informações"
+
+#~ msgctxt "The shape of the cursor"
+#~ msgid "Block"
+#~ msgstr "Anterior"
+
+#~ msgid "Select"
+#~ msgstr "Avançar/recuar no ficheiro"
+
+#~ msgid "Edit the selected profile(s)"
+#~ msgstr "Remover o(s) ficheiro(s) seleccionado(s)"
+
+#~ msgid "Edit Profile..."
+#~ msgstr "Editar letras..."
+
+#~ msgid "Icon Settings"
+#~ msgstr "&Configuração"
+
+#~ msgid "Advanced Options"
+#~ msgstr "Avançado"
+
+#~ msgid "Text Settings"
+#~ msgstr "&Configuração"
+
+#~ msgid "File types:"
+#~ msgstr "Ficheiros"
+
+#~ msgid "Add..."
+#~ msgstr "Adicionar"
+
+#~ msgid "Remove the selected emoticon"
+#~ msgstr "Remover o(s) ficheiro(s) seleccionado(s)"
+
+#~ msgid "Remove the selected theme from your disk"
+#~ msgstr "Remover o(s) ficheiro(s) seleccionado(s)"
+
+#~ msgid "Remove Theme"
+#~ msgstr "Remover"
+
+#~ msgid "&Volume:"
+#~ msgstr "Volume"
+
+#~ msgid "&Player:"
+#~ msgstr "Reproduzir"
+
+#~ msgid "&Recent connection:"
+#~ msgstr "Procurar na colecção"
+
+#~ msgid "Network Folder Information"
+#~ msgstr "Informações"
+
+#~ msgid "&Folder:"
+#~ msgstr "&Ficheiro"
+
+#~ msgid "Remove them"
+#~ msgstr "Remover"
+
+#~ msgid "Colon"
+#~ msgstr "Colecção"
+
+#~ msgid "&Advanced setup"
+#~ msgstr "Avançado"
+
+#~ msgid "Basic Settings"
+#~ msgstr "&Configuração"
+
+#~ msgid "Advanced Settings"
+#~ msgstr "Avançado"
+
+#~ msgid "Show hidden folders"
+#~ msgstr "Pasta de vídeos"
+
+#~ msgid "Calculating..."
+#~ msgstr "A procurar..."
+
+#~ msgid "Test"
+#~ msgstr "Repôr"
+
+#~ msgid "System Integration"
+#~ msgstr "Bandeja do Sistema"
+
+#~ msgid "Add Script..."
+#~ msgstr "&Adicionar ficheiros multimédia..."
+
+#~ msgid "Remove the selected scheme"
+#~ msgstr "Remover o(s) ficheiro(s) seleccionado(s)"
+
+#~ msgid "Remove Scheme"
+#~ msgstr "Remover"
+
+#~ msgid "Tooltip"
+#~ msgstr "Texto da dica"
+
+#~ msgid "Button Text"
+#~ msgstr "Inferior esquerdo"
+
+#~ msgid "Tooltip Background"
+#~ msgstr "Aparência das Dicas"
+
+#~ msgid "Tooltip Text"
+#~ msgstr "Texto da dica"
+
+#~ msgid "Intensity:"
+#~ msgstr "Internet"
+
+#~ msgid "Desaturate"
+#~ msgstr "Saturação"
+
+#~ msgid "Tint"
+#~ msgstr "Título"
+
+#~ msgid "Contrast:"
+#~ msgstr "Contraste"
+
+#~ msgid "Normal text"
+#~ msgstr "Texto da dica"
+
+#~ msgid "normal"
+#~ msgstr "Geral"
+
+#~ msgid "neutral"
+#~ msgstr "Geral"
+
+#~ msgid "Re&verse scroll direction"
+#~ msgstr "Procurar na colecção"
+
+#~ msgid "&No picture"
+#~ msgstr "Imagens"
+
+#~ msgid "&Picture:"
+#~ msgstr "Imagens"
+
+#~ msgid "Select a shortcut scheme file"
+#~ msgstr "Seleccione um ficheiro multimedia a adicionar"
+
+#~ msgid "&Remove Theme"
+#~ msgstr "Remover"
+
+#~ msgid "Style"
+#~ msgstr "Título"
+
+#~ msgid "Fonts"
+#~ msgstr "Contraste"
+
+#~ msgid "Top left:"
+#~ msgstr "Superior esquerdo"
+
+#~ msgid "No Action"
+#~ msgstr "Colecção"
+
+#~ msgid "Top right:"
+#~ msgstr "Superior direito"
+
+#~ msgid "Bottom left:"
+#~ msgstr "Inferior esquerdo"
+
+#~ msgid "Bottom right:"
+#~ msgstr "Inferior direito"
+
+#~ msgid "Medium"
+#~ msgstr "Multimédia"
+
+#~ msgid "Arguments:"
+#~ msgstr "Alinhamento"
+
+#~ msgid "Gestures"
+#~ msgstr "Imagens"
+
+#~ msgid "Contains"
+#~ msgstr "Contraste"
+
+#~ msgid "Delete Action"
+#~ msgstr "Colecção"
+
+#~ msgid "Ignore selection"
+#~ msgstr "Colecção"
+
+#~ msgid "Separate clipboard and selection"
+#~ msgstr "Procurar na colecção"
+
+#~ msgid "&Text"
+#~ msgstr "Próximo"
+
+#~ msgid "T&itle"
+#~ msgstr "Título"
+
+#~ msgid "Fi&lter"
+#~ msgstr "&Ficheiro"
+
+#~ msgid "&Add"
+#~ msgstr "Adicionar"
+
+#~ msgid "&Change"
+#~ msgstr "Mudar o volume"
+
+#~ msgid "&Title"
+#~ msgstr "Título"
+
+#~ msgid "Title &Alignment"
+#~ msgstr "Alinhamento"
+
+#~ msgid "Center"
+#~ msgstr "Superior centrado"
+
+#~ msgid "Ozone"
+#~ msgstr "Concluído"
+
+#~ msgid "Far"
+#~ msgstr "Avançar"
+
+#~ msgid "Reflections"
+#~ msgstr "Colecção"
+
+#~ msgctxt "Duration of rotation"
+#~ msgid "Default"
+#~ msgstr "Guardar como Predefinição"
+
+#~ msgid "Animation duration:"
+#~ msgstr "Saturação"
+
+#~ msgid "Activation"
+#~ msgstr "Saturação"
+
+#~ msgid "Reflection"
+#~ msgstr "Colecção"
+
+#~ msgid "Rotation duration:"
+#~ msgstr "Saturação"
+
+#~ msgid "Sphere Cap Deformation"
+#~ msgstr "Copiar Informação"
+
+#~ msgid "Sphere"
+#~ msgstr "Avançar/recuar no ficheiro"
+
+#~ msgid "Plane"
+#~ msgstr "Paineis"
+
+#~ msgctxt "Duration of zoom"
+#~ msgid "Default"
+#~ msgstr "Guardar como Predefinição"
+
+#~ msgid "Pager"
+#~ msgstr "Pausar"
+
+#~ msgid " rows"
+#~ msgstr "Programas de Televisão"
+
+#~ msgctxt "Duration of flip animation"
+#~ msgid "Default"
+#~ msgstr "Guardar como Predefinição"
+
+#~ msgid "Size"
+#~ msgstr "Simples"
+
+#~ msgctxt "Duration of rearrangement"
+#~ msgid "Default"
+#~ msgstr "Guardar como Predefinição"
+
+#~ msgid "Text"
+#~ msgstr "Próximo"
+
+#~ msgid "Top Left"
+#~ msgstr "Superior esquerdo"
+
+#~ msgid "Top Right"
+#~ msgstr "Superior direito"
+
+#~ msgid "Bottom Left"
+#~ msgstr "Inferior esquerdo"
+
+#~ msgid "Bottom Right"
+#~ msgstr "Inferior direito"
+
+#~ msgid "Fading duration:"
+#~ msgstr "Saturação"
+
+#~ msgctxt "Duration of fading"
+#~ msgid "Default"
+#~ msgstr "Guardar como Predefinição"
+
+#~ msgid "&Stiffness:"
+#~ msgstr "&Configuração"
+
+#~ msgid "More"
+#~ msgstr "Filmes"
+
+#~ msgid "Common Settings"
+#~ msgstr "&Configuração"
+
+#~ msgid "Shadows"
+#~ msgstr "Programas de Televisão"
+
+#~ msgid "Various animations"
+#~ msgstr "Visualização"
+
+#~ msgid "Instant"
+#~ msgstr "Internet"
+
+#~ msgid "Always"
+#~ msgstr "Reproduzir"
+
+#~ msgid "Title:"
+#~ msgstr "Título"
+
+#~ msgid "Toolbar"
+#~ msgstr "&Ferramentas"
+
+#~ msgid "Remember"
+#~ msgstr "Lembrar a última vez"
+
+#~ msgid "&Size"
+#~ msgstr "&Ficheiro"
+
+#~ msgid "&Position"
+#~ msgstr "&Colecção"
+
+#~ msgid "Maximized &horizontally"
+#~ msgstr "Horizontalmente"
+
+#~ msgid "Default"
+#~ msgstr "Guardar como Predefinição"
+
+#~ msgid "No Placement"
+#~ msgstr "Em Reprodução"
+
+#~ msgid "Centered"
+#~ msgstr "Internet"
+
+#~ msgid "&Preferences"
+#~ msgstr "Desempenho"
+
+#~ msgid "Other Settings"
+#~ msgstr "&Configuração"
+
+#~ msgid "Stream"
+#~ msgstr "pré-amp"
+
+#~ msgid "Filename"
+#~ msgstr "&Ficheiro"
+
+#~ msgid "&Pause"
+#~ msgstr "Pausar"
+
+#~ msgid "Programs Only"
+#~ msgstr "Programador"
+
+#~ msgid "Text to Speech"
+#~ msgstr "Mostrar às:"
+
+#~ msgid "Show charge &information"
+#~ msgstr "A carregar a informação sobre o artista..."
+
+#~ msgid "No text"
+#~ msgstr "Próximo"
+
+#~ msgid "&Network Interfaces:"
+#~ msgstr "Interface"
+
+#~ msgid "Filters"
+#~ msgstr "Ficheiros"
+
+#~ msgid "Author:"
+#~ msgstr "Outra:"
+
+#~ msgid "Request"
+#~ msgstr "Repôr"
+
+#~ msgid "Folders:"
+#~ msgstr "Ficheiros"
+
+#~ msgid "&Add Folder..."
+#~ msgstr "&Adicionar ficheiros multimédia..."
+
+#~ msgid "&Remove Folder"
+#~ msgstr "Remover"
+
+#~ msgid "Actions"
+#~ msgstr "Artista"
+
+#~ msgid "Change to:"
+#~ msgstr "Mudar o volume"
+
+#~ msgid "Connecting"
+#~ msgstr "Colecção"
+
+#~ msgid "Perform change"
+#~ msgstr "Desempenho"
+
+#~ msgid "Device Type:"
+#~ msgstr "Dispositivos"
+
+#~ msgid "Equals"
+#~ msgstr "Equalizador"
+
+#~ msgid "Edit entry..."
+#~ msgstr "Editar letras..."
+
+#~ msgid "Remove entry"
+#~ msgstr "Remover"
+
+#~ msgid "Add entry..."
+#~ msgstr "&Adicionar ficheiros multimédia..."
+
+#~ msgid "Sorting"
+#~ msgstr "&Configuração"
+
+#~ msgid "Reverse"
+#~ msgstr "Repôr"
+
+#~ msgid "Columns"
+#~ msgstr "Volume"
+
+#~ msgid "Shown"
+#~ msgstr "Programas de Televisão"
+
+#~ msgid "Misc"
+#~ msgstr "Música"
+
+#~ msgid "&Filetype:"
+#~ msgstr "&Ficheiro"
+
+#~ msgid "&Section:"
+#~ msgstr "&Colecção"
+
+#~ msgid "&Remote files"
+#~ msgstr "Remover o(s) ficheiro(s) seleccionado(s)"
+
+#~ msgid "File Format"
+#~ msgstr "Formato de Imagem"
+
+#~ msgid "Unknown word:"
+#~ msgstr "Artista Desconhecido"
+
+#~ msgid "<b>misspelled</b>"
+#~ msgstr "<b>Últimas Reproduções</b>"
+
+#~ msgid "Job Control"
+#~ msgstr "Controlos No Vídeo"
+
+#~ msgid "Billing Information:"
+#~ msgstr "Informações"
+
+#~ msgid "Pages"
+#~ msgstr "Paineis"
+
+#~ msgctxt "Banner page at end"
+#~ msgid "End"
+#~ msgstr "Expandir"
+
+#~ msgid "Remember password"
+#~ msgstr "Lembrar a última vez"
+
+#~ msgid "Action"
+#~ msgstr "Colecção"
+
+#~ msgid "Mouse Shape Gesture"
+#~ msgstr "Roda do Rato"
+
+#~ msgid "&Alignment"
+#~ msgstr "Alinhamento"
+
+#~ msgid "F&ile2"
+#~ msgstr "&Ficheiro"
+
+#~ msgctxt "@title:group Document information"
+#~ msgid "General"
+#~ msgstr "Geral"
+
+#~ msgid "Tests"
+#~ msgstr "Repôr"
+
+#~ msgctxt ""
+#~ "@title:group Title of a group that lets the user choose options regargin "
+#~ "program startup"
+#~ msgid "Startup"
+#~ msgstr "Volume Inicial"
+
+#~ msgid "Ad&vanced Options"
+#~ msgstr "Avançado"
+
+#~ msgid "Organization:"
+#~ msgstr "Visualização"
+
+#~ msgid "Country:"
+#~ msgstr "Contraste"
+
+#~ msgid "Open Script"
+#~ msgstr "Abrir Imagem"
+
+#~ msgid "Log to a file"
+#~ msgstr "A procurar ficheiros..."
+
+#~ msgid "Read"
+#~ msgstr "Cabeçalho"
+
+#~ msgid "File:"
+#~ msgstr "&Ficheiro"
+
+#~ msgid "Cancel"
+#~ msgstr "Paineis"
+
+#~ msgid "folder"
+#~ msgstr "Pasta de música"
+
+#~ msgid "Home Movies"
+#~ msgstr "Vídeos Caseiros"
+
+#~ msgid "save audio and video settings for each file"
+#~ msgstr "Guardar definições áudio e vídeo específicas de cada ficheiro"
+
+#~ msgid "notify when KDE Media Player changes to another music/video"
+#~ msgstr "Notificar quando o KDE Media Player carrega outro ficheiro"
+
+#~ msgid "check for changes in the collection"
+#~ msgstr "Procurar na colecção"
+
+#~ msgid "recan collection when kmp is opened"
+#~ msgstr "Verificar sempre que o KMP for aberto"
+
+#~ msgid "show basic media controls only on fullscreen and fullwindow mode"
+#~ msgstr ""
+#~ "Mostrar os controlos básicos apenas em modo de ecrã inteiro e de janela "
+#~ "inteira"
+
+#~ msgid "limit video panel slider values"
+#~ msgstr "Limitar valores das definições de vídeo em"
+
+#~ msgid "limit audio panel slider values"
+#~ msgstr "Limitar valores das definições de som em"
+
+#~ msgid "Fatal Error"
+#~ msgstr "Erro Fatal"

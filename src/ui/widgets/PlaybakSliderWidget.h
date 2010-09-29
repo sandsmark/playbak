@@ -29,23 +29,26 @@
 class PlaybaKSliderWidget : public QAbstractSlider
 {
   Q_OBJECT
+  Q_PROPERTY(Mode mode READ mode WRITE setMode)
+	Q_ENUMS(Mode)
 public:
     struct SliderMode
     {
+    };
       enum Mode
       {
-        VOLUME = 0,
-        SEEKBAR
+        VolumeSlider = 0,
+        SeekBar
       };
-    };
-public:
+//public:
     PlaybaKSliderWidget(QWidget* parent = 0);
     virtual int value();
     virtual void setValue(int);
-    void setMode(SliderMode::Mode mode);
+		Mode mode();
+		void setMode(Mode mode);
 private:
     int mValue;
-    SliderMode::Mode mMode;
+		Mode mMode;
     qreal mOpacity;
     //int lineOpacity;
     QTimer* mEffects;

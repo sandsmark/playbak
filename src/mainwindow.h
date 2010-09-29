@@ -22,7 +22,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "PlaybaKAnimatedSliderWidget.h"
 #include <kxmlguiwindow.h>
+#include "MediaInfoPage.h"
+#include "MediaInfoInteractivePage.h"
 
 namespace Ui {
     class MainWindow;
@@ -31,17 +34,30 @@ namespace Ui {
 class MainWindow : public KXmlGuiWindow
 {
     Q_OBJECT
-
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+	PlaybaKAnimatedSliderWidget *test;
+	PlaybaKAnimatedSliderWidget *test2;
+	PlaybaKAnimatedSliderWidget *test3;
+	PlaybaKAnimatedSliderWidget *test4;
+	PlaybaKAnimatedSliderWidget *test5;
+	PlaybaKAnimatedSliderWidget *test6;
+	PlaybaKAnimatedSliderWidget *test7;
+	Ui::MainWindow *ui;
+	MediaInfoPage* mip1;
+	MediaInfoInteractivePage* mip2;
     QWidget *playlistDockTitleBar;
     QWidget *controlsDockTitleBar;
     QWidget *nullPlaylistDockTitleBar;
     QWidget *nullControlsDockTitleBar;
+		
+private slots:
+	void testclick();
+	void showMediaInfoPage2();
+	void showMediaInfoPage1();
 };
 
 #endif // MAINWINDOW_H

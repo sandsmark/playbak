@@ -46,16 +46,21 @@ PlaybaKSliderWidget::PlaybaKSliderWidget(QWidget* parent): QAbstractSlider(paren
     setMouseTracking(true);
 }
 
-void PlaybaKSliderWidget::setMode(SliderMode::Mode mode)
+void PlaybaKSliderWidget::setMode(Mode mode)
 {
     mMode = mode;
+}
+
+PlaybaKSliderWidget::Mode PlaybaKSliderWidget::mode()
+{
+	return mMode;
 }
 
 void PlaybaKSliderWidget::paintEvent(QPaintEvent* ev)
 {
     //QSlider::paintEvent(ev);
     QPainter p(this);
-    if ( mMode == SliderMode::SEEKBAR)
+		if ( mMode == SeekBar)
     {
         QFont cFont = p.font();
         cFont.setPointSize(8);
@@ -113,7 +118,7 @@ void PlaybaKSliderWidget::paintEvent(QPaintEvent* ev)
                 p.drawLine( mVpos-1, 1, mVpos-1, height()-2);
             }
         }
-        if ( mMode == SliderMode::VOLUME)
+        if ( mMode == VolumeSlider)
         {
             int textWidth = fontMetrics().width(QString::number(value()) + "%");
             int textHeight = fontMetrics().height();
@@ -144,12 +149,12 @@ void PlaybaKSliderWidget::paintEvent(QPaintEvent* ev)
                 if (textWidth < mVpos)
                 {
                     p.setPen(QColor::fromRgbF(1, 1, 1, mOpacity));
-                    p.drawText( mVpos-1-textWidth, height()/2+textHeight/2-2, time);
+                    p.drawText( mVpos-1-textWidth, height()/2+textHeight/2-3, time);
                 }
                 else
                 {
                     p.setPen(QColor::fromRgbF(0, 0, 0, mOpacity));
-                    p.drawText( mVpos+2, height()/2+textHeight/2-2, time);
+                    p.drawText( mVpos+2, height()/2+textHeight/2-3, time);
                 }
             }
             else
@@ -157,22 +162,22 @@ void PlaybaKSliderWidget::paintEvent(QPaintEvent* ev)
                 if ( mMouseX + 2 + textMouseWidth < mVpos)
                 {
                     p.setPen(QColor::fromRgbF(1, 1, 1, mOpacity));
-                    p.drawText( mMouseX + 2, height()/2+textHeight/2-2, mouseTextTime);
+                    p.drawText( mMouseX + 2, height()/2+textHeight/2-3, mouseTextTime);
                 }
                 else if ( mMouseX + 2 < mVpos)
                 {
                     p.setPen(QColor::fromRgbF(1, 1, 1, mOpacity));
-                    p.drawText( mMouseX - textMouseWidth, height()/2+textHeight/2-2, mouseTextTime);
+                    p.drawText( mMouseX - textMouseWidth, height()/2+textHeight/2-3, mouseTextTime);
                 }
                 else if ( mMouseX - 2 - textMouseWidth > mVpos)
                 {
                     p.setPen(QColor::fromRgbF(0, 0, 0, mOpacity));
-                    p.drawText( mMouseX - textMouseWidth, height()/2+textHeight/2-2, mouseTextTime);
+                    p.drawText( mMouseX - textMouseWidth, height()/2+textHeight/2-3, mouseTextTime);
                 }
                 else
                 {
                     p.setPen(QColor::fromRgbF(0, 0, 0, mOpacity));
-                    p.drawText( mVpos+2, height()/2+textHeight/2-2, mouseTextTime);
+                    p.drawText( mVpos+2, height()/2+textHeight/2-3, mouseTextTime);
                 }
             }
         }

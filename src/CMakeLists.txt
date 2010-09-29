@@ -1,7 +1,13 @@
 set(playbak_SRCS
    main.cpp
    mainwidow.cpp
+   ui/widgets/MediaInfoPage.cpp
+   ui/widgets/MediaInfoInteractivePage.cpp
    ui/widgets/PlaybakSliderWidget.cpp
+   ui/widgets/PlaybaKFadingButton.cpp
+   ui/widgets/PlaybaKGlowTextButton.cpp
+   ui/widgets/PlaybaKAnimatedSliderWidget.cpp
+   ui/widgets/PlaybaKFrameWidget.cpp
  )
 
 SET(playbak_UIS

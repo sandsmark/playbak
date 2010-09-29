@@ -1,0 +1,99 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-09-30 00:41+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: build/src/ui_mainwindow.h:632
+#: src/ui/widgets/MediaInfoInteractivePage.cpp:108
+msgid "Today"
+msgstr ""
+
+#: build/src/ui_mainwindow.h:633
+#: src/ui/widgets/MediaInfoInteractivePage.cpp:109
+msgid "Score"
+msgstr ""
+
+#: build/src/ui_mainwindow.h:634
+msgid "Play Times"
+msgstr ""
+
+#: build/src/ui_mainwindow.h:635
+msgid "Last Play"
+msgstr ""
+
+#: build/src/ui_mainwindow.h:637
+msgid "Now Playing"
+msgstr ""
+
+#: build/src/ui_mainwindow.h:638
+msgid "Media Information"
+msgstr ""
+
+#: build/src/ui_mainwindow.h:639
+msgid "Collection"
+msgstr ""
+
+#: build/src/ui_mainwindow.h:640
+msgid "Internet"
+msgstr ""
+
+#: build/src/ui_mainwindow.h:641
+msgid "Devices"
+msgstr ""
+
+#: build/src/ui_mainwindow.h:646
+msgid "0 media"
+msgstr ""
+
+#: src/main.cpp:28
+msgid "A KDE 4 Application"
+msgstr ""
+
+#: src/main.cpp:34
+msgid "PlaybaK"
+msgstr ""
+
+#: src/main.cpp:35
+msgid "(C) 2010 PlaybaK Development Team"
+msgstr ""
+
+#: src/main.cpp:37
+msgid "Gil Castro"
+msgstr ""
+
+#: src/main.cpp:37
+msgid "Programmer and Portuguese translator"
+msgstr ""
+
+#: src/main.cpp:42
+msgid "Document to open"
+msgstr ""
+
+#: src/ui/widgets/MediaInfoInteractivePage.cpp:106
+msgid "110"
+msgstr ""
+
+#: src/ui/widgets/MediaInfoInteractivePage.cpp:107
+msgid "7"
+msgstr ""
+
+#: src/ui/widgets/MediaInfoInteractivePage.cpp:110
+msgid "Play times"
+msgstr ""
+
+#: src/ui/widgets/MediaInfoInteractivePage.cpp:111
+msgid "Last play"
+msgstr ""

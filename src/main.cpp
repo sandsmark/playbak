@@ -31,9 +31,11 @@ static const char version[] = "%{VERSION}";
 
 int main(int argc, char **argv)
 {
-    KAboutData about("playbak", 0, ki18n("playbak"), version, ki18n(description),
-                     KAboutData::License_GPL, ki18n("(C) 2007 %{AUTHOR}"), KLocalizedString(), 0, "%{EMAIL}");
-    about.addAuthor( ki18n("%{AUTHOR}"), KLocalizedString(), "%{EMAIL}" );
+		KAboutData about("playbak", 0, ki18n("PlaybaK"), version, ki18n(description),
+                     KAboutData::License_GPL, ki18n("(C) 2010 PlaybaK Development Team"), KLocalizedString(), 0, "%{EMAIL}");
+		about.setProgramIconName("playbak");
+		about.addAuthor( ki18n("Gil Castro"), ki18n("Programmer and Portuguese translator"), "gilfmc@gmail.com" );
+		//TODO add your names too
     KCmdLineArgs::init(argc, argv, &about);
 
     KCmdLineOptions options;
