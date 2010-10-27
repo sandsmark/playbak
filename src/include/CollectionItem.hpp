@@ -22,7 +22,7 @@
 
 #include <QList>
 
-#include <kurl.h>
+#include <KDE/KUrl>
 
 //! The collection's item's class.
 class CollectionItem
@@ -35,7 +35,8 @@ class CollectionItem
        * TODO Complete the list.
        */
       enum CollectionItemCategory
-      {        
+      {    
+        NONE = 0,
         ANIME,  /*!< Anime category. */
         MOVIE,  /*!< Movie category. */
         TVSERIE /*!< TV' serie category. */
@@ -58,7 +59,7 @@ class CollectionItem
     Category::CollectionItemCategory mCategory;
     
     //! The collection item's thumbnail's url.
-    KURL mThumbnail;
+    KUrl mThumbnail;
     
     //! The collection item's type.
     Type::CollectionItemType mType;
@@ -85,13 +86,15 @@ class CollectionItem
     /*!
      * \param thumbnail the collection items's thumbnail's url.
      */
-    void setThumbnail(KURL thumbnail);
+    void setThumbnail(KUrl thumbnail);
     
     //! Set the collection item's category.
     /*!
      * \param type the collection item's type.
      */
     void setType(Type::CollectionItemType type);
+  public:
+    CollectionItem(Type::CollectionItemType type);
 };
 
 #endif //PLAYBAK_COLLECTIONITEM_H

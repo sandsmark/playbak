@@ -34,7 +34,7 @@ MediaPlaylist::~MediaPlaylist()
 
 MediaItem* MediaPlaylist::operator[](const int position)
 {
-  return mItemList[position];mediaItem()->
+  return mItemList[position];
 }
 
 void MediaPlaylist::addMediaItem(MediaItem* mediaItem)
@@ -87,15 +87,36 @@ void MediaPlaylist::remove(const int position)
   mItemList.removeAt(position);
 }
 
-#include <sfd>
-
 void MediaPlaylist::play()
 {
   if (mVideoPlayer == 0x0l)
     return;
 
+  if (mVideoPlayer->isPlaying() | mVideoPlayer->isPaused())
+    mVideoPlayer->stop();
+
+  mVideoPlayer->play(Phonon::MediaSource(mediaItem()->url().toLocalFile()));
+  /// FIXME: Put the correct volume
+  mVideoPlayer->audioOutput()->setVolume(1.0);
+}
+
+void MediaPlaylist::pause()
+{
+  if (mVideoPlayer == 0x0l)
+    return;
+  if (mVideoPlayer->isPlaying())
+    mVideoPlayer->pause();
+}
+
+void MediaPlaylist::playPause()
+{
+  if (mVideoPlayer == 0x0l)
+    return;
   
-  mediaItem()->url()
+  if (mVideoPlayer->isPlaying())
+    mVideoPlayer->pause();
+  else if (mVideoPlayer->isPaused())
+    mVideoPlayer->play();
 }
 
 void MediaPlaylist::select(const int position)

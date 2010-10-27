@@ -20,12 +20,14 @@
 #ifndef PLAYBAK_MEDIAITEM_H
 #define PLAYBAK_MEDIAITEM_H
 
-#include <KDE/KUrl>
-#include <QDate>
+#include "CollectionItem.hpp"
+
 #include <QMap>
 #include <QString>
+#include <QStringList>
+#include <QDate>
 
-#include "CollectionItem.hpp"
+#include <kurl.h>
 
 //! The media item's class.
 class MediaItem : public CollectionItem
@@ -44,7 +46,7 @@ class MediaItem : public CollectionItem
     /*!
      * \param url the media item source url.
      */
-    MediaItem(KURL url);
+    MediaItem(KUrl url);
   private:
     //! The media item's artist's name.
     /** Nepomuk direction:
@@ -66,7 +68,7 @@ class MediaItem : public CollectionItem
      * Licence (all the licence): http://www.semanticdesktop.org/ontologies/2007/01/19/nie/#license
      * Licence type (GLP, BSD, ect): http://www.semanticdesktop.org/ontologies/2007/01/19/nie/#licenseType
      */
-    KURL    mCopyrightInformationURL;
+    KUrl    mCopyrightInformationURL;
     
     //! The media item's creation date.
     /** Nepomuk direction:
@@ -111,17 +113,17 @@ class MediaItem : public CollectionItem
      */
     QString mMimetype;
     
-    //! The media item's score.
-    /** Nepomuk direction:
-     * nao:score (range [0,1] float): http://www.semanticdesktop.org/ontologies/nao/#score
-     */
-    int     mScore;
-    
     //! The media item's rating.
     /** Nepomuk direction:
      * nao:rating [range [0,10] float, 0 means is not set): http://www.semanticdesktop.org/ontologies/nao/#rating
      */
-    float   mRating;
+    double   mRating;
+    
+    //! The media item's score.
+    /** Nepomuk direction:
+     * nao:score (range [0,1] float): http://www.semanticdesktop.org/ontologies/nao/#score
+     */
+    double     mScore;
     
     //! The similars artists.
     /** Nepomuk direction:
@@ -159,7 +161,7 @@ class MediaItem : public CollectionItem
      * Nepomuk direction:
      * nie:url: http://www.semanticdesktop.org/ontologies/2007/01/19/nie#url
      */
-    KURL    mUrl;
+    KUrl    mUrl;
     
     //! The media item's year.
     /*!
@@ -177,7 +179,7 @@ class MediaItem : public CollectionItem
     QString artist();
     
     //! Returns the media item's copyright information url.
-    KURL    copyrightInformationURL()
+    KUrl    copyrightInformationURL();
     
     //! Returns the media item's creation date.
     QDate   creationDate();
@@ -217,14 +219,14 @@ class MediaItem : public CollectionItem
      * This takes into account the complete play times, and the
      * skip times.
      */
-    int     score();
+    double     score();
     
     //! Returns the media item's rating.
     /*!
      * A value in the range [0-10].
      * NOTE Is it's then may be as you say :)
      */
-    int    rating();
+    double    rating();
     
     //! Returns the similars artist.
     /*!
@@ -247,7 +249,7 @@ class MediaItem : public CollectionItem
     QString title();
     
     //! Returns the media item's url.
-    KURL    url();
+    KUrl    url();
     
     //! Returns the media item's year.
     int     year();
@@ -306,25 +308,15 @@ class MediaItem : public CollectionItem
     
     //! Remove a similar artist's name from the media item.
     /*!
-     * The map's key is associate with a percentage that indicate the
-     * percentage similarity: ["Artist","Percentage"].
-     */
-    /*!
      * \param artistName the similar's key.
-     * \param percentage the similarity percentage.
      */
-    void removeSimilarArtist(QString artistName, int percentage);
+    void removeSimilarArtist(QString artistName);
     
     //! Remove a similar media item's name from the media item.
     /*!
-     * The map's key is associate with a percentage that indicate the
-     * percentage similarity: ["MediaItem","Percentage"].
-     */
-    /*!
      * \param mediaName the similar's key.
-     * \param percentage the similarity percentage.
      */
-    void removeSimilarMedia(QString mediaName, int percentage);
+    void removeSimilarMedia(QString mediaName);
     
     //! Add a keyword to media item.
     /*!
@@ -342,19 +334,13 @@ class MediaItem : public CollectionItem
     /*!
      * \param url the copyright's information url.
      */
-    void setCopyrightInformationURL(KURL url);
+    void setCopyrightInformationURL(KUrl url);
     
     //! Set the media item's creation date.
     /*!
      * \param creationDate the creation date.
      */
     void setCreationDate(QDate creationDate);
-    
-    //! Set the media item's file size expressed in bytes.
-    /*!
-     * \param fileSize the file size.
-     */
-    void setFileSize(qint64 fileSize);
     
     //! Set the media item's ID.
     /*!
@@ -372,7 +358,7 @@ class MediaItem : public CollectionItem
     /*!
      * \param lastUpdate the last update date.
      */
-    void setLastUpdate(Date lastUpdate);
+    void setLastUpdate(QDate lastUpdate);
     
     //! Set the media item's license.
     /*!
@@ -406,7 +392,7 @@ class MediaItem : public CollectionItem
     /*!
      * \param score the score.
      */
-    void setScore(int score);
+    void setScore(double score);
     
     //! Set the media item's rating.
     /*!
@@ -417,7 +403,7 @@ class MediaItem : public CollectionItem
     /*!
      * \param rating the rating.
      */
-    void setRating(float rating);
+    void setRating(double rating);
     
     //! Set the similars media items.
     /*!
@@ -455,157 +441,13 @@ class MediaItem : public CollectionItem
     /*!
      * \param url the source url.
      */
-    void setUrl(KURL url);
+    void setUrl(KUrl url);
     
     //! Set the media item's year.
     /*!
      * \param year the year.
      */
     void setYear(int year);
-}
-
-//! The playable media item's class.
-class PlayableMediaItemData
-{
-  private:;
-    //! The playable media item's equalizer's bands values.
-    /**
-     * Nepomuk have not.
-     * ID3 tag: EQUA (http://www.id3.org/id3v2.3.0)
-     */
-    QVector<double>  mAudioEq;
-    
-    //! The playable media item's audio preamplifier's value.
-    /**
-     * Nepomuk have not
-     * ID have not.
-     */
-    double  mAudioPreamp;
-    
-    //! The playable media item's duration.
-    /**
-     * Nepomuk direction:
-     *  nid3:lenght (in milliseconds): http://www.semanticdesktop.org/ontologies/nid3/#length
-     * ID3:
-     *  TLEN (in milliseconds, http://www.id3.org/id3v2.3.0)
-     */
-    QTime   mDuration;
-    
-    //! The playable media item's duration time.
-    /**
-     * Nepomuk direction:
-     *  nid3:contentType (is in): http://www.semanticdesktop.org/ontologies/nid3/#contentType
-     * ID3:
-     *  TCON (writed like "(31)", see genre list: http://www.id3.org/id3v2.3.0#head-129376727ebe5309c1de1888987d070288d7c7e7)
-     */
-    QString mGenre;
-    
-    //! The playable media item's involved persons.
-    /**
-     * Nepomuk direction:
-     *  nid3:involvedPersons: http://www.semanticdesktop.org/ontologies/nid3/#involvedPerson
-     * ID3:
-     *  IPLS
-     */
-    QStringList mInvolvedPersons;
-    
-    //! The playable media item's language.
-    /*!
-     * NOTE May need to be QStringList.
-     */
-    /**
-     * Nepomuk direction:
-     *  nie:language: http://www.semanticdesktop.org/ontologies/nie/#language
-     *  nid3:language (lyrics language): http://www.semanticdesktop.org/ontologies/2007/05/10/nid3/#language
-     * ID3:
-     *  TLAN
-     */
-    QString mLanguage;
-    
-    //! The playable media item's start position.
-    qint64  mStartat;
-  public:
-    //! Returns the playable media item's equalizer's bands values.
-    QVector<double>  audioEq();
-    
-    //! Returns a specific playable media item's equalizer's band value.
-    /*!
-     * \param band the equalizer's band number.
-     */
-    double  audioEq(int band);
-    
-    //! Returns the playable media item's preamplifier's value.
-    double  audioPreamp();
-    
-    //! Returns the playable media item's duration time.
-    QTime   duration();
-    
-    //! Returns the playable media item's genre.
-    QString genre();
-    
-    //! Returns the playable media item's involved persons.
-    QStringList involvedPersons();
-    
-    //! Returns the playable media item's language.
-    QString language();
-    
-    //! Returns the playable media item's start position.
-    qint64  startAt();
-  public:
-    //! Add an involved person to playable media item.
-    /*!
-     * \param person a involved person.
-     */
-    void addInvolvedPerson(QString person);
-    
-    //! Remove an involved person from playable media item.
-    /*!
-     * \param person a involved person.
-     */
-    void removeInvolvedPerson(QString person);
-    
-    //! Set the playable media item's audio equalizer's bands values.
-    /*!
-     * \param audioEq the equalizer.
-     */
-    void setAudioEq(QVector<double> audioEq);
-    
-    //! Set a specific playable media item's audio equalizer band.
-    /*!
-     * \param value the value to set.
-     * \param band the band number.
-     */
-    void setAudioEq(double value, int band);
-    
-    //! Set the playable media item's duration time.
-    /*!
-     * \param duration the media duration time.
-     */
-    void setDuration(QTime duration);
-    
-    //! Set the playable media item's genre.
-    /*!
-     * \param genre the media genre.
-     */
-    void setGenre(QString genre);
-    
-    //! Set the playable media item's involved persons.
-    /*!
-     * \param involvedPersons the involved persons.
-     */
-    void setInvolvedPersons(QStringList involvedPersons);
-    
-    //! Set the playable media item's language.
-    /*!
-     * \param language the language.
-     */
-    void setLanguage(QString language);
-    
-    //! Set the playable media item's start position.
-    /*!
-     * \param startAt the media's start position.
-     */
-    void setStartAt(int startAt);
 };
 
 #endif //PLAYBAK_MEDIAITEM_H

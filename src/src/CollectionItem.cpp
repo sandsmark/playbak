@@ -56,6 +56,6 @@ void CollectionItem::setType(Type::CollectionItemType type)
 
 CollectionItem::CollectionItem(Type::CollectionItemType type) :
   mType(type),
-  mCategory(Category::NONE)
+  mCategory(Category::NONE) //TODO: Temporal
 {
 }

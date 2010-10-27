@@ -185,6 +185,9 @@ class MediaPlaylist {
      */
     virtual void setOutputWidget(QWidget *outputWidget);
   public:
+    //! The media playlist's constructor.
+    MediaPlaylist();
+    
     //! The media playlist's destructor.
     virtual ~MediaPlaylist();
 };

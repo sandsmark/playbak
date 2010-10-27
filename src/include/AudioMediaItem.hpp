@@ -27,7 +27,7 @@
 
 #include <QString>
 
-#include <kurl.h>
+#include <KDE/KUrl>
 
 //! The audio media item's class.
 class AudioMediaItem : public PlayableMediaItemData,
@@ -48,10 +48,10 @@ class AudioMediaItem : public PlayableMediaItemData,
     /*!
      * \param url the media source url.
      */
-    AudioMediaItem(KURL url);
-  private:    
+    AudioMediaItem(KUrl url);
+  private:     
     //! The audio media item's subtype.
-    Type::AudioMediaItemSubtype mSubtype;
+    Subtype::AudioMediaItemSubtype mSubtype;
   public:
     //! Returns the audio media item's subtype.
     Subtype::AudioMediaItemSubtype subtype();

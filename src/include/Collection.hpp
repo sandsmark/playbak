@@ -20,7 +20,7 @@
 #ifndef PLAYBAK_COLLECTION_H 
 #define PLAYBAK_COLLECTION_H
 
-#include "CollectionItem.h"
+#include "CollectionItem.hpp"
 
 #include <QList>
 #include <QString>

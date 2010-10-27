@@ -38,7 +38,7 @@ kde4_add_kcfg_files(playbak_SRCS settings.kcfgc)
 
 kde4_add_executable(playbak ${playbak_SRCS})
 # 
-target_link_libraries(playbak ${KDE4_KDEUI_LIBS} ${NEPOMUK_LIBRARIES} ${TAGLIB_LIBRARIES})
+target_link_libraries(playbak ${KDE4_KDEUI_LIBS} ${NEPOMUK_LIBRARIES} ${TAGLIB_LIBRARIES} phonon)
 
 install(TARGETS playbak ${INSTALL_TARGETS_DEFAULT_ARGS} )
 

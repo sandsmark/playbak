@@ -28,7 +28,7 @@ class VisualMediaItemData
     /**
      * nexif:brightnessValue (range [-99.99; 99.99]): http://www.semanticdesktop.org/ontologies/2007/05/10/nexif/#brightnessValue
      */
-    int mBrightness:
+    int mBrightness;
     
     //! The visual media item's contrast.
     /**
@@ -42,7 +42,7 @@ class VisualMediaItemData
      * Nepomuk direction:
      *  nexif:height: http://www.semanticdesktop.org/ontologies/2007/05/10/nexif/#height
      */
-    int height;
+    int mHeight;
     
     //! The visual media item's hue.
     /**
@@ -62,7 +62,7 @@ class VisualMediaItemData
      * Nepomuk direction:
      *  nexif:width: http://www.semanticdesktop.org/ontologies/2007/05/10/nexif/#width
      */
-    int width;
+    int mWidth;
   public:
     //! Returns the visual media item's brightness.
     int brightness();
@@ -86,37 +86,37 @@ class VisualMediaItemData
     /*!
      * \param brightness the brightness.
      */
-    int setBrightness(int brightness);
+    virtual int setBrightness(int brightness) = 0;
     
     //! Set the visual media item's contrast.
     /*!
      * \param contrast the contrast.
      */
-    int setContrast(int contrast);
+    virtual int setContrast(int contrast) = 0;
     
     //! Set the visual media item's height.
     /*!
      * \param height the height.
      */
-    int setHeight(int height);
+    virtual int setHeight(int height) = 0;
     
     //! Set the visual media item's hue.
     /*!
      * \param hue the hue.
      */
-    int setHue(int hue);
+    virtual int setHue(int hue) = 0;
     
     //! Set the visual media item's saturation.
     /*!
      * \param saturation the saturation.
      */
-    int setSaturation(int saturation);
+    virtual int setSaturation(int saturation) = 0;
     
     //! Set the visual media item's width.
     /*!
      * \param width the width.
      */
-    int setWidth(int width);
+    virtual int setWidth(int width) = 0;
 };
 
 #endif //PLAYBAK_VISUALMEDIAITEMDATA_H

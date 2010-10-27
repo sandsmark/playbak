@@ -43,7 +43,7 @@ class VideoMediaItem : public PlayableMediaItemData,
         REMIXMUSIC         /*!< Remix music video. */
       };
     };
-    VideoMediaItem(KURL url);
+    VideoMediaItem(KUrl url);
   private:  
     //! The video media item's editor.
     /**
