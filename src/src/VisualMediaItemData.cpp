@@ -1,3 +1,4 @@
+<<<<<<< TREE
 /*
  * PlaybaK - A KDE Multimedia Player.
  * Copyright (C) 2010 PlaybaK Development Team (see AUTHORS file)
@@ -18,6 +19,8 @@
  * Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+=======
+>>>>>>> MERGE-SOURCE
 #include "VisualMediaItemData.hpp"
 
 int VisualMediaItemData::brightness()

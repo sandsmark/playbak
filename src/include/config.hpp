@@ -1,3 +1,4 @@
+<<<<<<< TREE
 /*
  * PlaybaK - A KDE Multimedia Player.
  * Copyright (C) 2010 PlaybaK Development Team (see AUTHORS file)
@@ -17,6 +18,8 @@
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  */
+=======
+>>>>>>> MERGE-SOURCE
 
 const char* APP_NAME = "Playbak";
 const int VERSION    = 0;
