@@ -20,6 +20,13 @@
 #ifndef PLAYBAK_MEDIAITEM_H
 #define PLAYBAK_MEDIAITEM_H
 
+#include <KDE/KUrl>
+#include <QDate>
+#include <QMap>
+#include <QString>
+
+#include "CollectionItem.hpp"
+
 //! The media item's class.
 class MediaItem : public CollectionItem
 {

@@ -1,4 +1,3 @@
-<<<<<<< TREE
 /*
  * PlaybaK - A KDE Multimedia Player.
  * Copyright (C) 2010 PlaybaK Development Team (see AUTHORS file)
@@ -19,14 +18,14 @@
  * Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-=======
->>>>>>> MERGE-SOURCE
 #include "MediaPlaylist.hpp"
 
 MediaPlaylist::MediaPlaylist()
 {
   mMode = Mode::NORMAL;
   mCurrent = -1;
+  mOutputWidget = 0x0l;
+  mVideoPlayer = 0x0l;
 }
 
 MediaPlaylist::~MediaPlaylist()
@@ -35,7 +34,7 @@ MediaPlaylist::~MediaPlaylist()
 
 MediaItem* MediaPlaylist::operator[](const int position)
 {
-  return mItemList[position];
+  return mItemList[position];mediaItem()->
 }
 
 void MediaPlaylist::addMediaItem(MediaItem* mediaItem)
@@ -88,6 +87,17 @@ void MediaPlaylist::remove(const int position)
   mItemList.removeAt(position);
 }
 
+#include <sfd>
+
+void MediaPlaylist::play()
+{
+  if (mVideoPlayer == 0x0l)
+    return;
+
+  
+  mediaItem()->url()
+}
+
 void MediaPlaylist::select(const int position)
 {
   setCurrent(position);
@@ -126,4 +136,11 @@ void MediaPlaylist::setCurrent(MediaItem* media)
 void MediaPlaylist::setMode(const Mode::MediaPlaylistMode mode)
 {
   mMode = mode;
+}
+
+void MediaPlaylist::setOutputWidget(QWidget *outputWidget)
+{
+  outputWidget = outputWidget;
+  if (mVideoPlayer)
+    mVideoPlayer = new Phonon::VideoPlayer(outputWidget);
 }

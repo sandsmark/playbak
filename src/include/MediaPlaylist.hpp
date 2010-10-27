@@ -23,6 +23,10 @@
 #include "MediaItem.hpp"
 
 #include <QList>
+#include <QWidget>
+#include <phonon/AudioOutput>
+#include <phonon/MediaObject>
+#include <phonon/VideoPlayer>
 
 //! The media playlist's class.
 class MediaPlaylist {
@@ -45,6 +49,11 @@ class MediaPlaylist {
     
     //!  The playlist's media items.
     QList<MediaItem*> mItemList;
+
+    //! The output widget.
+    QWidget *mOutputWidget;
+
+    Phonon::VideoPlayer *mVideoPlayer;
   public:
     //! Returns an media item from specific position at playlist.
     /*!
@@ -110,6 +119,15 @@ class MediaPlaylist {
      * \param position the media's position.
      */
     virtual void remove(const int position);
+
+    //! Play current media item.
+    virtual void play();
+
+    //! Pause current media item.
+    virtual void pause();
+
+    //! Play or pause the current media item.
+    virtual void playPause();
     
     //! Select a media item at specific position in playlist.
     /*!
@@ -160,6 +178,12 @@ class MediaPlaylist {
      * \param mode the playlist play mode.
      */
     virtual void setMode(const Mode::MediaPlaylistMode mode);
+
+    //! Set the output widget.
+    /*!
+     * \param outputWidget the output widget.
+     */
+    virtual void setOutputWidget(QWidget *outputWidget);
   public:
     //! The media playlist's destructor.
     virtual ~MediaPlaylist();
