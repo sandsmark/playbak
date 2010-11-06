@@ -17,5 +17,13 @@
       <label>size of a ball</label>
       <default>2</default>
     </entry>
+    <entry name="show_tray_icon" type="Bool">
+      <label>show tray icon</label>
+      <default>1</default>
+    </entry>
+    <entry name="show_notifications" type="Bool">
+      <label>show notification</label>
+      <default>1</default>
+    </entry>
   </group>
 </kcfg>
