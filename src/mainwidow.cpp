@@ -20,11 +20,15 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "settings.h"
 #include <QPushButton>
 #include <KIcon>
 #include <QTime>
 #include "PlaybaKFadingButton.h"
 #include "mainwindow.moc"
+#include <kaction.h>
+#include <kactioncollection.h>
+#include <kstandardaction.h>
 
 MainWindow::MainWindow(QWidget *parent) :
 KXmlGuiWindow(parent),
@@ -38,6 +42,7 @@ ui(new Ui::MainWindow)
 	ui->playlistFilterConfigButton->setIcon(KIcon("preferences-other"));
 	ui->playMedia->setOverIcon("/home/gil/playglow.png");
 	setAcceptDrops(true);
+	setupActions();
 	setupGUI(Create | Keys);
 	mip1 = new MediaInfoPage(ui->mediaInfo);
 	ui->mediaInfo->insertWidget(0, mip1);
@@ -94,6 +99,33 @@ void MainWindow::testclick()
 	test5->setValueAnimating(qrand() % ((99 + 1) - 0) + 0);
 	test6->setValueAnimating(qrand() % ((99 + 1) - 0) + 0);
 	test7->setValueAnimating(qrand() % ((99 + 1) - 0) + 0);
+}
+
+
+void MainWindow::optionsPreferences()
+{
+    // this show the configuration dialog
+
+    //avoid to have 2 dialogs shown
+    if ( KConfigDialog::showDialog ( "settings" ) )
+    {
+        return;
+    }
+
+    dialog = new KConfigDialog ( this, "settings", Settings::self() );
+    dialog->setFaceType ( KPageDialog::List );
+    QWidget *baseSettingsDlg = new QWidget;
+    ui_prefs_base.setupUi ( baseSettingsDlg );
+    dialog->addPage ( baseSettingsDlg, i18n ( "General" ), "preferences-other" );
+    dialog->setAttribute ( Qt::WA_DeleteOnClose );
+    dialog->show();
+}
+
+void MainWindow::setupActions()
+{
+    // It adds the action in the menu bar, created on playbakui.rc model.
+    KStandardAction::quit ( qApp, SLOT ( closeAllWindows() ), actionCollection() );
+    KStandardAction::preferences ( this, SLOT ( optionsPreferences() ), actionCollection() );
 }
 
 MainWindow::~MainWindow()

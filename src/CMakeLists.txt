@@ -23,6 +23,7 @@ set(playbak_SRCS
 
 SET(playbak_UIS
     ui/mainwindow.ui
+    ui/prefs_base.ui
 )
 
 find_package(Nepomuk REQUIRED)

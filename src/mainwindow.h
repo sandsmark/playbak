@@ -24,6 +24,8 @@
 #include <QMainWindow>
 #include "PlaybaKAnimatedSliderWidget.h"
 #include <kxmlguiwindow.h>
+#include <kconfigdialog.h>
+#include "ui_prefs_base.h"
 #include "MediaInfoPage.h"
 #include "MediaInfoInteractivePage.h"
 
@@ -46,6 +48,7 @@ private:
 	PlaybaKAnimatedSliderWidget *test5;
 	PlaybaKAnimatedSliderWidget *test6;
 	PlaybaKAnimatedSliderWidget *test7;
+	Ui::prefs_base ui_prefs_base;
 	Ui::MainWindow *ui;
 	MediaInfoPage* mip1;
 	MediaInfoInteractivePage* mip2;
@@ -53,11 +56,14 @@ private:
     QWidget *controlsDockTitleBar;
     QWidget *nullPlaylistDockTitleBar;
     QWidget *nullControlsDockTitleBar;
+    KConfigDialog* dialog;
+    void setupActions();
 		
 private slots:
 	void testclick();
 	void showMediaInfoPage2();
 	void showMediaInfoPage1();
+	void optionsPreferences();
 };
 
 #endif // MAINWINDOW_H
