@@ -20,12 +20,12 @@
 #ifndef MEDIAINFOINTERACTIVEPAGE_H
 #define MEDIAINFOINTERACTIVEPAGE_H
 
-#include <QWidget>
-#include <QLabel>
-//#include <QHBoxLayout>
-#include <QSpacerItem>
-#include <QPushButton>
 #include <QFormLayout>
+#include <QLabel>
+#include <QPushButton>
+#include <QSpacerItem>
+#include <QWidget>
+
 #include <Nepomuk/KRatingWidget>
 
 /**

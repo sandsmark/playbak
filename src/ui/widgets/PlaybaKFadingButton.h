@@ -20,8 +20,9 @@
 #ifndef PLAYBAKFADINGBUTTON_H
 #define PLAYBAKFADINGBUTTON_H
 
-#include <KPushButton>
 #include <QTimeLine>
+
+#include <KDE/KPushButton>
 
 /**
  * This class provides a fading KPushButton

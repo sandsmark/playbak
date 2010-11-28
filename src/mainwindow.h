@@ -1,33 +1,38 @@
 /*
- * PlaybaK - A KDE Multimedia Player.
- * Copyright (C) 2010 PlaybaK Development Team (see AUTHORS file)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see http://www.gnu.org/licenses
- * or write to the Free Software Foundation,Inc., 51 Franklin Street,
- * Fifth Floor, Boston, MA 02110-1301  USA
- */
+* PlaybaK - A KDE Multimedia Player.
+* Copyright (C) 2010 PlaybaK Development Team (see AUTHORS file)
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, see http://www.gnu.org/licenses
+* or write to the Free Software Foundation,Inc., 51 Franklin Street,
+* Fifth Floor, Boston, MA 02110-1301  USA
+*/
 
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "PlaybaKAnimatedSliderWidget.h"
-#include <kxmlguiwindow.h>
-#include <kconfigdialog.h>
-#include "ui_prefs_base.h"
-#include "MediaInfoPage.h"
-#include "MediaInfoInteractivePage.h"
+
+#include <KDE/KXmlGuiWindow>
+#include <KDE/KConfigDialog>
+
+#include <MediaInfoInteractivePage.h>
+#include <MediaInfoPage.h>
+#include <MediaPlaylist.h>
+#include <PlaybaKAnimatedSliderWidget.h>
+#include <PlaylistWidget.h>
+
+#include <ui_prefs_base.h>
 
 namespace Ui {
     class MainWindow;
@@ -41,29 +46,34 @@ public:
     ~MainWindow();
 
 private:
-	PlaybaKAnimatedSliderWidget *test;
-	PlaybaKAnimatedSliderWidget *test2;
-	PlaybaKAnimatedSliderWidget *test3;
-	PlaybaKAnimatedSliderWidget *test4;
-	PlaybaKAnimatedSliderWidget *test5;
-	PlaybaKAnimatedSliderWidget *test6;
-	PlaybaKAnimatedSliderWidget *test7;
-	Ui::prefs_base ui_prefs_base;
-	Ui::MainWindow *ui;
-	MediaInfoPage* mip1;
-	MediaInfoInteractivePage* mip2;
-    QWidget *playlistDockTitleBar;
-    QWidget *controlsDockTitleBar;
-    QWidget *nullPlaylistDockTitleBar;
-    QWidget *nullControlsDockTitleBar;
-    KConfigDialog* dialog;
-    void setupActions();
-		
+        Ui::prefs_base ui_prefs_base;
+        Ui::MainWindow *ui;
+        MediaInfoPage* mip1;
+        MediaInfoInteractivePage* mip2;
+        QWidget *playlistDockTitleBar;
+        QWidget *controlsDockTitleBar;
+        QWidget *nullPlaylistDockTitleBar;
+        QWidget *nullControlsDockTitleBar;
+        KConfigDialog* dialog;
+
+        PlaylistWidget *mPlaylistWidget;
+//         QAction* addFilesAction;
+
+        MediaPlaylist mMediaPlaylist;
+        void setupActions();
+public slots:
+        void addFiles();
+        void setProgressBarValue(qint64);
+        void setProgressBarMaximum(int);
+        void playPause();
+        void progressBarValueChanged(qint64);
+        void trackChanged();
+        void setVolume(int);
+        void toggleMute();
 private slots:
-	void testclick();
-	void showMediaInfoPage2();
-	void showMediaInfoPage1();
-	void optionsPreferences();
+        void showMediaInfoPage2();
+        void showMediaInfoPage1();
+        void optionsPreferences();
 };
 
 #endif // MAINWINDOW_H

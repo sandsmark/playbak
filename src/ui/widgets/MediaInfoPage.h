@@ -20,8 +20,9 @@
 #ifndef MEDIAINFOPAGE_H
 #define MEDIAINFOPAGE_H
 
-#include <QWidget>
 #include <QLabel>
+#include <QWidget>
+
 #include <Nepomuk/KRatingWidget>
 
 /**

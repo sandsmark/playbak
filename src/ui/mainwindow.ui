@@ -224,6 +224,9 @@ border-radius: 5px;
                 <height>24</height>
                </size>
               </property>
+              <property name="styleSheet">
+               <string notr="true"> </string>
+              </property>
               <property name="text">
                <string/>
               </property>
@@ -651,19 +654,7 @@ background-color: #000;
            <property name="currentIndex">
             <number>0</number>
            </property>
-           <widget class="QWidget" name="nowPlayingPage">
-            <widget class="QWidget" name="horizontalLayoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>30</x>
-               <y>30</y>
-               <width>321</width>
-               <height>291</height>
-              </rect>
-             </property>
-             <layout class="QHBoxLayout" name="st"/>
-            </widget>
-           </widget>
+           <widget class="QWidget" name="nowPlayingPage"/>
            <widget class="QWidget" name="informationPage"/>
            <widget class="QWidget" name="collectionPage"/>
            <widget class="QWidget" name="internetPage"/>
@@ -675,16 +666,16 @@ background-color: #000;
       </item>
       <item>
        <widget class="QWidget" name="widget_5" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
-          <width>220</width>
+          <width>250</width>
           <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>220</width>
-          <height>16777215</height>
          </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -698,7 +689,7 @@ background-color: #000;
           <widget class="QWidget" name="playlistWidget" native="true">
            <property name="minimumSize">
             <size>
-             <width>220</width>
+             <width>250</width>
              <height>0</height>
             </size>
            </property>
@@ -781,7 +772,7 @@ QLabel {
                <property name="verticalSpacing">
                 <number>0</number>
                </property>
-               <item row="0" column="1" rowspan="3">
+               <item row="0" column="2" rowspan="3">
                 <widget class="QPushButton" name="clearPlaylist">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -809,7 +800,7 @@ QLabel {
                  </property>
                 </widget>
                </item>
-               <item row="0" column="2" rowspan="3">
+               <item row="0" column="3" rowspan="3">
                 <widget class="QPushButton" name="undoPlaylistAction">
                  <property name="minimumSize">
                   <size>
@@ -831,7 +822,7 @@ QLabel {
                  </property>
                 </widget>
                </item>
-               <item row="0" column="3" rowspan="3">
+               <item row="0" column="4" rowspan="3">
                 <widget class="QPushButton" name="redoPlaylistAction">
                  <property name="minimumSize">
                   <size>
@@ -853,7 +844,7 @@ QLabel {
                  </property>
                 </widget>
                </item>
-               <item row="0" column="4" rowspan="3">
+               <item row="0" column="5" rowspan="3">
                 <widget class="QPushButton" name="savePlaylist">
                  <property name="minimumSize">
                   <size>
@@ -875,7 +866,7 @@ QLabel {
                  </property>
                 </widget>
                </item>
-               <item row="1" column="8">
+               <item row="1" column="9">
                 <widget class="QWidget" name="widget_6" native="true">
                  <layout class="QVBoxLayout" name="verticalLayout_5">
                   <property name="spacing">
@@ -925,7 +916,7 @@ QLabel {
                  </layout>
                 </widget>
                </item>
-               <item row="1" column="5">
+               <item row="1" column="6">
                 <spacer name="horizontalSpacer_3">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -938,21 +929,65 @@ QLabel {
                  </property>
                 </spacer>
                </item>
+               <item row="1" column="0">
+                <widget class="QPushButton" name="addMediaItem">
+                 <property name="minimumSize">
+                  <size>
+                   <width>22</width>
+                   <height>22</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>22</width>
+                   <height>22</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="flat">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QPushButton" name="removeMediaItem">
+                 <property name="minimumSize">
+                  <size>
+                   <width>22</width>
+                   <height>22</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>22</width>
+                   <height>22</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="flat">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="QWidget" name="widget" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>220</width>
                 <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>220</width>
-                <height>16777215</height>
                </size>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_4">

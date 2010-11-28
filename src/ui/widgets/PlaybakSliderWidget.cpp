@@ -1,30 +1,29 @@
 /*
- *    Copyright 2010 Gil Castro
- *    KDE Media Player is distributed under the terms of the GNU General Public License
- *
- *    This file is part of KDE Media Player.
- *
- *    KDE Media Player is free software: you can redistribute it and/or modify  it
- *    under the terms of the GNU General Public License as published by the Free
- *    Software Foundation, either version 3 of the License, or (at your option) any
- *    later version.
- *
- *    KDE Media Player is distributed in the hope that it will be useful, but WITHOUT
- *    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- *    A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License  along with KDE
- *    Media Player.  If not, see <http://www.gnu.org/licenses/>.
+ *  The PlaybaK Multimedia Player's library.
+ *  Copyright (C) 2010 PlaybaK Development Team (see AUTHORS file)
+ * 
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2.1 of the License, or (at your option) any later version.
+ * 
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-
-#include "PlaybakSliderWidget.h"
-
-#include <qevent.h>
+#include <QEvent>
+#include <QMouseEvent>
 #include <QPainter>
-#include <QTimer>
 #include <QTime>
+#include <QTimer>
 
+#include <PlaybakSliderWidget.h>
 
 PlaybaKSliderWidget::PlaybaKSliderWidget(QWidget* parent): QAbstractSlider(parent)
 {
@@ -53,14 +52,14 @@ void PlaybaKSliderWidget::setMode(Mode mode)
 
 PlaybaKSliderWidget::Mode PlaybaKSliderWidget::mode()
 {
-	return mMode;
+  return mMode;
 }
 
 void PlaybaKSliderWidget::paintEvent(QPaintEvent* ev)
 {
     //QSlider::paintEvent(ev);
     QPainter p(this);
-		if ( mMode == SeekBar)
+    if ( mMode == SeekBar)
     {
         QFont cFont = p.font();
         cFont.setPointSize(8);
@@ -205,14 +204,14 @@ void PlaybaKSliderWidget::timeout()
     update();
 }
 /*
- * void PlaybaKSliderWidget::lineTimeout()
- * {
- *  if(overLine) { lineOpacity += 0.25; }
- *  else { lineOpacity -= 0.1; }
- *  if(lineOpacity > 1.0) { lineOpacity = 1; effects->stop(); }
- *  else if(lineOpacity < 0.0) { lineOpacity = 0; effects->stop(); }
- *  update();
- * }*/
+* void PlaybaKSliderWidget::lineTimeout()
+* {
+*  if(overLine) { lineOpacity += 0.25; }
+*  else { lineOpacity -= 0.1; }
+*  if(lineOpacity > 1.0) { lineOpacity = 1; effects->stop(); }
+*  else if(lineOpacity < 0.0) { lineOpacity = 0; effects->stop(); }
+*  update();
+* }*/
 
 void PlaybaKSliderWidget::mouseMoveEvent(QMouseEvent* ev)
 {
@@ -316,7 +315,7 @@ void PlaybaKSliderWidget::setValue(int v)
     {
         mValue = v;
         update();
-        //emit valueChanged(v);
+//         emit valueChanged(v);
     }
 }
 int PlaybaKSliderWidget::value()
