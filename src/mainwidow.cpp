@@ -66,8 +66,8 @@ ui(new Ui::MainWindow)
         setupActions();
         setupGUI(Create | Keys);
         mip1 = new MediaInfoPage(ui->mediaInfo);
-        ui->mediaInfo->insertWidget(0, mip1);
         mip2 = new MediaInfoInteractivePage(ui->mediaInfo);
+        ui->mediaInfo->insertWidget(0, mip1);
         ui->mediaInfo->insertWidget(1, mip2);
         ui->mediaInfo->setCurrentIndex(0);
 //         mip1->setStyleSheet(QString::fromUtf8("#page {\n"
@@ -189,7 +189,7 @@ void MainWindow::progressBarValueChanged(qint64 value){
 void MainWindow::setProgressBarValue(qint64 value){
 //   qDebug(QString::number(ui->trackProgressBar->maximum()).toAscii());
 //   qDebug(QString::number(ui->trackProgressBar->value()).toAscii());
-  ui->trackProgressBar->setValue(value / 100);
+  ui->trackProgressBar->setValue(value);
 }
 
 void MainWindow::setProgressBarMaximum(int value){

@@ -61,6 +61,8 @@ void MediaPlaylist::addMediaItem(MediaItem* mediaItem)
     loop.exec();
     emit trackChanged();
   }
+
+  emit addedItem();
 }
 
 int MediaPlaylist::count()
@@ -120,7 +122,7 @@ void MediaPlaylist::setVolume(qreal volume){
     volume = 1.0;
   else if (volume < 0.0)
     volume = 0.0;
-  mVolume = (int)(volume * 100.0);
+  mVolume = (int)(volume);
   mVideoPlayer->setVolume(volume);
 }
 void MediaPlaylist::play()
@@ -135,7 +137,7 @@ void MediaPlaylist::play()
   mVideoPlayer->play(Phonon::MediaSource(mediaItem()->url().toLocalFile()));
   connect(mVideoPlayer->mediaObject(), SIGNAL(stateChanged(Phonon::State,Phonon::State)),&loop,SLOT(quit()));
   loop.exec();
-  emit totalTime(int(mVideoPlayer->totalTime() / 100));
+  emit totalTime(int(mVideoPlayer->totalTime()));
   emit trackChanged();
 }
 

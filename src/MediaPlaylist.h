@@ -66,6 +66,8 @@ private:
         //! Indicates if the palyer is mute.
         bool mMute;
 signals:
+        void addedItem();
+        void removedItem();
         void tick(qint64);
         void totalTime(int);
         void trackChanged();

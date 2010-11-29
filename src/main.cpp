@@ -33,7 +33,7 @@ static const char version[] = "%{VERSION}";
 int main(int argc, char **argv)
 {
     KAboutData about("playbak", 0, ki18n("PlaybaK"), version, ki18n(description),
-                    KAboutData::License_GPL, ki18n("(C) 2010 PlaybaK Development Team"), KLocalizedString(), 0, "%{EMAIL}");
+                    KAboutData::License_GPL_V3, ki18n("(C) 2010 PlaybaK Development Team"), KLocalizedString(), 0, "%{EMAIL}");
     about.setProgramIconName("playbak");
     about.addAuthor( ki18n("Borek, Andres"),   ki18n("Programmer and Spanish translator"),    "andres.b.dev@gmail.com" );
     about.addAuthor( ki18n("Borek, Danilo"),   ki18n("Programmer and Spanish translator"),    "d4gnu.dev@gmail.com" );
