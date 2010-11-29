@@ -30,4 +30,7 @@ PlaylistItemWidget::PlaylistItemWidget(QWidget *parent) :
 
 PlaylistItemWidget::~PlaylistItemWidget()
 {
+  if (mMediaItem != 0x0L)
+    delete mMediaItem;
+  emit removed(mParentChildPos);
 }

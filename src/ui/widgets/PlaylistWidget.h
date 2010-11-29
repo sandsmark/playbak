@@ -48,6 +48,8 @@ signals:
     
     //! Emited when a PlaylistItemWidget may be played.
     void play(int);
+
+    void removedItem(int);
 protected slots:
     //! Reorganize the media item.
     void reorganize(int);
@@ -57,6 +59,9 @@ protected slots:
     void wheelEvent(QWheelEvent *);
     //! Remove an item in a specific position.
     void removeItem(int);
+
+    //! Remove selecteds items
+    virtual void removeSelecteds();
     //! Manage the item' selection.
     /*!
      * When a item is selected, this is executed.

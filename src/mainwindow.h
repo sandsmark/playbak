@@ -23,8 +23,8 @@
 
 #include <QMainWindow>
 
-#include <KDE/KXmlGuiWindow>
 #include <KDE/KConfigDialog>
+#include <KDE/KXmlGuiWindow>
 
 #include <MediaInfoInteractivePage.h>
 #include <MediaInfoPage.h>
@@ -34,6 +34,8 @@
 
 #include <ui_prefs_base.h>
 
+class KStatusNotifierItem;
+class KSystemTrayIcon;
 namespace Ui {
     class MainWindow;
 }
@@ -48,15 +50,16 @@ public:
 private:
         Ui::prefs_base ui_prefs_base;
         Ui::MainWindow *ui;
-        MediaInfoPage* mip1;
-        MediaInfoInteractivePage* mip2;
+        MediaInfoPage *mip1;
+        MediaInfoInteractivePage *mip2;
         QWidget *playlistDockTitleBar;
         QWidget *controlsDockTitleBar;
         QWidget *nullPlaylistDockTitleBar;
         QWidget *nullControlsDockTitleBar;
-        KConfigDialog* dialog;
+        KConfigDialog *dialog;
 
         PlaylistWidget *mPlaylistWidget;
+        KStatusNotifierItem *mStatusNotifierItem;
 //         QAction* addFilesAction;
 
         MediaPlaylist mMediaPlaylist;

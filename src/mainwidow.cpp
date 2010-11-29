@@ -28,6 +28,7 @@
 #include <KDE/KActionCollection>
 #include <KDE/KFileDialog>
 #include <KDE/KStandardAction>
+#include <KDE/KStatusNotifierItem>
 
 #include <PlaybaKFadingButton.h>
 
@@ -54,6 +55,12 @@ ui(new Ui::MainWindow)
         ui->undoPlaylistAction->setIcon(KIcon("edit-undo"));
         ui->redoPlaylistAction->setIcon(KIcon("edit-redo"));
         ui->savePlaylist->setIcon(KIcon("document-save"));
+
+        mStatusNotifierItem = new KStatusNotifierItem(this);
+        mStatusNotifierItem->setCategory(KStatusNotifierItem::ApplicationStatus);
+        mStatusNotifierItem->setToolTipTitle("PlaybaK");
+        mStatusNotifierItem->setTitle("PlaybaK");
+        mStatusNotifierItem->setIconByName("media-playback-start");
         
         setAcceptDrops(true);
         setupActions();
@@ -99,6 +106,8 @@ mMediaPlaylist.setMode(MediaPlaylist::Mode::LOOP_PLAYLIST);
         connect(ui->prevMedia, SIGNAL(clicked()),&mMediaPlaylist, SLOT(playPrevious()));
         connect(ui->addMediaItem,SIGNAL(clicked()),this,SLOT(addFiles()));
         connect(ui->trackProgressBar,SIGNAL(valueChanged(int)),&mMediaPlaylist,SLOT(setTick(int)));
+        connect(ui->removeMediaItem,SIGNAL(clicked()),mPlaylistWidget,SLOT(removeSelecteds()));
+        connect(mPlaylistWidget,SIGNAL(removedItem(int)),&mMediaPlaylist,SLOT(remove(int)));
         ui->volumeBar->setMinimum(0);
         ui->volumeBar->setMaximum(100);
         ui->volumeBar->setValue(100);
@@ -232,7 +241,7 @@ void MainWindow::addFiles(){
 //   mFileDialog->setMimeFilter(mimes);
 
 //   files = KFileDialog::getOpenFileNames(KUrl("/home/"), tr("*.*"), this);
-mPlaylistWidget->addItem( KFileDialog::getOpenFileNames(KUrl("/home/"), "audio/ac3 audio/midi audio/mp3 audio/ogg audio/wav", this) );
+mPlaylistWidget->addItem( KFileDialog::getOpenFileNames(KUrl("/home/"), "udio/aac audio/ac3 audio/midi audio/mp3 audio/ogg audio/wav", this) );
 
 //   ((PlaylistWidget*)(ui->playlistList->childAt(0,0)))->addItem(mFileDialog->getOpenFileNames());
 //   delete mFileDialog;

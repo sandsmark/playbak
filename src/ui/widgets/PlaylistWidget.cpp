@@ -74,7 +74,7 @@ void PlaylistWidget::addItem(QStringList items){
         connect(mediaItem_new,SIGNAL(resized(int)),this,SLOT(reorganize(int)));
         connect(mediaItem_new,SIGNAL(removed(int)),this,SLOT(removeItem(int)));
         connect(mediaItem_new,SIGNAL(selected(int)),this,SLOT(selectManager(int)));
-        
+//         connect(mediaItem_new,SIGNAL(removed(int)),this,SIGNAL(removeItem(int)));
         emit itemAdded(audioMediaItem); //FIXME Mover
         mediaItem_new->show();
         // We verifi if we need an separator (album name, artist name, rating, etc)
@@ -159,6 +159,10 @@ void PlaylistWidget::wheelEvent(QWheelEvent *e){
 }
 
 void PlaylistWidget::removeItem(int item){
+//   If the item is out of the range, we do nothing
+  if ( ( item < 0 ) ||
+       ( item >= ui->mContent->children().size() ) )
+    return;
   PlaylistAbstractMediaItem *w;
   w = static_cast<PlaylistAbstractMediaItem*>(ui->mContent->children().at(item));
   int itemH(w->height());
@@ -169,6 +173,7 @@ void PlaylistWidget::removeItem(int item){
     ui->mVerticalScrollBar->setMaximum(0);
   w->setParent(0x0L);
   w->destroy();
+  emit removedItem(item);
   for (int i = item; i < ui->mContent->children().size(); ++i ){
     w = static_cast<PlaylistAbstractMediaItem*>(ui->mContent->children().at(i));
     w->mParentChildPos--;
@@ -177,6 +182,18 @@ void PlaylistWidget::removeItem(int item){
 //    itemH = tmp;
   }
 
+}
+
+void PlaylistWidget::removeSelecteds()
+{
+  QObject *item;
+  foreach(item, ui->mContent->children())
+  {
+    PlaylistItemWidget *l_item;
+    if ( l_item = qobject_cast< PlaylistItemWidget* >(item))
+      if (l_item->getSelected())
+        removeItem(l_item->mParentChildPos);
+  }
 }
 
 void PlaylistWidget::selectManager(int item){
