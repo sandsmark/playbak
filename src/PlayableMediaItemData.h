@@ -20,6 +20,7 @@
 #ifndef PLAYBAK_PLAYABLEMEDIAITEMDATA_H
 #define PLAYBAK_PLAYABLEMEDIAITEMDATA_H
 
+// #include <QObject>
 #include <QString>
 #include <QStringList>
 #include <QTime>
@@ -30,7 +31,7 @@
 //! The playable media item's class.
 class PlayableMediaItemData
 {
-  private:;
+  protected:;
     //! The playable media item's equalizer's bands values.
     /**
      * Nepomuk have not.
@@ -89,86 +90,86 @@ class PlayableMediaItemData
     qint64  mStartat;
   public:
     //! Returns the playable media item's equalizer's bands values.
-    QVector<double>  audioEq();
+     QVector<double>  audioEq();
     
     //! Returns a specific playable media item's equalizer's band value.
     /*!
      * \param band the equalizer's band number.
      */
-    double  audioEq(int band);
+     double  audioEq(int band);
     
     //! Returns the playable media item's preamplifier's value.
-    double  audioPreamp();
+     double  audioPreamp();
     
     //! Returns the playable media item's duration time.
-    QTime   duration();
+    virtual QTime   duration();
     
     //! Returns the playable media item's genre.
-    QString genre();
+    virtual QString genre() {};
     
     //! Returns the playable media item's involved persons.
-    QStringList involvedPersons();
+    virtual QStringList involvedPersons() {};
     
     //! Returns the playable media item's language.
-    QString language();
+    virtual QString language() {};
     
     //! Returns the playable media item's start position.
-    qint64  startAt();
+     qint64  startAt();
   public:
     //! Add an involved person to playable media item.
     /*!
      * \param person a involved person.
      */
-    void addInvolvedPerson(QString person);
+     void addInvolvedPerson(QString person);
     
     //! Remove an involved person from playable media item.
     /*!
      * \param person a involved person.
      */
-    void removeInvolvedPerson(QString person);
+     void removeInvolvedPerson(QString person);
     
     //! Set the playable media item's audio equalizer's bands values.
     /*!
      * \param audioEq the equalizer.
      */
-    void setAudioEq(QVector<double> audioEq);
+     void setAudioEq(QVector<double> audioEq);
     
     //! Set a specific playable media item's audio equalizer band.
     /*!
      * \param value the value to set.
      * \param band the band number.
      */
-    void setAudioEq(double value, int band);
+     void setAudioEq(double value, int band);
     
     //! Set the playable media item's duration time.
     /*!
      * \param duration the media duration time.
      */
-    void setDuration(QTime duration);
+     void setDuration(QTime duration);
     
     //! Set the playable media item's genre.
     /*!
      * \param genre the media genre.
      */
-    void setGenre(QString genre);
+     void setGenre(QString genre);
     
     //! Set the playable media item's involved persons.
     /*!
      * \param involvedPersons the involved persons.
      */
-    void setInvolvedPersons(QStringList involvedPersons);
+     void setInvolvedPersons(QStringList involvedPersons);
     
     //! Set the playable media item's language.
     /*!
      * \param language the language.
      */
-    void setLanguage(QString language);
+     void setLanguage(QString language);
     
     //! Set the playable media item's start position.
     /*!
      * \param startAt the media's start position.
      */
-    void setStartAt(int startAt);
+     void setStartAt(int startAt);
   public:
      PlayableMediaItemData(KUrl file);
 };

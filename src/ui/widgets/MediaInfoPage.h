@@ -25,6 +25,8 @@
 
 #include <Nepomuk/KRatingWidget>
 
+class MediaItem;
+
 /**
  * This class provides the first page of the media info frame
  * This page isn't interactive
@@ -49,6 +51,7 @@ protected:
     //virtual void mouseReleaseEvent(QMouseEvent* );
     //virtual void wheelEvent(QWheelEvent* e);
 public slots:
+  void setMediaItem( MediaItem* mediaItem);
 	void setRating(int rating) { ratingBar->setRating(rating); }
 signals:
 	void mouseLeave();

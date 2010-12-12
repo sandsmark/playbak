@@ -24,5 +24,5 @@ PlayableMediaItemData::PlayableMediaItemData(KUrl file) {
 }
 
 QTime PlayableMediaItemData::duration(){
-    return QTime();
+    return mDuration;
 }

@@ -28,6 +28,8 @@
 
 #include <Nepomuk/KRatingWidget>
 
+class MediaItem;
+
 /**
  * This class provides the first page of the media info frame
  * This page is interactive
@@ -57,6 +59,8 @@ protected:
     //virtual void mousePressEvent(QMouseEvent* );
     //virtual void mouseReleaseEvent(QMouseEvent* );
     //virtual void wheelEvent(QWheelEvent* e);
+public:
+  void setMediaItem(MediaItem* mediaItem);
 signals:
 	void mouseLeave();
 	/**

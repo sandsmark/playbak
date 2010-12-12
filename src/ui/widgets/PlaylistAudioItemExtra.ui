@@ -80,7 +80,7 @@ color: #222;
            </font>
           </property>
           <property name="text">
-           <string>Aya Hirano</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -98,7 +98,7 @@ color: #222;
            </font>
           </property>
           <property name="text">
-           <string>Suzumiya OST</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -111,7 +111,7 @@ color: #222;
            </sizepolicy>
           </property>
           <property name="text">
-           <string>God Knows</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -259,7 +259,7 @@ border-right: 2px solid qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop
             </sizepolicy>
            </property>
            <property name="text">
-            <string>147</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -272,7 +272,7 @@ border-right: 2px solid qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop
             </sizepolicy>
            </property>
            <property name="text">
-            <string>5</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -285,7 +285,7 @@ border-right: 2px solid qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop
             </sizepolicy>
            </property>
            <property name="text">
-            <string>1 hour ago</string>
+            <string/>
            </property>
           </widget>
          </item>

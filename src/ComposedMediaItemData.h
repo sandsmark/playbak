@@ -20,13 +20,14 @@
 #ifndef PLAYBAK_COMPOSEDMEDIAITEMDATA_H
 #define PLAYBAK_COMPOSEDMEDIAITEMDATA_H
 
+// #include <QObject>
 #include <QString>
 
 #include <KDE/KUrl>
 
 class ComposedMediaItemData
 {
-  private:
+  protected:
     //! The composed media item's composer.
     /**
      * Nepomuk direction:

@@ -27,6 +27,9 @@
 #include <KDE/KAction>
 #include <KDE/KActionCollection>
 #include <KDE/KFileDialog>
+#include <KDE/KGlobalSettings>
+#include <KDE/KMenu>
+#include <KDE/KMenuBar>
 #include <KDE/KStandardAction>
 #include <KDE/KStatusNotifierItem>
 
@@ -40,7 +43,9 @@ MainWindow::MainWindow(QWidget *parent) :
 KXmlGuiWindow(parent),
 ui(new Ui::MainWindow)
 {
+        qDebug("setupUI");
         ui->setupUi(this);
+        qDebug("Constructor general");
         ui->prevMedia->setIcon(KIcon("media-skip-backward"));
         ui->playMedia->setIcon(KIcon("media-playback-start"));
         ui->nextMedia->setIcon(KIcon("media-skip-forward"));
@@ -55,16 +60,34 @@ ui(new Ui::MainWindow)
         ui->undoPlaylistAction->setIcon(KIcon("edit-undo"));
         ui->redoPlaylistAction->setIcon(KIcon("edit-redo"));
         ui->savePlaylist->setIcon(KIcon("document-save"));
-
+        ui->playMode->setIcon(KIcon("media-playlist-repeat"));
+        
+        mPlayPause = new KAction(KIcon("media-playback-start"),tr("Play media"),this);
+        mPlayPause->setText(tr("Play media"));
+        mPlayPause->setIcon(KIcon("media-playback-start"));
+        connect(mPlayPause,SIGNAL(triggered()),ui->playMedia,SLOT(click()));
+        mNext = new KAction(KIcon("media-skip-forward"),tr("Next media"),this);
+        mNext->setText(tr("Next media"));
+        mNext->setIcon(KIcon("media-skip-forward"));
+        connect(mNext,SIGNAL(triggered()),ui->nextMedia,SLOT(click()));
+        mPrev = new KAction(KIcon("edia-skip-backward"),tr("Previous media"),this);
+        mPrev->setText(tr("Previous media"));
+        mPrev->setIcon(KIcon("edia-skip-backward"));
+        
         mStatusNotifierItem = new KStatusNotifierItem(this);
         mStatusNotifierItem->setCategory(KStatusNotifierItem::ApplicationStatus);
         mStatusNotifierItem->setToolTipTitle("PlaybaK");
         mStatusNotifierItem->setTitle("PlaybaK");
         mStatusNotifierItem->setIconByName("media-playback-start");
+        mStatusNotifierItem->contextMenu()->addAction(mPlayPause);
+        mStatusNotifierItem->contextMenu()->addAction(mNext);
+        mStatusNotifierItem->contextMenu()->addAction(mPrev);
+//         mStatusNotifierItem->setContextMenu(contextMenu);
         
         setAcceptDrops(true);
+        qDebug("Vamos a setupActions");
         setupActions();
-        setupGUI(Create | Keys);
+        qDebug("Luego del seetupActions");
         mip1 = new MediaInfoPage(ui->mediaInfo);
         mip2 = new MediaInfoInteractivePage(ui->mediaInfo);
         ui->mediaInfo->insertWidget(0, mip1);
@@ -91,8 +114,10 @@ ui(new Ui::MainWindow)
         mPlaylistWidget = new PlaylistWidget();
         playListLayout->addWidget(mPlaylistWidget);
 
-        mMediaPlaylist.setOutputWidget(ui->nowPlayingPage);
-mMediaPlaylist.setMode(MediaPlaylist::Mode::LOOP_PLAYLIST);
+//         mMediaPlaylist.setOutputWidget(ui->nowPlayingPage);
+        //TODO Cunado se reproduzca un video, establecer mMediaPlaylist.setOutputWidget(ui->nowPlayingPage);
+        mMediaPlaylist.setOutputWidget(0x0L);
+        mMediaPlaylist.setMode(MediaPlaylist::Mode::LOOP_PLAYLIST);
         connect(ui->volumeBar,SIGNAL(valueChanged(int)),this,SLOT(setVolume(int)));
         connect(mPlaylistWidget,SIGNAL(play(int)),&mMediaPlaylist, SLOT(play(int)));
         connect(mPlaylistWidget,SIGNAL(itemAdded(MediaItem*)),&mMediaPlaylist, SLOT(addMediaItem(MediaItem*)));
@@ -108,22 +133,30 @@ mMediaPlaylist.setMode(MediaPlaylist::Mode::LOOP_PLAYLIST);
         connect(ui->trackProgressBar,SIGNAL(valueChanged(int)),&mMediaPlaylist,SLOT(setTick(int)));
         connect(ui->removeMediaItem,SIGNAL(clicked()),mPlaylistWidget,SLOT(removeSelecteds()));
         connect(mPlaylistWidget,SIGNAL(removedItem(int)),&mMediaPlaylist,SLOT(remove(int)));
+        connect(ui->clearPlaylist,SIGNAL(clicked()),mPlaylistWidget,SLOT(clearPlaylist()));
+        connect(ui->savePlaylist,SIGNAL(clicked()),this,SLOT(savePlaylist()));
+        connect(ui->playMode,SIGNAL(clicked()),this,SLOT(togglePlaylistMode()));
         ui->volumeBar->setMinimum(0);
         ui->volumeBar->setMaximum(100);
         ui->volumeBar->setValue(100);
         setVolume(ui->volumeBar->value());
+
         
         if (Nepomuk::ResourceManager::instance()->init())
           qDebug("Nepomuk problem: Can't init.");
         
 }
 
+#include <QTimer>
+
 void MainWindow::playPause(){
-  if (mMediaPlaylist.state() == Phonon::PlayingState)
+  qDebug("PlayPause");
+  if (mMediaPlaylist.state() == Phonon::PlayingState){
     ui->playMedia->setIcon(KIcon("media-playback-pause"));
-  else
+  }
+  else{
     ui->playMedia->setIcon(KIcon("media-playback-start"));
-  
+  }
   mMediaPlaylist.playPause();
 }
 
@@ -138,12 +171,43 @@ void MainWindow::toggleMute(){
 
 }
 
+void MainWindow::togglePlaylistMode(){
+  switch(mMediaPlaylist.mode())
+  {
+    case MediaPlaylist::Mode::NORMAL:
+      ui->playMode->setIcon(KIcon("media-playlist-repeat"));
+      ui->playMode->setToolTip(tr("Repeat media"));
+      mMediaPlaylist.setMode(MediaPlaylist::Mode::LOOP_MEDIA);
+      break;
+    case MediaPlaylist::Mode::LOOP_MEDIA:
+      ui->playMode->setIcon(KIcon("media-playlist-repeat"));
+      ui->playMode->setToolTip(tr("Repeat playlist"));
+      mMediaPlaylist.setMode(MediaPlaylist::Mode::LOOP_PLAYLIST);
+      break;
+    case MediaPlaylist::Mode::LOOP_PLAYLIST:
+      ui->playMode->setIcon(KIcon("media-playlist-shuffle"));
+      ui->playMode->setToolTip(tr("Random media"));
+      mMediaPlaylist.setMode(MediaPlaylist::Mode::SHUFFLE_ALL);
+      break;
+    case MediaPlaylist::Mode::SHUFFLE_ALL:
+      ui->playMode->setIcon(KIcon("view-media-playlist"));
+      ui->playMode->setToolTip(tr("Normal mode"));
+      mMediaPlaylist.setMode(MediaPlaylist::Mode::NORMAL);
+      break;
+  }
+}
+
 void MainWindow::setVolume(int value){
   qreal volume = (qreal)(value) / 100.0;
   mMediaPlaylist.setVolume(volume);
 }
 
 void MainWindow::trackChanged(){
+  if(!mMediaPlaylist.mediaItem()){
+    ui->trackLenght->setText("00:00");
+    return;
+  }
+  
   int value = mMediaPlaylist.totalTime() / 1000;
   
   int min = value / 60;
@@ -162,10 +226,20 @@ void MainWindow::trackChanged(){
     secString = QString::number(sec);
   
   ui->trackLenght->setText( minString + QString(':') + secString);
+  
+  if ( MediaInfoPage *w = qobject_cast< MediaInfoPage* >(ui->mediaInfo->widget(0)))
+    w->setMediaItem(mMediaPlaylist.mediaItem());
+  if (MediaInfoInteractivePage *w = qobject_cast< MediaInfoInteractivePage* >(ui->mediaInfo->widget(1)))
+    w->setMediaItem(mMediaPlaylist.mediaItem());
 }
 
 //TODO Que admita horas.
 void MainWindow::progressBarValueChanged(qint64 value){
+//   if(!mMediaPlaylist.mediaItem())
+//   {
+//     ui->trackActualTime->setText("00:00");
+//     return;
+//   }
   value = value / 1000;
   
   int min = value / 60;
@@ -187,8 +261,6 @@ void MainWindow::progressBarValueChanged(qint64 value){
 }
 
 void MainWindow::setProgressBarValue(qint64 value){
-//   qDebug(QString::number(ui->trackProgressBar->maximum()).toAscii());
-//   qDebug(QString::number(ui->trackProgressBar->value()).toAscii());
   ui->trackProgressBar->setValue(value);
 }
 
@@ -200,6 +272,41 @@ void MainWindow::showMediaInfoPage2()
 {
   if(ui->mediaInfo->currentIndex() != 1)
           ui->mediaInfo->setCurrentIndex(1);
+}
+
+void MainWindow::loadPlaylist(){
+  QString fileName = KFileDialog::getOpenFileName(KGlobalSettings::desktopPath(),"*.m3u");
+  if ( !fileName.isEmpty() )
+  {
+    QFile file(fileName);
+    file.open(QIODevice::ReadOnly);
+    QStringList playlist;
+    while (!file.atEnd()) {
+      QByteArray line = file.readLine();
+      line.remove(line.size() - 1,1); // Remove the character '\n'
+      QString mediaName(line);
+      playlist << mediaName;
+    }
+    file.close();
+    mPlaylistWidget->addItem(playlist);
+  }
+}
+
+void MainWindow::savePlaylist(){
+  
+  QString fileName = KFileDialog::getSaveFileName(KUrl(KGlobalSettings::desktopPath()),"*.m3u");
+  if ( !fileName.isEmpty() )
+  {
+    QFile file(fileName);
+    file.open(QIODevice::Truncate | QIODevice::WriteOnly);
+    for(int i = 0; i < mMediaPlaylist.count(); ++i)
+    {
+      QByteArray row(mMediaPlaylist.mediaItem(i)->url().toEncoded());
+      row.append("\n");
+      file.write(row);
+    }
+    file.close();
+  }
 }
 
 void MainWindow::showMediaInfoPage1()
@@ -229,9 +336,19 @@ void MainWindow::optionsPreferences()
 
 void MainWindow::setupActions()
 {
+    mLoadPlaylist = new KAction(tr("Load Playlist"), this);
+    mLoadPlaylist->setText(tr("Load Playlist"));
+    connect(mLoadPlaylist,SIGNAL(triggered()),this,SLOT(loadPlaylist()));
+    actionCollection()->addAction("lpl",mLoadPlaylist);
+
     // It adds the action in the menu bar, created on playbakui.rc model.
     KStandardAction::quit ( qApp, SLOT ( closeAllWindows() ), actionCollection() );
-    KStandardAction::preferences ( this, SLOT ( optionsPreferences() ), actionCollection() );
+    KStandardAction::preferences ( this, SLOT ( optionsPreferences() ), actionCollection() ); 
+
+    // FIXME: write the correct dir
+    createGUI("playbakui.rc");
+//     setupGUI(Create | Keys);
+
 }
 
 void MainWindow::addFiles(){
@@ -241,7 +358,7 @@ void MainWindow::addFiles(){
 //   mFileDialog->setMimeFilter(mimes);
 
 //   files = KFileDialog::getOpenFileNames(KUrl("/home/"), tr("*.*"), this);
-mPlaylistWidget->addItem( KFileDialog::getOpenFileNames(KUrl("/home/"), "udio/aac audio/ac3 audio/midi audio/mp3 audio/ogg audio/wav", this) );
+mPlaylistWidget->addItem( KFileDialog::getOpenFileNames(KGlobalSettings::desktopPath(), "udio/aac audio/ac3 audio/midi audio/mp3 audio/ogg audio/wav", this) );
 
 //   ((PlaylistWidget*)(ui->playlistList->childAt(0,0)))->addItem(mFileDialog->getOpenFileNames());
 //   delete mFileDialog;

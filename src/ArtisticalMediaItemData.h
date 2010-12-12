@@ -20,13 +20,14 @@
 #ifndef PLAYBAK_ARTISTICALMEDIAITEMDATA_H
 #define PLAYBAK_ARTISTICALMEDIAITEMDATA_H
 
+// #include <QObject>
 #include <QString>
 
 #include <KDE/KUrl>
 
 class ArtisticalMediaItemData
 {
-  private:
+  protected:
     //! The artistical media item's artist's website.
     /**
      * Nepomuk direction:

@@ -20,6 +20,7 @@
 #ifndef PLAYBAK_AUDIOMEDIAITEM_H
 #define PLAYBAK_AUDIOMEDIAITEM_H
 
+#include <QObject>
 #include <QString>
 
 #include <KDE/KUrl>
@@ -31,12 +32,15 @@
 #include <PlayableMediaItemData.h>
 
 //! The audio media item's class.
-class AudioMediaItem : public PlayableMediaItemData,
+//NOTE: IMPORTANT: The order is important MediaItem need be first because have the QObject hineritance
+// see http://slopjong.de/2008/10/07/staticmetaobject-is-not-a-member/
+class AudioMediaItem : public MediaItem,
+                       public PlayableMediaItemData,
                        public AlbumMediaItemData,
                        public ArtisticalMediaItemData,
-                       public ComposedMediaItemData,
-                       public MediaItem
+                       public ComposedMediaItemData
 {
+  Q_OBJECT
   public:
     struct Subtype{
       //! The audio media item's subtypes.
@@ -47,15 +51,67 @@ class AudioMediaItem : public PlayableMediaItemData,
         VOICE         /*!< Voice audio. */
       };
     };
+
+    //! The audio media item's contructor from MediaItem.
+    /*!
+     * \param url the media source url.
+     */
+    explicit AudioMediaItem(const MediaItem& copy_mediaitem);
+    
+    //! The audio media item's copy contructor.
+    /*!
+     * \param url the media source url.
+     */
+    explicit AudioMediaItem(const AudioMediaItem& copy);
     
     //! The audio media item's contructor.
     /*!
      * \param url the media source url.
      */
-    AudioMediaItem(KUrl url);
+    AudioMediaItem(KUrl url, bool byDemand = false);
   private:     
     //! The audio media item's subtype.
     Subtype::AudioMediaItemSubtype mSubtype;
+signals:
+  void constructAudioMediaItem();
+private:
+  class AudioMediaItemConstructor : public QThread {
+  public:
+    AudioMediaItemConstructor(AudioMediaItem* p) {
+      parent = p;
+    }
+    AudioMediaItem* parent;
+    
+    void run() {
+      parent->firstConstructAudioMediaItem();
+    }
+  };
+  friend class AudioMediaItemConstructor;
+private slots:
+  void firstConstructAudioMediaItem();
+public:
+  //! Returns the playable media item's duration time.
+  virtual QTime   duration();
+  
+  //! Returns the playable media item's genre.
+  virtual QString genre();
+  
+  //! Returns the playable media item's involved persons.
+  virtual QStringList involvedPersons();
+  
+  //! Returns the playable media item's language.
+  virtual QString language();
+
+  //! Returns the album media item's album's name.
+  QString album();
+  
+  //! Returns the album media item's track number.
+  int     trackNumber();
+
+  //! Returns the composed media item's composer.
+  QString composer();
+protected slots:
+  virtual void loadAudioMediaItemMetadata();
   public:
     //! Returns the audio media item's subtype.
     Subtype::AudioMediaItemSubtype subtype();

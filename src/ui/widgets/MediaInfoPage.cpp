@@ -22,6 +22,9 @@
 
 #include <MediaInfoPage.h>
 
+#include <MediaItem.h>
+#include <AudioMediaItem.h>
+
 MediaInfoPage::MediaInfoPage(QWidget* parent): QWidget(parent)
 {
   int y = 67;
@@ -83,6 +86,24 @@ void MediaInfoPage::enterEvent(QEvent* )
 {
   //QWidget::enterEvent();
   emit mouseOver();
+}
+
+void MediaInfoPage::setMediaItem ( MediaItem* mediaItem )
+{
+  if(!mediaItem)
+  {
+    ratingBar->setRating(0);
+    artistName->setText("");
+    trackName->setText("");
+    albumName->setText("");
+    return;
+  }
+  ratingBar->setRating((int)(mediaItem->rating() * 10.0));
+  artistName->setText(mediaItem->artist());
+  trackName->setText(mediaItem->title());
+  if (mediaItem->mimetype().contains("audio/"))
+    if (AudioMediaItem *w = qobject_cast<AudioMediaItem*>(mediaItem))
+      albumName->setText(w->album());
 }
 
 //void MediaInfoPage::mouseMoveEvent(QMouseEvent* )

@@ -22,6 +22,8 @@
 
 #include <PlaylistAbstractMediaItem.h>
 
+#include <KDE/KUrl>
+
 namespace Ui {
     class PlaylistAudioItemWidget;
 }
@@ -30,10 +32,20 @@ class AudioMediaItem;
 
 class PlaylistAudioItemWidget : public PlaylistAbstractMediaItem
 {
+  Q_OBJECT
   friend class MainWindow;
 public:
-    explicit PlaylistAudioItemWidget(AudioMediaItem* mediaItem, QWidget *parent = 0);
+    explicit PlaylistAudioItemWidget(KUrl mediaItem, QWidget* parent = 0);
+    explicit PlaylistAudioItemWidget(AudioMediaItem &mediaItem, QWidget* parent = 0);
     ~PlaylistAudioItemWidget();
+signals:
+  void constructPlaylistAudioItemWidget();
+private slots:
+  void firstConstructPlaylistAudioItemWidget();
+public:
+  virtual AudioMediaItem* audioMediaItem(){
+    return mMediaItem;
+  }
   public slots:
     //! Contract the extra info zone.
     virtual void contract() {}
@@ -60,10 +72,14 @@ protected slots:
     virtual void emitMoreInfo();
     //! Emit the removed signal.
     virtual void emitRemoved();
+    //! Load the metadata
+    void loadMetadata();
     //! Toggle the extra info's animation.
     virtual void toggleAnimation();
     //! Toggle the extra info button's animation direction.
     virtual void toggleButtonAnimation();
+protected:
+  AudioMediaItem *mMediaItem;
 protected:
     bool event(QEvent *e);
     void contextMenuEvent(QContextMenuEvent *e);

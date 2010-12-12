@@ -51,13 +51,19 @@ static const QString NIE_CONTENTCREATED   = "http://www.semanticdesktop.org/onto
 // Disc number
 static const QString XESAM_DISCNUMBER     = "http://freedesktop.org/standards/xesam/1.0/core#discNumber";
 // File size
-static const QString XESAM_SIZE       = "http://freedesktop.org/standards/xesam/1.0/core#size";
+static const QString XESAM_SIZE           = "http://freedesktop.org/standards/xesam/1.0/core#size";
 // First played
 static const QString XESAM_FIRSTUSED      = "http://freedesktop.org/standards/xesam/1.0/core#firstUsed";
 // Genre
 static const QString XESAM_GENRE          = "http://freedesktop.org/standards/xesam/1.0/core#genre";
+static const QString NID3_CONTENTTYPE     = "http://www.semanticdesktop.org/ontologies/nid3/#contentType";
+// Involvd persons
+static const QString NID3_INVOLVEDPERSONS = "http://www.semanticdesktop.org/ontologies/nid3/#involvedPerson";
 // Keywords
 static const QString NIE_KEYWORD          = "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#keyword";
+// Language
+static const QString NID3_LANGUAGE        = "http://www.semanticdesktop.org/ontologies/2007/05/10/nid3/#language";
+static const QString NIE_LANGUAGE         = "http://www.semanticdesktop.org/ontologies/nie/#language";
 // Last played
 static const QString XESAM_LASTUSED       = "http://freedesktop.org/standards/xesam/1.0/core#lastUsed";
 // Last updated
@@ -65,6 +71,7 @@ static const QString NFO_LASTUPDATED      = "http://www.semanticdesktop.org/onto
 static const QString NIE_LASTUPDATE       = "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#contentLastModified";
 // Length
 static const QString XESAM_MEDIADURATION  = "http://freedesktop.org/standards/xesam/1.0/core#mediaDuration";
+static const QString NID3_LENGHT          = "http://www.semanticdesktop.org/ontologies/nid3/#length";
 // License
 static const QString NIE_LICENSE          = "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#license";
 // License type

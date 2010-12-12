@@ -39,7 +39,7 @@ public:
                 //! The media playlist plzy modes.
                 enum MediaPlaylistMode {
                         NORMAL = 0,   /*!< Normal mode. */
-                        RANDOM_ALL,   /*!< Random all mode. */
+                        SHUFFLE_ALL,   /*!< Shuffle mode. */
                         LOOP_MEDIA,   /*!< Repeat one media mode. */
                         LOOP_PLAYLIST /*!< Repeat playlist mode. */
                 };

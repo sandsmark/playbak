@@ -78,6 +78,10 @@ signals:
 protected:
     //! The 'add' and 'remove' icons.
     static QVector<KIcon*>    *mExpandButtonIcon;
+    //! Add media icon
+    static KIcon add_icon;
+    //! Remove media icon
+    static KIcon remove_icon;
     //! An iterator for mExpandButtonIcon.
     QVector<KIcon*>::iterator mExpandButtonIconIt;
     //! The extra info's expand animation.

@@ -96,6 +96,7 @@ class CollectionItem : public QObject
     void setType(Type::CollectionItemType type);
   public:
     CollectionItem(Type::CollectionItemType type);
+    CollectionItem(const CollectionItem& copy){/*TODO*/}
 };
 
 #endif //PLAYBAK_COLLECTIONITEM_H

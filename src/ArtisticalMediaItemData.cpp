@@ -33,14 +33,14 @@ ArtisticalMediaItemData::ArtisticalMediaItemData( KUrl file)
 {
   // NOTE: This code is not realy usefull, because we don not need create an AlbumMediaItemData,
   //       only the ""gets"" functions are usefull
-  Nepomuk::Resource rFile(file);
-  Nepomuk::Variant variant;
-  TagLib::FileRef id3File(file.toLocalFile().toAscii());
-
-  if ( (variant = rFile.property(NID3_OFFICIALARTISTWEBPAGE)).isString()) 
-    mArtistWebsite = variant.toString();
-  else
-    mArtistWebsite = KUrl();
+//   Nepomuk::Resource rFile(file);
+//   Nepomuk::Variant variant;
+//   TagLib::FileRef id3File(file.toLocalFile().toAscii());
+// 
+//   if ( (variant = rFile.property(NID3_OFFICIALARTISTWEBPAGE)).isString()) 
+//     mArtistWebsite = variant.toString();
+//   else
+//     mArtistWebsite = KUrl();
   // TODO: Search how read the tag WOAR from ID3
   // TODO: Search from where read the original media and implement it
   // We verificate with ID3 tag

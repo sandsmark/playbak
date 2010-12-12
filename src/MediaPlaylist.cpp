@@ -41,7 +41,7 @@ void MediaPlaylist::play(int position){
 }
 
 void MediaPlaylist::setTick( int tick){
-  mVideoPlayer->seek(tick * 100);
+  mVideoPlayer->seek(tick);
 }
 
 MediaItem* MediaPlaylist::operator[](const int position)
@@ -77,6 +77,9 @@ int MediaPlaylist::current()
 
 MediaItem* MediaPlaylist::mediaItem()
 {
+  if ( (mCurrent >= mItemList.count()) || (mCurrent < 0) )
+    return 0x0L;
+  
   return mItemList[mCurrent];
 }
 
@@ -122,8 +125,9 @@ void MediaPlaylist::setVolume(qreal volume){
     volume = 1.0;
   else if (volume < 0.0)
     volume = 0.0;
-  mVolume = (int)(volume);
-  mVideoPlayer->setVolume(volume);
+  mVolume = (int)(volume * 100.0);
+  if(!isMute())
+    mVideoPlayer->setVolume(volume);
 }
 void MediaPlaylist::play()
 {
@@ -198,7 +202,7 @@ void MediaPlaylist::selectNext()
       mCurrent = -1;
   } else if (mMode == Mode::LOOP_MEDIA) {
       return;
-  } else if (mMode == Mode::RANDOM_ALL) {
+  } else if (mMode == Mode::SHUFFLE_ALL) {
     mCurrent = qrand() %  mItemList.count();      
   }
   
@@ -222,7 +226,7 @@ void MediaPlaylist::selectPrevious()
       mCurrent = 0;
   } else if (mMode == Mode::LOOP_MEDIA) {
       return;
-  } else if (mMode == Mode::RANDOM_ALL) {
+  } else if (mMode == Mode::SHUFFLE_ALL) {
     mCurrent = qrand() %  mItemList.count();
   }
 
@@ -256,12 +260,11 @@ void MediaPlaylist::setMode(const Mode::MediaPlaylistMode mode)
 
 void MediaPlaylist::setMute(const bool mute)
 {
+  mMute = mute;
   if(mute)
     mVideoPlayer->setVolume(0.0);
   else
     mVideoPlayer->setVolume((qreal)(mVolume)/100.0);
-  qDebug(QString::number(mVolume).toAscii());
-  mMute = mute;
 }
 
 void MediaPlaylist::setOutputWidget(QWidget *outputWidget)

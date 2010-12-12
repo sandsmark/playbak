@@ -31,64 +31,114 @@
 #include <PlaylistWidget.h>
 #include <ui_PlaylistAudioItemExtra.h>
 #include <ui_PlaylistAudioItemWidget.h>
+#include <QLayout>
+#include <qfile.h>
+#include <qfileinfo.h>
 
-PlaylistAudioItemWidget::PlaylistAudioItemWidget(AudioMediaItem* mediaItem,QWidget *parent) :
+PlaylistAudioItemWidget::PlaylistAudioItemWidget(KUrl mediaItem,QWidget *parent) :
     PlaylistAbstractMediaItem(parent),
     ui(new Ui::PlaylistAudioItemWidget)
 {
+    mMediaItem = 0x0L;
+    mMediaItem = new AudioMediaItem(mediaItem,true);
     ui->setupUi(this);
-    if (mediaItem != 0x0L)
-    {
-//         qDebug("Iniciando...");
-        mMediaItem = mediaItem;
-//         qDebug("0");
-        ui->mTitleLabel->setText(((AudioMediaItem*)(mMediaItem))->title());
-//         qDebug("1");
-        ui->mTimeLabel->setText(QString::number(((AudioMediaItem*)(mMediaItem))->duration().minute()) + QString(":") + QString::number(((AudioMediaItem*)(mMediaItem))->duration().second()));
-        /*
-         * TODO:
-         * Load Album image
-         */
-        
-    }
-
     static int  sMinHeight(ui->mTopWidget->sizeHint().height());
     static int  sMaxHeight(ui->mContent->sizeHint().height());
     static int  sMinWidth(ui->mTimeLabel->sizeHint().width() + ui->mExpandButton->sizeHint().width());
-
-    mExpandButtonIconIt = mExpandButtonIcon->begin();
-
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->setContentsMargins(0,0,0,0);
-
-    ui->mExtra->setLayout(layout);
-
-    ui->mTitleLabel->setMinimumWidth(0);
-
-    setMinimumWidth(sMinWidth);
-
-    ui->mExpandButton->setIcon(*(*mExpandButtonIconIt));
-
+    
     setMinimumHeight(sMinHeight);
     setMaximumHeight(sMaxHeight);
-
-    resize(parent->width(),sMinHeight);
+    
+    // When the metadata is loaded/changed, we change the labels
+    connect(mMediaItem,SIGNAL(metadataChanged()),this,SLOT(loadMetadata()));
+    loadMetadata();
+    
+    mExpandButtonIconIt = mExpandButtonIcon->begin();
+    
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->setContentsMargins(0,0,0,0);
+    
+    ui->mExtra->setLayout(layout);
+    
+    ui->mTitleLabel->setMinimumWidth(0);
+    
+    ui->mExpandButton->setIcon(*(*mExpandButtonIconIt));
+    
+    resize(parent->width(),minimumHeight());
+    
     ui->mContent->resize(width(),ui->mContent->height());
-
+    
     mExpandAnimation = new QPropertyAnimation(this,"size");
     mExpandAnimation->setDuration(750);
-
+    
     connect(ui->mExpandButton,SIGNAL(clicked()), this, SLOT(createExtra()));
-
+    
     mExpandButtonAnimation = new QPropertyAnimation(ui->mExpandButton,"maximumWidth");
     mExpandButtonAnimation->setDuration(500);
     mExpandButtonAnimation->setStartValue(0);
     mExpandButtonAnimation->setEndValue(24);
     mExpandButtonAnimation->setEasingCurve(QEasingCurve::InCubic);
-
+    
     connect(mExpandButtonAnimation,SIGNAL(finished()),this,SLOT(toggleButtonAnimation()));
-
+    
     ui->mExpandButton->setMaximumWidth(0);
+    
+}
+
+PlaylistAudioItemWidget::PlaylistAudioItemWidget(AudioMediaItem& mediaItem, QWidget* parent):
+PlaylistAbstractMediaItem(parent),
+ui(new Ui::PlaylistAudioItemWidget)
+{
+//   QTime t;
+//   t.start();
+  mMediaItem = &mediaItem;
+  ui->setupUi(this);
+//   qDebug(QString::number(t.elapsed()).toAscii());
+  static int  sMinHeight(ui->mTopWidget->sizeHint().height());
+  static int  sMaxHeight(ui->mContent->sizeHint().height());
+  static int  sMinWidth(ui->mTimeLabel->sizeHint().width() + ui->mExpandButton->sizeHint().width());
+  
+  setMinimumHeight(sMinHeight);
+  setMaximumHeight(sMaxHeight);
+
+  // When the metadata is loaded/changed, we change the labels
+  connect(mMediaItem,SIGNAL(metadataChanged()),this,SLOT(loadMetadata()));
+  loadMetadata();
+  
+  mExpandButtonIconIt = mExpandButtonIcon->begin();
+  
+  QVBoxLayout *layout = new QVBoxLayout;
+  layout->setContentsMargins(0,0,0,0);
+  
+  ui->mExtra->setLayout(layout);
+  
+  ui->mTitleLabel->setMinimumWidth(0);
+  
+  ui->mExpandButton->setIcon(*(*mExpandButtonIconIt));
+  
+  resize(parent->width(),minimumHeight());
+  
+  ui->mContent->resize(width(),ui->mContent->height());
+  
+  mExpandAnimation = new QPropertyAnimation(this,"size");
+  mExpandAnimation->setDuration(750);
+  
+  connect(ui->mExpandButton,SIGNAL(clicked()), this, SLOT(createExtra()));
+  
+  mExpandButtonAnimation = new QPropertyAnimation(ui->mExpandButton,"maximumWidth");
+  mExpandButtonAnimation->setDuration(500);
+  mExpandButtonAnimation->setStartValue(0);
+  mExpandButtonAnimation->setEndValue(24);
+  mExpandButtonAnimation->setEasingCurve(QEasingCurve::InCubic);
+  
+  connect(mExpandButtonAnimation,SIGNAL(finished()),this,SLOT(toggleButtonAnimation()));
+  
+  ui->mExpandButton->setMaximumWidth(0);
+
+}
+
+void PlaylistAudioItemWidget::firstConstructPlaylistAudioItemWidget()
+{
 }
 
 PlaylistAudioItemWidget::~PlaylistAudioItemWidget()
@@ -131,6 +181,42 @@ void PlaylistAudioItemWidget::leaveEvent(QEvent *){
   mExpandButtonAnimation->setStartValue(ui->mExpandButton->width());
   mExpandButtonAnimation->setEndValue(0);
   mExpandButtonAnimation->start();
+}
+
+void PlaylistAudioItemWidget::loadMetadata()
+{
+  if (mMediaItem != 0x0L)
+  {
+    if (!mMediaItem->title().isEmpty())
+      ui->mTitleLabel->setText(((AudioMediaItem*)(mMediaItem))->title());
+    else
+    {
+      QFileInfo file_info(mMediaItem->url().toLocalFile());
+      ui->mTitleLabel->setText(file_info.baseName());
+    }
+    ui->mTimeLabel->setText(QString::number(((AudioMediaItem*)(mMediaItem))->duration().minute()) + QString(":") + QString::number(((AudioMediaItem*)(mMediaItem))->duration().second()));
+    QTime duration = ((AudioMediaItem*)(mMediaItem))->duration();
+    if (duration.hour() > 0 && duration.hour() < 10)
+      ui->mTimeLabel->setText( duration.toString("h:mm:ss") );
+    else if (duration.hour() >= 10)
+      ui->mTimeLabel->setText( duration.toString("hh:mm:ss") );
+    else
+      ui->mTimeLabel->setText( duration.toString("mm:ss") );
+   
+    /*
+     * TODO:
+     * Load Album image
+     */
+    if ((ui->mExtra->layout() != 0x0L) && (!ui->mExtra->layout()->children().isEmpty())){
+      qDebug("Posiblemente falle aqui.");
+      PlaylistAudioItemExtra *extra =  qobject_cast< PlaylistAudioItemExtra* >(ui->mExtra->layout()->children().at(0));
+      qDebug("No fallo");
+      qobject_cast< PlaylistAudioItemExtra* >(extra)->ui->mAlbum->setText(((AudioMediaItem*)(mMediaItem))->album());
+      qobject_cast< PlaylistAudioItemExtra* >(extra)->ui->mArtist->setText(((AudioMediaItem*)(mMediaItem))->artist());
+      qobject_cast< PlaylistAudioItemExtra* >(extra)->ui->mRatingLabel->setText(QString::number(((AudioMediaItem*)(mMediaItem))->rating()));
+      qobject_cast< PlaylistAudioItemExtra* >(extra)->ui->mTrack->setText(QString::number(((AudioMediaItem*)(mMediaItem))->trackNumber()));
+    }
+  }
 }
 
 bool PlaylistAudioItemWidget::event(QEvent *e){
@@ -235,3 +321,5 @@ void PlaylistAudioItemWidget::resizeEvent ( QResizeEvent *event ){
   if (mParentChildPos != -1 && mExpandAnimation->state() == QAbstractAnimation::Running)
     emit resized(mParentChildPos);
 }
+
+#include "PlaylistAudioItemWidget.moc"

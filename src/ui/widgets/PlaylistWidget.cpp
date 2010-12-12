@@ -17,6 +17,8 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
+
 #include <QKeyEvent>
 #include <QWheelEvent>
 
@@ -38,6 +40,7 @@ PlaylistWidget::PlaylistWidget(QWidget *parent) :
     ui->mVerticalScrollBar->setMaximum(0);
     connect(ui->mVerticalScrollBar,SIGNAL(valueChanged(int)),this,SLOT(moveContent(int)));
     mShiftPressed = false;
+    connect(this,SIGNAL(connectItemSlotsFor(PlaylistAbstractMediaItem*)),this,SLOT(connectItemSlots(PlaylistAbstractMediaItem*)));
   }
 
 PlaylistWidget::~PlaylistWidget()
@@ -47,43 +50,51 @@ PlaylistWidget::~PlaylistWidget()
 
 void PlaylistWidget::addItem(QStringList items){
   // In parallel
-//   #pragma omp parallel for ordered default(none) shared(items)
-  int startFrom = items.size();
+  
+  int startFrom = ui->mContent->children().size();
+  QTime t;
+  t.start();
   for(int i = 0; i < items.size();++i)
   {
-
-    MediaItem mediaItem(items[i]);
+    
+    MediaItem *mediaItem = new MediaItem(items[i],true);
+    
     // We create the corresponded PlaylistItem acord the type
     //We use the mime type to see the file type
-    if (!mediaItem.mimetype().isEmpty())
+    if (!mediaItem->mimetype().isEmpty())
     {
       // If is an audio, we create an PlaylistAudioItemWidget
-      if (mediaItem.mimetype().contains("audio",Qt::CaseInsensitive))
+      if (mediaItem->mimetype().contains("audio",Qt::CaseInsensitive))
       {
-        AudioMediaItem *audioMediaItem = new AudioMediaItem(items[i]);
-        PlaylistAudioItemWidget *mediaItem_new = new PlaylistAudioItemWidget(audioMediaItem,this);
+        AudioMediaItem *audioMediaItem = new AudioMediaItem(*mediaItem);
+//         AudioMediaItem *audioMediaItem = new AudioMediaItem(items[i],true);
+        PlaylistAudioItemWidget *mediaItem_new = new PlaylistAudioItemWidget(*audioMediaItem,this);
         mediaItem_new->setParent(ui->mContent);
         mediaItem_new->move(0,mContentHeight);
         mediaItem_new->mParentChildPos = ui->mContent->children().size() - 1;
-        mContentHeight += mediaItem_new->height();
+
         if ( (mContentHeight - ui->mContent->height()) > 0 )
             ui->mVerticalScrollBar->setMaximum(mContentHeight - ui->mContent->height());
         else
             ui->mVerticalScrollBar->setMaximum(0);
+        mContentHeight += mediaItem_new->height();
+
         connect(mediaItem_new,SIGNAL(play(int)),this,SIGNAL(play(int)));
         connect(mediaItem_new,SIGNAL(resized(int)),this,SLOT(reorganize(int)));
         connect(mediaItem_new,SIGNAL(removed(int)),this,SLOT(removeItem(int)));
         connect(mediaItem_new,SIGNAL(selected(int)),this,SLOT(selectManager(int)));
+        
 //         connect(mediaItem_new,SIGNAL(removed(int)),this,SIGNAL(removeItem(int)));
-        emit itemAdded(audioMediaItem); //FIXME Mover
-        mediaItem_new->show();
+
+        emit itemAdded(mediaItem_new->audioMediaItem());//FIXME Mover
+
         // We verifi if we need an separator (album name, artist name, rating, etc)
         // Create the PlaylistAudioItemWidget and add it to the playlist (this)
       }
-      else if (mediaItem.mimetype().contains("video",Qt::CaseInsensitive))
+      else if (mediaItem->mimetype().contains("video",Qt::CaseInsensitive))
       {
       }
-      else if (mediaItem.mimetype().contains("image",Qt::CaseInsensitive))
+      else if (mediaItem->mimetype().contains("image",Qt::CaseInsensitive))
       {
       }
     }
@@ -99,9 +110,11 @@ void PlaylistWidget::addItem(QStringList items){
           // else, is an audio an we create the item and return
     }
   }
-  if (items.size() > startFrom)
-    for (int i = startFrom; i < items.size(); ++i)
-      qobject_cast< QWidget* >(children().at(i))->show();
+  if (ui->mContent->children().size() > startFrom)
+    for (int i = startFrom; i < ui->mContent->children().size(); ++i)
+      static_cast< QWidget* >(ui->mContent->children().at(i))->show();
+  qDebug(QString::number(t.elapsed()).toAscii());
+//       qobject_cast< QWidget* >(ui->mContent->children().at(i))->show();
   /*
   item->setParent(ui->mContent);
   item->move(0,mContentHeight);
@@ -117,6 +130,14 @@ void PlaylistWidget::addItem(QStringList items){
   /**/
 }
 
+
+void PlaylistWidget::clearPlaylist()
+{
+  int size = ui->mContent->children().size();
+  for (int i = 0; i < size; ++i)
+    removeItem(0);
+}
+
 void PlaylistWidget::reorganize(int widget_ptr){
   /*
    Primero aumentamos el tamaño del contenido y el rango del scrollbar
@@ -126,6 +147,7 @@ void PlaylistWidget::reorganize(int widget_ptr){
     mContentHeight += (w->height() - w->mLastHeight);
   else
     mContentHeight -= (w->mLastHeight - w->height());
+
   if ( (mContentHeight - ui->mContent->height()) > 0 )
     ui->mVerticalScrollBar->setMaximum(mContentHeight - ui->mContent->height());
   else
@@ -152,9 +174,7 @@ void PlaylistWidget::moveContent(int offset){
 
 void PlaylistWidget::wheelEvent(QWheelEvent *e){
   int numDegrees = e->delta() / 2;
-
   ui->mVerticalScrollBar->setValue(ui->mVerticalScrollBar->value() - numDegrees);
-
   e->accept();
 }
 
@@ -168,7 +188,8 @@ void PlaylistWidget::removeItem(int item){
   int itemH(w->height());
   mContentHeight -= itemH;
   if ( (mContentHeight - ui->mContent->height()) > 0 )
-    ui->mVerticalScrollBar->setMaximum(mContentHeight - ui->mContent->height());
+//     ui->mVerticalScrollBar->setMaximum(mContentHeight - ui->mContent->height());
+    ui->mVerticalScrollBar->setMaximum(mContentHeight);
   else
     ui->mVerticalScrollBar->setMaximum(0);
   w->setParent(0x0L);

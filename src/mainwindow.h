@@ -22,7 +22,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTime>
 
+#include <KDE/KAction>
 #include <KDE/KConfigDialog>
 #include <KDE/KXmlGuiWindow>
 
@@ -36,6 +38,7 @@
 
 class KStatusNotifierItem;
 class KSystemTrayIcon;
+
 namespace Ui {
     class MainWindow;
 }
@@ -57,6 +60,10 @@ private:
         QWidget *nullPlaylistDockTitleBar;
         QWidget *nullControlsDockTitleBar;
         KConfigDialog *dialog;
+        KAction *mPlayPause;
+        KAction *mNext;
+        KAction *mPrev;
+        KAction *mLoadPlaylist;
 
         PlaylistWidget *mPlaylistWidget;
         KStatusNotifierItem *mStatusNotifierItem;
@@ -73,6 +80,10 @@ public slots:
         void trackChanged();
         void setVolume(int);
         void toggleMute();
+        void togglePlaylistMode();
+//         void openMedia();
+        void loadPlaylist();
+        void savePlaylist();
 private slots:
         void showMediaInfoPage2();
         void showMediaInfoPage1();

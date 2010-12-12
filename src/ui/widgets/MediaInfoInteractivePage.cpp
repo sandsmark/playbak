@@ -25,6 +25,9 @@
 
 #include <MediaInfoInteractivePage.h>
 
+#include <MediaItem.h>
+#include <AudioMediaItem.h>
+
 MediaInfoInteractivePage::MediaInfoInteractivePage(QWidget* parent): QWidget(parent)
 {
   //int y = 67;
@@ -115,4 +118,9 @@ void MediaInfoInteractivePage::leaveEvent(QEvent* )
 {
     //QWidget::enterEvent();
     emit mouseLeave();
+}
+
+void MediaInfoInteractivePage::setMediaItem ( MediaItem* mediaItem )
+{
+  mInfoValue1->setText(QString::number(mediaItem->score()));
 }

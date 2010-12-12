@@ -24,19 +24,19 @@
 #include <PlaylistAbstractMediaItem.h>
 #include <ui_PlaylistAbstractMediaItem.h>
 
+KIcon PlaylistAbstractMediaItem::add_icon("list-add");
+KIcon PlaylistAbstractMediaItem::remove_icon("list-remove");
 QVector<KIcon*> *PlaylistAbstractMediaItem::mExpandButtonIcon = 0x0L;
 
 PlaylistAbstractMediaItem::PlaylistAbstractMediaItem(QWidget *parent) :
     PlaylistItemWidget(parent),
     ui(new Ui::PlaylistAbstractItem)
 {
-  emit play(mParentChildPos);
-//   qDebug("playWidget");
-  
   if (mExpandButtonIcon == 0x0L){
     mExpandButtonIcon = new QVector<KIcon*>;
-    mExpandButtonIcon->push_back(new KIcon("list-add"));
-    mExpandButtonIcon->push_back(new KIcon("list-remove"));
+    mExpandButtonIcon->push_back(&add_icon);
+    mExpandButtonIcon->push_back(&remove_icon);
+    
   }
     ui->setupUi(this);
     mExtraHeight = 0;
@@ -50,10 +50,7 @@ PlaylistAbstractMediaItem::~PlaylistAbstractMediaItem()
   delete mExpandAnimation;
   delete mExpandButtonAnimation;
   mExpandButtonIcon->clear();
-//  if (mExpandButtonIcon) {
-//    delete mExpandButtonIcon;
-//    mExpandButtonIcon = 0x0L;
-//  }
+
   delete ui;
 }
 

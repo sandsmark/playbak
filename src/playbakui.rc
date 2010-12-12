@@ -3,7 +3,8 @@
  <MenuBar alreadyVisited="1">
   <Menu name="file">
    <text>&amp;File</text>
-   <Action name="file_quit"/>
+    <Action name="lpl"/>
+    <Action name="file_quit"/>
   </Menu>
   <Menu name="settings">
    <text>&amp;Settings</text>
@@ -27,3 +28,4 @@
 	<Action shortcut="F6" name="devices"/>
  </ActionProperties>
 </kpartgui>
+

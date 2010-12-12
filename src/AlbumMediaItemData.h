@@ -20,13 +20,14 @@
 #ifndef PLAYBAK_ALBUMMEDIAITEMDATA_H
 #define PLAYBAK_ALBUMMEDIAITEMDATA_H
 
+// #include <QObject>
 #include <QString>
 
 #include <MediaItem.h>
 
 class AlbumMediaItemData
 {
-  private:
+  protected:
     //! The album media item's album's name.
     /**
      * Nepomuk direction:

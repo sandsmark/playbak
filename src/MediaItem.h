@@ -20,12 +20,19 @@
 #ifndef PLAYBAK_MEDIAITEM_H
 #define PLAYBAK_MEDIAITEM_H
 
+#include <taglib/fileref.h>
+#include <taglib/tag.h>
+
 #include <QDate>
 #include <QFileSystemWatcher>
 #include <QMap>
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QThread>
+
+#include <Nepomuk/Resource>
+#include <Phonon/MediaObject>
 
 #include <KDE/KUrl>
 
@@ -45,19 +52,32 @@ class MediaItem : public CollectionItem
         VIDEO      /*!< Video medias. */
       };
     };
+    //! The media item's copy contructor.
+    /*!
+     * \param copy the media item to copy.
+     */
+    explicit MediaItem(const MediaItem& copy);
     
     //! The media item's contructor.
     /*!
      * \param url the media item source url.
      */
-    MediaItem(KUrl url);
+    MediaItem(KUrl url, bool byDemand = false);
     virtual ~MediaItem()
     {
-      if (mFileWatcher)
-        delete mFileWatcher;
     }
-  private:
-    QFileSystemWatcher *mFileWatcher;
+signals:
+  void constructMediaItem();
+private:
+private slots:
+  void firstConstructMediaItem();
+  protected:
+    //BEGIN Created to optimize the construction
+    bool mByDemand;
+    Nepomuk::Resource *rFile;
+    Nepomuk::Variant *variant;
+    TagLib::FileRef *id3File;
+    //END
     //! The media item's artist's name.
     /** Nepomuk direction:
      * Audio: 
@@ -263,8 +283,10 @@ class MediaItem : public CollectionItem
     
     //! Returns the media item's year.
     int     year();
+  signals:
+    void metadataChanged();
   protected slots:
-    virtual void loadMetadata(QString url);
+    virtual void loadMediaItemMetadata();
   public:
     //! Returns true if has the keyword, else false.
     /*!

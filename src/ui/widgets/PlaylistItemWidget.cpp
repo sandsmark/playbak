@@ -24,7 +24,8 @@ PlaylistItemWidget::PlaylistItemWidget(QWidget *parent) :
 {
   mParentChildPos = -1;
   mLastHeight = height();
-  setSelected(false);
+//   setSelected(false);
+  mSelected = false;
   mMediaItem = 0x0L;
 }
 

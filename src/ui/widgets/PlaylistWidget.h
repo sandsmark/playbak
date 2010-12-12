@@ -24,8 +24,11 @@
 #include <QWidget>
 #include <QUrl>
 
+
+
 class MediaItem;
 class PlaylistAudioItemWidget;
+class PlaylistAbstractMediaItem;
 
 namespace Ui {
     class PlaylistWidget;
@@ -50,6 +53,9 @@ signals:
     void play(int);
 
     void removedItem(int);
+public slots:
+  //! Clear the playlist
+  void clearPlaylist();
 protected slots:
     //! Reorganize the media item.
     void reorganize(int);
