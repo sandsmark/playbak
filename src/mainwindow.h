@@ -71,6 +71,9 @@ private:
 
         MediaPlaylist mMediaPlaylist;
         void setupActions();
+protected:
+  virtual void saveProperties( KConfigGroup &config);
+  virtual void readProperties(const KConfigGroup &config);
 public slots:
         void addFiles();
         void setProgressBarValue(qint64);
@@ -87,6 +90,7 @@ public slots:
 private slots:
         void showMediaInfoPage2();
         void showMediaInfoPage1();
+        void showShortcutsSettingsDialog();
         void optionsPreferences();
 };
 

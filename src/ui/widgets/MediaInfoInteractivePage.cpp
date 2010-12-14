@@ -106,9 +106,9 @@ MediaInfoInteractivePage::MediaInfoInteractivePage(QWidget* parent): QWidget(par
 
 void MediaInfoInteractivePage::retranslateUi()
 {
-  mInfoValue1->setText(i18n("110", 0));
-  mInfoValue2->setText(i18n("7", 0));
-  mInfoValue3->setText(i18n("Today", 0));
+  mInfoValue1->setText(i18n("0", 0));
+  mInfoValue2->setText(i18n("0", 0));
+  mInfoValue3->setText(i18n("Unknow", 0));
   mInfo1->setText(i18n("Score", 0));
   mInfo2->setText(i18n("Play times", 0));
   mInfo3->setText(i18n("Last play", 0));

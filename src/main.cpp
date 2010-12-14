@@ -46,16 +46,22 @@ int main(int argc, char **argv)
     options.add("+[URL]", ki18n( "Document to open" ));
     KCmdLineArgs::addCmdLineOptions(options);
     KApplication app;
-
     MainWindow *widget = new MainWindow;
+    widget->setObjectName("PlaybaK#");
+    
 
     // see if we are starting with session management
     if (app.isSessionRestored())
     {
 //         RESTORE(playbak);
+        qDebug(":::Intentando restaurar...");
+        if (widget->canBeRestored(1))
+          widget->restore(1);
+        kRestoreMainWindows<MainWindow>();
     }
     else
     {
+      qDebug(":::Iniciado normalmente...");
         // no session.. just start up normally
         KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
         if (args->count() == 0)

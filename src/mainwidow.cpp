@@ -19,8 +19,6 @@
 */
 
 #include <QPushButton>
-#include <QTime>
-
 #include <Nepomuk/ResourceManager>
 
 #include <KDE/KIcon>
@@ -30,6 +28,7 @@
 #include <KDE/KGlobalSettings>
 #include <KDE/KMenu>
 #include <KDE/KMenuBar>
+#include <KDE/KShortcutsDialog>
 #include <KDE/KStandardAction>
 #include <KDE/KStatusNotifierItem>
 
@@ -62,28 +61,6 @@ ui(new Ui::MainWindow)
         ui->savePlaylist->setIcon(KIcon("document-save"));
         ui->playMode->setIcon(KIcon("media-playlist-repeat"));
         
-        mPlayPause = new KAction(KIcon("media-playback-start"),tr("Play media"),this);
-        mPlayPause->setText(tr("Play media"));
-        mPlayPause->setIcon(KIcon("media-playback-start"));
-        connect(mPlayPause,SIGNAL(triggered()),ui->playMedia,SLOT(click()));
-        mNext = new KAction(KIcon("media-skip-forward"),tr("Next media"),this);
-        mNext->setText(tr("Next media"));
-        mNext->setIcon(KIcon("media-skip-forward"));
-        connect(mNext,SIGNAL(triggered()),ui->nextMedia,SLOT(click()));
-        mPrev = new KAction(KIcon("edia-skip-backward"),tr("Previous media"),this);
-        mPrev->setText(tr("Previous media"));
-        mPrev->setIcon(KIcon("edia-skip-backward"));
-        
-        mStatusNotifierItem = new KStatusNotifierItem(this);
-        mStatusNotifierItem->setCategory(KStatusNotifierItem::ApplicationStatus);
-        mStatusNotifierItem->setToolTipTitle("PlaybaK");
-        mStatusNotifierItem->setTitle("PlaybaK");
-        mStatusNotifierItem->setIconByName("media-playback-start");
-        mStatusNotifierItem->contextMenu()->addAction(mPlayPause);
-        mStatusNotifierItem->contextMenu()->addAction(mNext);
-        mStatusNotifierItem->contextMenu()->addAction(mPrev);
-//         mStatusNotifierItem->setContextMenu(contextMenu);
-        
         setAcceptDrops(true);
         qDebug("Vamos a setupActions");
         setupActions();
@@ -104,8 +81,6 @@ ui(new Ui::MainWindow)
         connect(mip2, SIGNAL(mouseLeave()), SLOT(showMediaInfoPage1()));
         connect(mip2, SIGNAL(ratingChanged(int)), mip1, SLOT(setRating(int)));
         
-        QTime time = QTime::currentTime();
-        qsrand((uint)time.msec());
         // Create and add the PlaylistWidget to the gui
         QHBoxLayout *playListLayout;
         playListLayout = new QHBoxLayout();
@@ -146,8 +121,6 @@ ui(new Ui::MainWindow)
           qDebug("Nepomuk problem: Can't init.");
         
 }
-
-#include <QTimer>
 
 void MainWindow::playPause(){
   qDebug("PlayPause");
@@ -339,16 +312,46 @@ void MainWindow::setupActions()
     mLoadPlaylist = new KAction(tr("Load Playlist"), this);
     mLoadPlaylist->setText(tr("Load Playlist"));
     connect(mLoadPlaylist,SIGNAL(triggered()),this,SLOT(loadPlaylist()));
-    actionCollection()->addAction("lpl",mLoadPlaylist);
+    actionCollection()->addAction("Load Playlist",mLoadPlaylist);
+
+    mPlayPause = new KAction(KIcon("media-playback-start"),tr("Play media"),this);
+    mPlayPause->setText(tr("Play media"));
+    mPlayPause->setIcon(KIcon("media-playback-start"));
+    connect(mPlayPause,SIGNAL(triggered()),ui->playMedia,SLOT(click()));
+    actionCollection()->addAction("Play/Pause media",mPlayPause);
+    mNext = new KAction(KIcon("media-skip-forward"),tr("Next media"),this);
+    mNext->setText(tr("Next media"));
+    mNext->setIcon(KIcon("media-skip-forward"));
+    connect(mNext,SIGNAL(triggered()),ui->nextMedia,SLOT(click()));
+    actionCollection()->addAction("Next media",mNext);
+    mPrev = new KAction(KIcon("edia-skip-backward"),tr("Previous media"),this);
+    mPrev->setText(tr("Previous media"));
+    mPrev->setIcon(KIcon("media-skip-backward"));
+    actionCollection()->addAction("Previous media",mPrev);
+    
+    mStatusNotifierItem = new KStatusNotifierItem(this);
+    mStatusNotifierItem->setCategory(KStatusNotifierItem::ApplicationStatus);
+    mStatusNotifierItem->setToolTipTitle("PlaybaK");
+    mStatusNotifierItem->setTitle("PlaybaK");
+    mStatusNotifierItem->setIconByName("media-playback-start");
+    mStatusNotifierItem->contextMenu()->addAction(mPlayPause);
+    mStatusNotifierItem->contextMenu()->addAction(mNext);
+    mStatusNotifierItem->contextMenu()->addAction(mPrev);
+    //         mStatusNotifierItem->setContextMenu(contextMenu);
 
     // It adds the action in the menu bar, created on playbakui.rc model.
     KStandardAction::quit ( qApp, SLOT ( closeAllWindows() ), actionCollection() );
-    KStandardAction::preferences ( this, SLOT ( optionsPreferences() ), actionCollection() ); 
+    KStandardAction::preferences ( this, SLOT ( optionsPreferences() ), actionCollection() );
+    KStandardAction::keyBindings(this, SLOT(showShortcutsSettingsDialog()), actionCollection());
 
     // FIXME: write the correct dir
     createGUI("playbakui.rc");
 //     setupGUI(Create | Keys);
 
+}
+
+void MainWindow::showShortcutsSettingsDialog() {
+  KShortcutsDialog::configure(actionCollection());
 }
 
 void MainWindow::addFiles(){
@@ -362,6 +365,28 @@ mPlaylistWidget->addItem( KFileDialog::getOpenFileNames(KGlobalSettings::desktop
 
 //   ((PlaylistWidget*)(ui->playlistList->childAt(0,0)))->addItem(mFileDialog->getOpenFileNames());
 //   delete mFileDialog;
+}
+
+void MainWindow::saveProperties( KConfigGroup &config) {
+  qDebug(":::Saving...");
+  QString entry;
+  config.writeEntry( "items number", mMediaPlaylist.count());
+  for (int i = 0; i < mMediaPlaylist.count();++i)  {
+    entry = QString("item") + QString::number(i);
+    config.writeEntry( entry, mMediaPlaylist.mediaItem(i)->url().toLocalFile() );
+  }
+}
+
+void MainWindow::readProperties(const KConfigGroup &config) {
+  qDebug(":::Restoring...");
+  QString entry;
+  QStringList items;
+  int intemsNumber = config.readEntry("items number").toInt();
+  for (int i = 0; i < intemsNumber;++i)  {
+    entry = QString("item") + QString::number(i);
+    items.append( config.readEntry( entry) );
+  }
+  mPlaylistWidget->addItem(items);
 }
 
 

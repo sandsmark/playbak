@@ -49,10 +49,13 @@ MediaInfoPage::MediaInfoPage(QWidget* parent): QWidget(parent)
   font.setWeight(50);
   albumName->setFont(font);
   albumName->setText("Album name");
-
+  albumName->setTextFormat(Qt::RichText);
+  
   artistName = new QLabel(mw);
   artistName->setObjectName(QString::fromUtf8("artistName"));
   artistName->setGeometry(QRect(y, 3, w, h));
+  artistName->setTextFormat(Qt::RichText);
+  
   QFont font1;
   //font1.setPointSize(9);
   font1.setBold(true);
@@ -65,7 +68,8 @@ MediaInfoPage::MediaInfoPage(QWidget* parent): QWidget(parent)
   trackName->setGeometry(QRect(y, 17, w, h));
   trackName->setFont(font1);
   trackName->setText("Track name");
-
+  trackName->setTextFormat(Qt::RichText);
+  
   cover = new QLabel(this);
   cover->setObjectName(QString::fromUtf8("cover"));
   cover->setGeometry(QRect(0, 0, 64, 64));
@@ -99,11 +103,11 @@ void MediaInfoPage::setMediaItem ( MediaItem* mediaItem )
     return;
   }
   ratingBar->setRating((int)(mediaItem->rating() * 10.0));
-  artistName->setText(mediaItem->artist());
-  trackName->setText(mediaItem->title());
+  artistName->setText(QString("<marquee>") + mediaItem->artist() + QString("</marquee>"));
+  trackName->setText(QString("<marquee>") + mediaItem->title() + QString("</marquee>"));
   if (mediaItem->mimetype().contains("audio/"))
     if (AudioMediaItem *w = qobject_cast<AudioMediaItem*>(mediaItem))
-      albumName->setText(w->album());
+      albumName->setText(QString("<marquee>") + w->album() + QString("</marquee>"));
 }
 
 //void MediaInfoPage::mouseMoveEvent(QMouseEvent* )
