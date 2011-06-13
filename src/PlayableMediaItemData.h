@@ -105,13 +105,13 @@ class PlayableMediaItemData
     virtual QTime   duration();
     
     //! Returns the playable media item's genre.
-    virtual QString genre() {};
+  //  virtual QString genre() {};
     
     //! Returns the playable media item's involved persons.
-    virtual QStringList involvedPersons() {};
+  //  virtual QStringList involvedPersons() {};
     
     //! Returns the playable media item's language.
-    virtual QString language() {};
+  //  virtual QString language() {};
     
     //! Returns the playable media item's start position.
      qint64  startAt();

@@ -1,6 +1,6 @@
-set(playbak_SRCS
+set(playbak_SRCS  
    main.cpp
-   mainwidow.cpp
+   mainwindow.cpp
    ui/widgets/MediaInfoPage.cpp
    ui/widgets/MediaInfoInteractivePage.cpp
    ui/widgets/PlaybakSliderWidget.cpp
@@ -25,6 +25,8 @@ set(playbak_SRCS
    ComposedMediaItemData.cpp
    MediaPlaylist.cpp
    VideoMediaItem.cpp
+   NetworkManager.cpp
+   YoutubeManager.cpp
  )
 
 SET(playbak_UIS

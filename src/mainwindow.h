@@ -33,8 +33,10 @@
 #include <MediaPlaylist.h>
 #include <PlaybaKAnimatedSliderWidget.h>
 #include <PlaylistWidget.h>
-
+#include <YoutubeManager.h>
 #include <ui_prefs_base.h>
+
+	
 
 class KStatusNotifierItem;
 class KSystemTrayIcon;
@@ -71,6 +73,7 @@ private:
 
         MediaPlaylist mMediaPlaylist;
         void setupActions();
+	
 protected:
   virtual void saveProperties( KConfigGroup &config);
   virtual void readProperties(const KConfigGroup &config);
@@ -87,6 +90,7 @@ public slots:
 //         void openMedia();
         void loadPlaylist();
         void savePlaylist();
+	
 private slots:
         void showMediaInfoPage2();
         void showMediaInfoPage1();

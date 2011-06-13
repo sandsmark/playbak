@@ -645,7 +645,7 @@ background-color: #000;
 }</string>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>3</number>
           </property>
           <widget class="QWidget" name="nowPlayingPage"/>
           <widget class="QWidget" name="informationPage"/>
