@@ -1,5 +1,3 @@
-add_subdirectory( icons )
-
 set(playbak_SRCS
    main.cpp
    mainwidow.cpp
