@@ -33,10 +33,8 @@
 #include <MediaPlaylist.h>
 #include <PlaybaKAnimatedSliderWidget.h>
 #include <PlaylistWidget.h>
-#include <YoutubeManager.h>
-#include <ui_prefs_base.h>
 
-	
+#include <ui_prefs_base.h>
 
 class KStatusNotifierItem;
 class KSystemTrayIcon;
@@ -53,49 +51,138 @@ public:
     ~MainWindow();
 
 private:
-        Ui::prefs_base ui_prefs_base;
-        Ui::MainWindow *ui;
-        MediaInfoPage *mip1;
-        MediaInfoInteractivePage *mip2;
-        QWidget *playlistDockTitleBar;
-        QWidget *controlsDockTitleBar;
-        QWidget *nullPlaylistDockTitleBar;
-        QWidget *nullControlsDockTitleBar;
-        KConfigDialog *dialog;
-        KAction *mPlayPause;
-        KAction *mNext;
-        KAction *mPrev;
-        KAction *mLoadPlaylist;
+  Ui::prefs_base ui_prefs_base;
+  Ui::MainWindow *ui;
 
-        PlaylistWidget *mPlaylistWidget;
-        KStatusNotifierItem *mStatusNotifierItem;
-//         QAction* addFilesAction;
+  //! These 'static' media info widget.
+  MediaInfoPage *mip1;
 
-        MediaPlaylist mMediaPlaylist;
-        void setupActions();
-	
+  //! These 'dynamic' media info widget.
+  MediaInfoInteractivePage *mip2;
+  /**
+    * NOTE This is ONLY an idea, but we don't think implement it for a long time.
+    */
+  //BEGIN
+  QWidget *playlistDockTitleBar;
+  QWidget *controlsDockTitleBar;
+  QWidget *nullPlaylistDockTitleBar;
+  QWidget *nullControlsDockTitleBar;
+  //END
+
+  //! The config dialog.
+  KConfigDialog *dialog;
+
+  //! The Playback's GLOBAL config.
+  KConfigGroup *mGlobalConfig;
+
+  //! Play/Pause action.
+  KAction *mPlayPause;
+
+  //! Next track action.
+  KAction *mNext;
+
+  //! Previous track action.
+  KAction *mPrev;
+
+  //! Load playlist action.
+  KAction *mLoadPlaylist;
+
+  //! The Playlist widget.
+  PlaylistWidget *mPlaylistWidget;
+
+  //! Status notifier.
+  KStatusNotifierItem *mStatusNotifierItem;
+
+  //! The media playlist manager. This is the logical manager, no the visual manager.
+  MediaPlaylist mMediaPlaylist;
+
+  //! Setup all the actions like play media, load playlist, etc
+  void setupActions();
+
+  //! The Playback's configuration interface.
+  KConfig *mConfig;
+
+  //! The Playback's LOCAL config. This is useful to restore sessions.
+  KConfigGroup *mGroup;
+
+  //! The media items.
+  QList<MediaItem*> mMediaItems;
+
 protected:
-  virtual void saveProperties( KConfigGroup &config);
-  virtual void readProperties(const KConfigGroup &config);
+
+  //! Save the actual state of the application.
+  /*!
+   * \param config Where you want save it.
+   */
+  virtual void saveProperties( KConfigGroup *config);
+
+  //! Restore a state of the application.
+  /*!
+   * \param config Where you want load it.
+   */
+  virtual void readProperties(const KConfigGroup *config);
+
+  //! 'Captures' the close action and hide the application in the systray.
+  virtual bool queryClose();
+
+  //! 'Captures' the close action, save the actual state of the application and exit.
+  virtual bool queryExit();
+protected slots:
+  //! Close all application's windows.
+  /*!
+   * Depdens of configuration.
+   * If is specified that may minimize to systray, then do it, else close the application.
+   */
+  void closeAllWindows();
 public slots:
-        void addFiles();
-        void setProgressBarValue(qint64);
-        void setProgressBarMaximum(int);
-        void playPause();
-        void progressBarValueChanged(qint64);
-        void trackChanged();
-        void setVolume(int);
-        void toggleMute();
-        void togglePlaylistMode();
+  //! Displays the 'Open Files' dialog.
+  void addFiles();
+  
+  //! Set the progress bar max value.
+  /*!
+   * \param value The maximum posible progress bar value.
+   */
+  void setProgressBarMaximum(qint64 value);
+
+  //! Toggle between play and pause states.
+  void playPause();
+
+  //! When the progress bar value change, this updates the UI's elements.
+  /*!
+   * \param value The new progress bar value.
+   */
+  void progressBarValueChanged(qint64 value);
+
+  //! When the progress bar value change, this updates the UI's elements.
+  void trackChanged();
+
+  //! Set the media volume value.
+  void setVolume(int);
+
+  //! Toggle mute state.
+  void toggleMute();
+
+  //! Toggle the playlist mode. Repeat all, repeat one, random, etc
+  void togglePlaylistMode();
 //         void openMedia();
-        void loadPlaylist();
-        void savePlaylist();
-	
+
+  //! Load a playlist.
+  void loadPlaylist();
+
+  //! Save a playlist.
+  void savePlaylist();
 private slots:
-        void showMediaInfoPage2();
-        void showMediaInfoPage1();
-        void showShortcutsSettingsDialog();
-        void optionsPreferences();
+  //! Show the second media info widget's page.
+  void showMediaInfoPage2();
+
+  //! Show the first media info widget's page.
+  void showMediaInfoPage1();
+
+  //! Show the shortcuts settings dialog.
+  void showShortcutsSettingsDialog();
+
+  //! Show the settings dialog.
+  void showSettingsDialog();
 };
 
 #endif // MAINWINDOW_H

@@ -68,7 +68,7 @@ class AudioMediaItem : public MediaItem,
     /*!
      * \param url the media source url.
      */
-    AudioMediaItem(KUrl url, bool byDemand = false);
+    AudioMediaItem(QString url, bool byDemand = false);
   private:     
     //! The audio media item's subtype.
     Subtype::AudioMediaItemSubtype mSubtype;

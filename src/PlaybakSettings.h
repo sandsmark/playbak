@@ -30,112 +30,177 @@
 
 class PlaybakSettings {
   protected:
-    /// The audio config group
+    //! The audio config group
     KConfigGroup mAudioConfigGroup;
 
-    /// The audio preamplifier
+    //! The audio preamplifier
     qreal mAudioPreamp;
 
-    /// The video brightness
+    //! The video brightness
     qreal mBrightness;
 
-    /// The configuration
+    //! The configuration
     KConfig mConfigFile;
 
-    /// The video contrast
+    //! The video contrast
     qreal mContrast;
     
-    /// The database name
+    //! The database name
     QString mDataBaseName;
 
-    /// The audio equalizer
+    //! The audio equalizer
     QList<qreal> mEqualizer;
 
-    /// The general config group
+    //! The general config group
     KConfigGroup mGeneralConfigGroup;
     
-    /// The host of the database
+    //! The host of the database
     QString mHost;
-    
+
+    //! The image/video hue.
     qreal mHue;
-    /// The language of the aplication.
-    /**
+    //! The language of the aplication.
+    /*!
      * Used, for example, to show the name of the chapters of the series.
      */
     QString mLanguage;
     
-    /// The password of the user
+    //! The password of the user
     QString mPassword;
     
-    /// The port of the database
+    //! The port of the database
     qint32 mPort;
-    
+
+    //! The image/video saturation.
     qreal mSaturation;
-    /// the user of the database
     
+    //! The user of the database
     QString mUser;
 
+    //! NOTE ?
     KConfigGroup mVideoConfigGroup;
-    
+
+    //! The audio volume.
     qreal mVolume;
 
-    /**
-     * Used to save the database information
+    //! The KWallet iterface.
+    /*!
+     * Used to save the database information.
      */
     KWallet::Wallet *mWalletConfig;
 
+    //! Indicates if the wallet is open.
     bool mWalletIsOpen;
 
-    bool mWalletReadedSusefully;
-  private slots:
-    void isWalletOpen(bool ok);
+    //! Indicates if the wallet was read successfully.
+    bool mWalletReadSuccessfully;
+  private:
+    //! Open the wallet and load the configuration from database.
+    void setWalletOpen(bool ok);
   protected:
-    void loadDatabaseConfig();
+    //! Load the configuration from database.
+    void loadConfigFromDatabase();
   public:
+    //! Get the audio's preamplifier value.
     qreal audioPreamp();
-    
+
+    //! Get the image/video's brightness value.
     qreal brightness();
-    
+
+    //! Get the image/video's contrast value.
     qreal contrast();
-    
+
+    //! Get the database's name.
     QString dataBaseName();
-    
+
+    //! Get the equalizer's values.
     QList<qreal> equalizer();
-    
-    QString host();
-    
+
+    //! Get the hostname.
+    QString hostname();
+
+    //! Get the language.
     QString language();
-    
+
+    //! Get the database's password.
     QString password();
-    
+
+    //! Get the database's port.
     qint32 port();
-    
+
+    //! Get the image/video saturation value.
     qreal saturation();
-    
-    QString user();
-    
+
+    //! Get the database's username.
+    QString username();
+
+    //! Get the audio volume's value.
     qreal volume();
   public:
-    void setAudioPromp(qreal audioPreamp);
-    
+    //! Set the audio's preamplifier.
+    /*!
+     * \param audioPreamp The audio's preamplifier.
+     */
+    void setAudioPreamp(qreal audioPreamp);
+
+    //! Set the image/video's brightness.
+    /*!
+     * \param brightness The image/video's brightness.
+     */
     void setBrightness(qreal brightness);
-    
+
+    //! Set the image/video's contrast.
+    /*!
+     * \param contrast The image/video's contrast.
+     */
     void setContrast(qreal contrast);
-    
+
+    //! Set the database's name.
+    /*!
+     * \param dataBaseName The database's name.
+     */
     void setDataBaseName(QString dataBaseName);
-    
+
+    //! Set the audio's equalizer.
+    /*!
+     * \param equalizer The audio equalizer.
+     */
     void setEqualizer(QList<qreal> equalizer);
-    
-    void setHost(QString host);
-    
+
+    //! Set the database's hostname.
+    /*!
+     * \param hostname The database's hostname.
+     */
+    void setHostname(QString hostname);
+
+    //! Set language's value.
+    /*!
+     * \param language The language's value.
+     */
     void setLanguage(QString language);
-    
+
+    //! Set the database's password.
+    /*!
+     * \param password The database's password.
+     */
     void setPassword(QString password);
-    
+
+    //! Set the database's port.
+    /*!
+     * \param port The database's port.
+     */
     void setPort(qint32 port);
-    
-    void setUser(QString user);
-    
+
+    //! Set the database's username.
+    /*!
+     * \param username The database's username.
+     */
+    void setUsername(QString username);
+
+    //! Set the audio's volume.
+    /*!
+     * \param volume The audio's volume.
+     */
     void setVolume(qreal volume);
   public:
     PlaybakSettings();

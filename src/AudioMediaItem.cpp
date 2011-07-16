@@ -33,41 +33,31 @@
 #include <Ontologies.h>
 
 AudioMediaItem::AudioMediaItem(const MediaItem& copy_mediaitem):
-MediaItem(copy_mediaitem),
-AlbumMediaItemData(mUrl),
-ArtisticalMediaItemData(mUrl),
-ComposedMediaItemData(mUrl),
-PlayableMediaItemData(mUrl)
+  MediaItem(copy_mediaitem),
+  AlbumMediaItemData(mUrl),
+  ArtisticalMediaItemData(mUrl),
+  ComposedMediaItemData(mUrl),
+  PlayableMediaItemData(mUrl)
 {
   // TODO: Read from nepomuk the subtype (we need create own ontology)
   mSubtype = AudioMediaItem::Subtype::NORMAL;
-//   if (metadataObserver != 0x0L) {
-//     connect(metadataObserver,SIGNAL(metaDataChanged()),this,SLOT(loadAudioMediaItemMetadata()));
-//   }
-//   AudioMediaItemConstructor *c = new AudioMediaItemConstructor(this);
-//   c->start();
   firstConstructAudioMediaItem();
 }
 
 AudioMediaItem::AudioMediaItem(const AudioMediaItem& copy):
-MediaItem(copy),
-AlbumMediaItemData(mUrl),
-ArtisticalMediaItemData(mUrl),
-ComposedMediaItemData(mUrl),
-PlayableMediaItemData(mUrl)
+  MediaItem(copy),
+  AlbumMediaItemData(mUrl),
+  ArtisticalMediaItemData(mUrl),
+  ComposedMediaItemData(mUrl),
+  PlayableMediaItemData(mUrl)
 {
   // TODO: Read from nepomuk the subtype (we need create own ontology)
   mSubtype = AudioMediaItem::Subtype::NORMAL;
-//   if (metadataObserver != 0x0L) {
-//     connect(metadataObserver,SIGNAL(metaDataChanged()),this,SLOT(loadAudioMediaItemMetadata()));
-//   }
-//   AudioMediaItemConstructor *c = new AudioMediaItemConstructor(this);
-//   c->start();
   firstConstructAudioMediaItem();
 }
 
 
-AudioMediaItem::AudioMediaItem(KUrl url, bool byDemand) :
+AudioMediaItem::AudioMediaItem(QString url, bool byDemand) :
   MediaItem(url,byDemand),
   AlbumMediaItemData(url),
   ArtisticalMediaItemData(url),
@@ -83,44 +73,32 @@ void AudioMediaItem::firstConstructAudioMediaItem()
 {
   // TODO: Read from nepomuk the subtype (we need create own ontology)
   mSubtype = AudioMediaItem::Subtype::NORMAL;
-//   if (metadataObserver != 0x0L) {
-//     QEventLoop loop;
-//     QObject::connect(metadataObserver, SIGNAL(stateChanged(Phonon::State,Phonon::State)), &loop, SLOT(quit()));
-//     loop.exec();
-//     connect(metadataObserver,SIGNAL(metaDataChanged()),this,SLOT(loadAudioMediaItemMetadata()));
-//   }
   if (mByDemand == false)
-  {
     loadAudioMediaItemMetadata();
-  }
-//   disconnect(this,SIGNAL(constructAudioMediaItem()),0,0);
 }
 
 void AudioMediaItem::loadAudioMediaItemMetadata() {
-
-  /* If is by demand, MediaItem construct the necesaries pointers, else
-   * we create the pointers if are not seted
+  /*!
+   * If is by demand, MediaItem construct the necessaries pointers, else
+   * create the pointers if are not created.
    */
-  if (mByDemand){
-    // We wait to MediaItem to construct the rFile (and etc.) object
-    while (rFile == 0x0L){}
-  }
-  else
-  {
-    if (rFile == 0x0L)
-      rFile = new Nepomuk::Resource(mUrl);;
-    if (variant == 0x0L)
-      variant = new Nepomuk::Variant;;
-    if (id3File == 0x0L)
-      id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());;
-  }
+  if (rFile == 0x0L)
+    rFile = new Nepomuk::Resource(mUrl);;
+  if (variant == 0x0L)
+    variant = new Nepomuk::Variant;;
+  if (id3File == 0x0L)
+    id3File = new TagLib::FileRef(mUrl.toUtf8());;
+  
+  //! Because is on demand we don't load nothing
+  if (mByDemand)
+    return;
 
-      
-  // We verity is Nepomuk was initialized (is recomended if we use thread, and we use it)
+  //! We verify is Nepomuk was initialized (is recomended if we use thread, and we use it)
   if (rFile->manager()->initialized())
     rFile->manager()->init();
 
-  // PlayableMediaItemData Metadata
+  //! PlayableMediaItemData Metadata
+  //BEGIN
   if ((id3File->audioProperties() != 0x0L) && (id3File->audioProperties()->length() != 0) ) {
     int h, m, s;
     h = id3File->audioProperties()->length()/60/60;
@@ -137,25 +115,23 @@ void AudioMediaItem::loadAudioMediaItemMetadata() {
     *variant = rFile->property(XESAM_MEDIADURATION);
     mDuration = variant->toTime();
   }
-
+  
   if ((id3File->tag() != 0x0L) && (!id3File->tag()->genre().isEmpty()))
     mGenre = id3File->tag()->genre().toCString();
   else if ( (*variant = rFile->property(NID3_CONTENTTYPE)).isValid() )
     mGenre = variant->toString();
-//   else
-//     mGenre = id3File->tag()->genre().toCString();
 
   if ( (*variant = rFile->property(NID3_INVOLVEDPERSONS)).isValid() )
     mInvolvedPersons = variant->toStringList();
-
+  
   if ( (*variant = rFile->property(NID3_LANGUAGE)).isValid() )
     mLanguage = variant->toString();
   else if ( (*variant = rFile->property(NIE_LANGUAGE)).isValid() )
     mLanguage = variant->toString();
-
+  
   mStartat = 0;
 
-  // AlbumMediaItemData Metadata
+  //! AlbumMediaItemData Metadata
   if ((id3File->tag() != 0x0L) && (!id3File->tag()->album().isEmpty()))
     mAlbum = id3File->tag()->album().toCString();
   else if ( (*variant = rFile->property(NID3_ALBUMTITLE)).isValid() )
@@ -169,10 +145,7 @@ void AudioMediaItem::loadAudioMediaItemMetadata() {
     mTrackNumber = id3File->tag()->track();
   else if ( (*variant = rFile->property(NID3_TRACKNUMBER)).isValid() )
     mTrackNumber = variant->toInt();
-//   else
-//     mTrackNumber = id3File->tag()->track();
 
-  // ArtisticalMediaItemData Metadata
   if ((id3File->tag() != 0x0L) && (!id3File->tag()->artist().isEmpty()))
     mArtist = id3File->tag()->artist().toCString();
   else if ( (*variant = rFile->property(NID3_ORIGINALARTIST)).isValid() )
@@ -184,20 +157,21 @@ void AudioMediaItem::loadAudioMediaItemMetadata() {
   else if ( (*variant = rFile->property(XESAM_ARTIST)).isValid() )
     mArtist = variant->toString();
 
-  // ComposedMediaItemData Metadata
   if ( (*variant = rFile->property(XESAM_COMPOSER)).isValid() )
     mComposer = variant->toString();
-  
+  //END
+
   emit metadataChanged();
 
-  // When we load all metadatas, is no more necesary use mByDemand
-  mByDemand = false;
   delete rFile;
   delete variant;
   delete id3File;
+
   rFile = 0x0L;
   variant = 0x0L;
   id3File = 0x0L;
+  //! When we load all metadatas, is no more necessary use mByDemand.
+  mByDemand = false;
 }
 
 void AudioMediaItem::setSubtype(Subtype::AudioMediaItemSubtype subtype)
@@ -245,8 +219,6 @@ QString AudioMediaItem::genre() {
       mGenre = id3File->tag()->genre().toCString();
     else if ( (*variant = rFile->property(NID3_CONTENTTYPE)).isValid() )
       mGenre = variant->toString();
-//     else
-//       mGenre = id3File->tag()->genre().toCString();
   }
   return mGenre;
 }
@@ -274,6 +246,9 @@ QString AudioMediaItem::language(){
 QString AudioMediaItem::album() {
   if (mByDemand && mAlbum.isEmpty())
   {
+    if (id3File->isNull() )
+      return QString();
+    
     mAlbum = id3File->tag()->album().toCString();
     if (mAlbum.isEmpty())
       if ((id3File->tag() != 0x0L) && (!id3File->tag()->album().isEmpty()))
@@ -295,8 +270,6 @@ int AudioMediaItem::trackNumber() {
       mTrackNumber = id3File->tag()->track();
     else if ( (*variant = rFile->property(NID3_TRACKNUMBER)).isValid() )
       mTrackNumber = variant->toInt();
-//     else
-//       mTrackNumber = id3File->tag()->track();
   }
   return mTrackNumber;
 }

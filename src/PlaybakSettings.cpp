@@ -30,35 +30,35 @@ PlaybakSettings::PlaybakSettings() :
   mAudioConfigGroup = mConfigFile.group("Audio");
   mVideoConfigGroup = mConfigFile.group("Audio");
   mGeneralConfigGroup = mConfigFile.group("General");
-  mWalletReadedSusefully = false;
+  mWalletReadSuccessfully = false;
 //   QObject::connect(mWalletConfig, SIGNAL(walletOpened(bool)),this, SLOT(isWalletOpen(bool)));
   QEventLoop loop;
   QObject::connect(mWalletConfig,SIGNAL(walletOpened(bool)),&loop,SLOT(quit()));
   loop.exec();
-  isWalletOpen(true);
+  setWalletOpen(true);
   mWalletConfig = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(),
                                               0,
                                               KWallet::Wallet::Asynchronous);
-  // NOTE: No se el valor correcto del volumen
+
   mAudioPreamp = QVariant(mAudioConfigGroup.readEntry( "Preamplifier", qreal(0.5) )).toReal();
   mBrightness = QVariant(mVideoConfigGroup.readEntry( "Brightness", qreal(0.5) )).toReal();
   mContrast = QVariant(mVideoConfigGroup.readEntry( "Contrast", qreal(0.5) )).toReal();
-  // TODO: read the equalizer
+  // TODO: Read the equalizer
   mHue = QVariant(mVideoConfigGroup.readEntry( "Hue", qreal(0.5) )).toReal();
-  // TODO: Read the lenguage of the sistem to default, not en
+  // TODO: Read the language of the sistem to default, not en.
   mLanguage = QVariant(mGeneralConfigGroup.readEntry( "Language", QString("en") )).toString();
   mSaturation = QVariant(mVideoConfigGroup.readEntry( "Saturation", qreal(0.5) )).toReal();
   mVolume = QVariant(mVideoConfigGroup.readEntry( "Volume", qreal(0.5) )).toReal();                                                
 }
 
-void PlaybakSettings::isWalletOpen(bool ok)
+void PlaybakSettings::setWalletOpen(bool ok)
 {
   mWalletIsOpen = ok;
   if (ok)
-    loadDatabaseConfig();
+    loadConfigFromDatabase();
 }
 
-void PlaybakSettings::loadDatabaseConfig()
+void PlaybakSettings::loadConfigFromDatabase()
 {
   if (!mWalletConfig->hasFolder("PlaybaK"))
     mWalletConfig->createFolder("PlaybaK");
@@ -90,7 +90,7 @@ void PlaybakSettings::loadDatabaseConfig()
     mWalletConfig->readEntry("Port", data);
     mPort = QVariant(data).toInt();
   }
-  mWalletReadedSusefully = true;
+  mWalletReadSuccessfully = true;
   
 }
 
@@ -134,12 +134,12 @@ QString PlaybakSettings::dataBaseName()
   return mDataBaseName;
 }
 
-QString PlaybakSettings::host()
+QString PlaybakSettings::hostname()
 {
   return mHost;
 }
 
-QString PlaybakSettings::user()
+QString PlaybakSettings::username()
 {
   return mUser;
 }
@@ -177,7 +177,7 @@ void PlaybakSettings::setVolume(qreal volume)
   mAudioConfigGroup.writeEntry("Volume",volume);
 }
 
-void PlaybakSettings::setAudioPromp(qreal audioPreamp)
+void PlaybakSettings::setAudioPreamp(qreal audioPreamp)
 {
   mAudioPreamp = audioPreamp;
   mAudioConfigGroup.writeEntry("Preamplifier",audioPreamp);
@@ -196,18 +196,18 @@ void PlaybakSettings::setDataBaseName(QString dataBaseName)
     mWalletConfig->writeEntry("DataBase",dataBaseName.toUtf8());
 }
 
-void PlaybakSettings::setHost(QString host)
+void PlaybakSettings::setHostname(QString hostname)
 {
-  mHost = host;
+  mHost = hostname;
   if (mWalletIsOpen)
-    mWalletConfig->writeEntry("Host", host.toUtf8());
+    mWalletConfig->writeEntry("Host", hostname.toUtf8());
 }
 
-void PlaybakSettings::setUser(QString user)
+void PlaybakSettings::setUsername(QString username)
 {
-  mUser = user;
+  mUser = username;
   if (mWalletIsOpen)
-    mWalletConfig->writeEntry("User", user.toUtf8());
+    mWalletConfig->writeEntry("User", username.toUtf8());
 }
 
 void PlaybakSettings::setPassword(QString password)

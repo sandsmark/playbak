@@ -46,6 +46,7 @@ MediaItem::MediaItem(const MediaItem& copy): CollectionItem(copy)
   rFile     = 0x0L;
   variant   = 0x0L;
   id3File   = 0x0L;
+
   if (mByDemand)
   {
     mYear = 0;
@@ -53,6 +54,7 @@ MediaItem::MediaItem(const MediaItem& copy): CollectionItem(copy)
     firstConstructMediaItem();
     return;
   }
+
   mArtist = copy.mArtist;
   mCopyrightInformationURL = copy.mCopyrightInformationURL;
   mCreationDate = copy.mCreationDate;
@@ -71,18 +73,17 @@ MediaItem::MediaItem(const MediaItem& copy): CollectionItem(copy)
   mYear  = copy.mYear;
 }
 
-MediaItem::MediaItem(KUrl url, bool byDemand) :
+MediaItem::MediaItem(QString url, bool byDemand) :
   mUrl(url),
   CollectionItem(CollectionItem::Type::MIX) // TODO: Temporal el MIX
 {
   mByDemand = byDemand;
   mYear = 0;
-  mUrl = url;
   mScore = mRating = 0.0;
 
   rFile = 0x0L;
   variant = 0x0L;
-  id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());;
+  id3File = new TagLib::FileRef(mUrl.toUtf8());;
   
   firstConstructMediaItem();
 }
@@ -94,62 +95,30 @@ void MediaItem::firstConstructMediaItem()
   {
     rFile = new Nepomuk::Resource(mUrl);
     variant = new Nepomuk::Variant;
-    id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());
+    id3File = new TagLib::FileRef(mUrl.toUtf8());
   }
   else
     loadMediaItemMetadata();
 }
 
+// NOTE Read the datas in parallel
 void MediaItem::loadMediaItemMetadata()
 {
   if(!mByDemand)
   {
     rFile = new Nepomuk::Resource(mUrl);
     variant = new Nepomuk::Variant;
-    id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());
+    id3File = new TagLib::FileRef(mUrl.toUtf8());
   }
-
-//   if (metadataObserver != 0x0L)
-//   {
-    /* All metadatas are:
-     ALBUM
-     ARTIST
-     AUDIO-CODEC
-     BITRATE
-     CHANNEL-MODE
-     CONTAINER-FORMAT
-     EMPHASIS
-     GENRE
-     HAS-CRC
-     LAYER
-     MODE
-     TITLE
-     TRACK-NUMBER
-     ALBUM
-     ARTIST
-     AUDIO-CODEC
-     BITRATE
-     CHANNEL-MODE
-     CONTAINER-FORMAT
-     EMPHASIS
-     GENRE
-     HAS-CRC
-     LAYER
-     MODE
-     TITLE
-     TRACK-NUMBER
-     */
 
   // TODO: Verify if is a valid media (image, video or music)
   //       if is not: throw
   
-  // We verity is Nepomuk was initialized (is recomended if we use thread, and we use it)
+  //! We verify is Nepomuk was initialized (is recomended if we use thread, and we use it)
   if (rFile->manager()->initialized())
     rFile->manager()->init();
 
-  // Not readed
-  //   mCopyrightInformationURL
-  // Read the datas in parallel
+  //! Load the media's creation date.
   if ( (*variant = rFile->property(NAO_CREATED)).isValid() )
     mCreationDate = variant->toDate();
   else if ( (*variant = rFile->property(NFO_FILECREATED)).isValid() )
@@ -159,11 +128,13 @@ void MediaItem::loadMediaItemMetadata()
   else
     mCreationDate = QDate();
 
+  //! Load the media's keywords.
   if ( (*variant = rFile->property(NIE_KEYWORD)).isValid() )
     mKeywords = variant->toStringList();
   else
     mKeywords = QStringList();
 
+  //! Load the media's last update date.
   if ( (*variant = rFile->property(NFO_LASTUPDATED)).isValid() )
     mLastUpdate = variant->toDate();
   else if ( (*variant = rFile->property(NIE_LASTUPDATE)).isValid() )
@@ -171,66 +142,65 @@ void MediaItem::loadMediaItemMetadata()
   else
     mLastUpdate = QDate();
 
+  //! Load the media's license.
   if (mLicense.isEmpty())
     if ( (*variant = rFile->property(NIE_LICENSETYPE)).isValid() )
       mLicense = variant->toString();
     else
       mLicense = QString();
 
-    if ( !(*variant = rFile->property(NIE_MIMETYPE)).toString().isEmpty() )
-      mMimetype = variant->toString();
-    else // If have not mimetype, we set manualy the mime type, because is necesary
+  //! Load the media's mimetype.
+  if ( !(*variant = rFile->property(NIE_MIMETYPE)).toString().isEmpty() ) {
+    mMimetype = variant->toString();
+  } else { //! If has not mimetype, we set manually the mimetype, because is necesary
+    //! Load the media with Phonon to try to detect the media type.
+    Phonon::MediaObject *media = new Phonon::MediaObject();
+    media->setCurrentSource(Phonon::MediaSource(mUrl));
+    if (media->isValid())
     {
-      // Load the media widht Phonon to try to detect the type
-      Phonon::MediaObject *media = new Phonon::MediaObject();
-      media->setCurrentSource(Phonon::MediaSource(mUrl));
-      if (media->isValid())
-      {
-        // We wait to finish to read
-        QEventLoop loop;
-        QObject::connect(media, SIGNAL(stateChanged(Phonon::State,Phonon::State)), &loop, SLOT(quit()));
-        loop.exec();
+      //! We wait to finish to read
+      QEventLoop loop;
+      QObject::connect(media, SIGNAL(stateChanged(Phonon::State,Phonon::State)), &loop, SLOT(quit()));
+      loop.exec();
 
-        // If is an video
-        if (media->hasVideo())
-          setMimetype("video/"); // TODO: load the full mimetype
-        // Else is an audio
-        else
-          setMimetype("audio/"); // TODO: load the full mimetype
-      }
-      //We try to load like an image
+      if (media->hasVideo())
+        setMimetype("video/"); // TODO: load the full mimetype
       else
-      {
-        QImage img;
-        img.load(mUrl.toLocalFile());
-        // If is an image
-        if (!img.isNull())
-          setMimetype("image/"); // TODO: load the full mimetype
-      }
-      delete media;
+        setMimetype("audio/"); // TODO: load the full mimetype
     }
-
-    if ( (*variant = rFile->property(NAO_SCORE)).isValid() )
-      mScore = variant->toDouble();
     else
-      mScore = 0.0;
+    {
+      QImage img;
+      img.load(mUrl);
 
-    if ( (*variant = rFile->property(XESAM_RATING)).isValid() )
-      mRating = variant->toDouble();
-    else if ( (*variant = rFile->property(XESAM_AUTORATING)).isValid() )
-      mRating = variant->toDouble();
-    else
-      mRating = 0.0;
+      if (!img.isNull())
+        setMimetype("image/"); // TODO: load the full mimetype
+    }
+    delete media;
+  }
 
-    if ( (*variant = rFile->property(NAO_TAG)).isValid() )
-      mTags = variant->toStringList();
-    else
-      mTags = QStringList();
+  //! Load the media's score.
+  if ( (*variant = rFile->property(NAO_SCORE)).isValid() )
+    mScore = variant->toDouble();
+  else
+    mScore = 0.0;
 
-  // Search the correct title
-  // First we search in the normal title
-  // if is not, we use the id3 title (is no problem if is empty, because we have no more
-  // sites to search )
+  //! Load the media's rating.
+  if ( (*variant = rFile->property(XESAM_RATING)).isValid() )
+    mRating = variant->toDouble();
+  else if ( (*variant = rFile->property(XESAM_AUTORATING)).isValid() )
+    mRating = variant->toDouble();
+  else
+    mRating = 0.0;
+
+  //! Load the media's tags.
+  if ( (*variant = rFile->property(NAO_TAG)).isValid() )
+    mTags = variant->toStringList();
+  else
+    mTags = QStringList();
+
+  //! Load the media's title.
+  //BEGIN
   if (mTitle.isEmpty())
     if ( (*variant = rFile->property(NID3_TITLE)).isValid() )
       mTitle = variant->toString();
@@ -238,10 +208,8 @@ void MediaItem::loadMediaItemMetadata()
       mTitle = variant->toString();
     else if ( (*variant = rFile->property(XESAM_TITLE)).isValid() )
       mTitle = variant->toString();
-    else
-      mTitle = QString();
 
-  // We verificate with ID3 tag
+  //! We try with ID3 tag.
   if (mTitle.isEmpty())
     if ( !id3File->isNull() && id3File->tag()->title().toCString() != mTitle.toStdString().c_str() )
     {
@@ -252,11 +220,10 @@ void MediaItem::loadMediaItemMetadata()
       rFile->setProperty(NIE_TITLE, Nepomuk::Variant(mTitle) );
       // We do not save in Xesam because is depercated
     }
+  //END
 
-  // We search the year of the media in 2 sites
-  // First we search in the original relase year id3 tag
-  // if is not we use the recording year (is no problem if is empty, because we have no more
-  // sites to search )
+  //! Load the media's year.
+  //BEGIN
   if (mYear == 0)
   {
     if ( (*variant = rFile->property(NID3_ORIGINALRELASEYEAR)).isValid() )
@@ -267,22 +234,22 @@ void MediaItem::loadMediaItemMetadata()
       mYear = variant->toInt();
   }
 
-  // We verificate with ID3 tag
+  //! We try with ID3 tag.
   if (mYear == 0)
     if ( !id3File->isNull() && id3File->tag()->year() != mYear )
     {
-      // ID3 tag is more importan than data stored in Nepomuk.
-      // We use ID3 tag and update the data stored in nepomuk
+      //! ID3 tag is more importan than data stored in Nepomuk.
+      
+      //! We use ID3 tag and update the data stored in Nepomuk.
       mYear = id3File->tag()->year();
       rFile->setProperty(NID3_ORIGINALRELASEYEAR, Nepomuk::Variant(mYear) );
       rFile->setProperty(NID3_RECORDINGYEAR, Nepomuk::Variant(mYear) );
-      // We do not save in Xesam because is depercated
+      //! NOTE We do not save in Xesam because is depercated.
     }
+  //END
 
-  // We search the audio artist
-  // First we search in the lider artist
-  // if is not we use the original artist (is no problem if is empty, because we have no more
-  // sites to search )
+  //! Load the media's artist.
+  //BEGIN
   if (mArtist.isEmpty())
     if ( (*variant = rFile->property(NID3_ORIGINALARTIST)).isValid() )
       mArtist = variant->toString();
@@ -293,16 +260,16 @@ void MediaItem::loadMediaItemMetadata()
     else if ( (*variant = rFile->property(XESAM_ARTIST)).isValid() )
       mArtist = variant->toString();
     
-  // End parallel load
-  // This section require the data loaded
   
-  // We verificate with ID3 tag
+  //! We try with ID3 tag.
   if ( !id3File->isNull() && id3File->tag()->artist().toCString() != mArtist.toStdString().c_str() )
   {
-    // ID3 tag is more importan than data stored in Nepomuk.
-    // We use ID3 tag and update the data stored in nepomuk
+    //! ID3 tag is more importan than data stored in Nepomuk.
+    
+    //! We use ID3 tag and update the data stored in Nepomuk.
     mArtist = id3File->tag()->artist().toCString();
-    // If is an audio or video we update the ID3 tag
+    
+    //! If is an audio or video we update the ID3 tag
     if ((bool)(mMimetype.contains("audio",Qt::CaseInsensitive)) | (bool)(mMimetype.contains("video",Qt::CaseInsensitive)) )
     {
       rFile->setProperty(NID3_ORIGINALARTIST, Nepomuk::Variant(mArtist) );
@@ -312,14 +279,17 @@ void MediaItem::loadMediaItemMetadata()
     {
       rFile->setProperty(NEXIF_ARTIST, Nepomuk::Variant(mArtist) );
     }
-    // We do not save in Xesam because is depercated
+    //! NOTE We do not save in Xesam because is depercated.
   }
+  //END
 
-  // When we load all metadatas, is no more necesary use mByDemand
+  //! When we load all metadatas, is no more necesary use mByDemand
   mByDemand = false;
+  
   delete rFile;
   delete variant;
   delete id3File;
+  
   rFile = 0x0L;
   variant = 0x0L;
   id3File = 0x0L;
@@ -329,8 +299,11 @@ void MediaItem::loadMediaItemMetadata()
 
 QString MediaItem::artist()
 {
-  if (mByDemand && mArtist.isEmpty())
+  if (mByDemand && mArtist.isNull())
   {
+    if (id3File->isNull() )
+      return QString();
+    
     mArtist = id3File->tag()->artist().toCString();
     if (mArtist.isEmpty()) {
       if ( (*variant = rFile->property(NID3_ORIGINALARTIST)).isValid() )
@@ -433,33 +406,26 @@ QString MediaItem::mimetype()
     if ( !(*variant = rFile->property(NIE_MIMETYPE)).toString().isEmpty() )
     {
       mMimetype = variant->toString();
-    }
-    // If have not mimetype, we set manualy the mime type, because is necesary
-    else
-    {
-      // Load the media widht Phonon to try to detect the type
+    } else { //! If has not mimetype, we set manualy the mimetype, because is necessary.
+      //! Load the media with Phonon to try to detect the type.
       Phonon::MediaObject *media = new Phonon::MediaObject();
       media->setCurrentSource(Phonon::MediaSource(mUrl));
       if (media->isValid())
       {
-        // We wait to finish to read
+        //! We wait to finish to read.
         QEventLoop loop;
         QObject::connect(media, SIGNAL(stateChanged(Phonon::State,Phonon::State)), &loop, SLOT(quit()));
         loop.exec();
         
-        // If is an video
         if (media->hasVideo())
           setMimetype("video/");
-          // Else is an audio
           else
             setMimetype("audio/");
       }
-      //We try to load like an image
       else
       {
         QImage img;
-        img.load(mUrl.toLocalFile());
-        // If is an image
+        img.load(mUrl);
         if (!img.isNull())
           setMimetype("image/");
       }
@@ -522,14 +488,17 @@ QString MediaItem::title()
     if ( (mTitle.isEmpty())  )
     {
       if ( !id3File->isNull() && id3File->tag()->title().toCString() != mTitle.toStdString().c_str() ) {
-        // ID3 tag is more importan than data stored in Nepomuk.
-        // We use ID3 tag and update the data stored in nepomuk
+        //! ID3 tag is more importan than data stored in Nepomuk.
+        
+        //! We use ID3 tag and update the data stored in Nepomuk.
         mTitle = id3File->tag()->title().toCString();
-//         rFile->setProperty(NID3_TITLE, Nepomuk::Variant(mTitle) );
-//         rFile->setProperty(NIE_TITLE, Nepomuk::Variant(mTitle) );
-        // We do not save in Xesam because is depercated
+        rFile->setProperty(NID3_TITLE, Nepomuk::Variant(mTitle) );
+        rFile->setProperty(NIE_TITLE, Nepomuk::Variant(mTitle) );
+        
         if (!mTitle.isEmpty())
           return mTitle;
+
+        //! NOTE We do not save in Xesam because is depercated.
       }
     }
 
@@ -554,6 +523,7 @@ int MediaItem::year()
 {
   if (mByDemand && mTags.isEmpty())
   {
+    //! Load the media's year.
     if ( (*variant = rFile->property(NID3_ORIGINALRELASEYEAR)).isValid() )
       mYear = variant->toInt();
     else if ( (*variant = rFile->property(NID3_RECORDINGYEAR)).isValid() )
@@ -562,16 +532,18 @@ int MediaItem::year()
       mYear = variant->toInt();
     
     
-    // We verificate with ID3 tag
+    //! We try with ID3 tag.
     if (mYear == 0)
       if ( !id3File->isNull() && id3File->tag()->year() != mYear )
       {
-        // ID3 tag is more importan than data stored in Nepomuk.
-        // We use ID3 tag and update the data stored in nepomuk
+        //! ID3 tag is more importan than data stored in Nepomuk.
+        
+        //! We use ID3 tag and update the data stored in Nepomuk
         mYear = id3File->tag()->year();
         rFile->setProperty(NID3_ORIGINALRELASEYEAR, Nepomuk::Variant(mYear) );
         rFile->setProperty(NID3_RECORDINGYEAR, Nepomuk::Variant(mYear) );
-        // We do not save in Xesam because is depercated
+        
+        //! NOTE We do not save in Xesam because is depercated
       }
   }
   return mYear;
@@ -598,9 +570,9 @@ void MediaItem::addKeyword(QString keyword)
   {
     rFile = new Nepomuk::Resource(mUrl);
   }
-  // Add the keyword
   mKeywords << keyword;
-  // Update Nepomuk
+  
+  //! Update Nepomuk.
   rFile->setProperty(NIE_KEYWORD, Nepomuk::Variant(mKeywords));
   if(!mByDemand)
   {
@@ -657,9 +629,9 @@ void MediaItem::addTag(QString tag)
   {
     rFile = new Nepomuk::Resource(mUrl);
   }
-  // Add the tag
   mTags << tag;
-  // Update Nepomuk
+  
+  //! Update metadata.
   rFile->setProperty(NAO_TAG, Nepomuk::Variant(mTags));
   if(!mByDemand)
   {
@@ -673,12 +645,12 @@ void MediaItem::setArtist(QString artist)
   if(!mByDemand)
   {
     rFile = new Nepomuk::Resource(mUrl);
-    id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());
+    id3File = new TagLib::FileRef(mUrl.toUtf8());
   }
-  // Rewrite the artist
+  //! Rewrite the artist
   mArtist = artist;
-  // Update Nepomuk
-  // If is an audio or video we update the ID3 tag
+  
+  //! Update metadata.
   if ((bool)(mMimetype.contains("audio",Qt::CaseInsensitive)) | (bool)(mMimetype.contains("video",Qt::CaseInsensitive)) )
   {
     if (rFile->property(NID3_ORIGINALARTIST).isValid())
@@ -693,7 +665,6 @@ void MediaItem::setArtist(QString artist)
     
     id3File->tag()->setArtist(mArtist.toStdString().c_str());
   }
-  // If is an image
   else if (mMimetype.contains("image") )
   {
     if (rFile->property(NEXIF_ARTIST).isValid())
@@ -724,9 +695,11 @@ void MediaItem::setCreationDate(QDate creationDate)
   {
     rFile = new Nepomuk::Resource(mUrl);
   }
-  // Set creation date
+  //! Set the creation date.
+  
   mCreationDate = creationDate;
-  // Update Nepomuk
+  
+  //! Update metadata.
   if (rFile->property(NFO_FILECREATED).isValid())
     rFile->setProperty(NFO_FILECREATED, Nepomuk::Variant(mCreationDate));
   else
@@ -755,8 +728,10 @@ void MediaItem::setKeywords(QStringList keywords)
   {
     rFile = new Nepomuk::Resource(mUrl);
   }
+  //! Set the keywords.
   mKeywords = keywords;
-  // Set the keywords
+
+  //! Update metadata.
   if (rFile->property(NIE_KEYWORD).isValid())
     rFile->setProperty(NIE_KEYWORD, Nepomuk::Variant(mKeywords));
   else
@@ -776,8 +751,11 @@ void MediaItem::setLastUpdate(QDate lastUpdate)
     rFile = new Nepomuk::Resource(mUrl);
   }
   
+  //! Set the last update date.
   mLastUpdate = lastUpdate;
-  // Set last update
+
+  //! Update metadata.
+  //BEGIN
   if (rFile->property(NFO_LASTUPDATED).isValid())
     rFile->setProperty(NFO_LASTUPDATED, Nepomuk::Variant(mLastUpdate));
   else
@@ -787,6 +765,7 @@ void MediaItem::setLastUpdate(QDate lastUpdate)
     rFile->setProperty(NIE_LASTUPDATE, Nepomuk::Variant(mLastUpdate));
   else
     rFile->addProperty(NIE_LASTUPDATE, Nepomuk::Variant(mLastUpdate));
+  //END
 
   if(!mByDemand)
   {
@@ -801,9 +780,11 @@ void MediaItem::setLicense(QString license)
   {
     rFile = new Nepomuk::Resource(mUrl);
   }
-  
+
+  //! Set the license.
   mLicense = license;
-  // Set the license
+
+  //! Update metadata.
   if (rFile->property(NIE_LICENSETYPE).isValid())
     rFile->setProperty(NIE_LICENSETYPE, Nepomuk::Variant(mLicense));
   else
@@ -822,12 +803,14 @@ void MediaItem::setMimetype(QString mimetype)
   {
     rFile = new Nepomuk::Resource(mUrl);
   }
-  
+
+  //! Set the mimetype.
   mMimetype = mimetype;
+
+  //! Update metadata.
   if (rFile->property(NIE_MIMETYPE).isValid())
       rFile->setProperty(NIE_MIMETYPE, Nepomuk::Variant(mMimetype));
   else
-    // Set the mime type
     rFile->addProperty(NIE_MIMETYPE, Nepomuk::Variant(mMimetype));
 
   if(!mByDemand)
@@ -843,9 +826,11 @@ void MediaItem::setScore(double score)
   {
     rFile = new Nepomuk::Resource(mUrl);
   }
-  
+
+  //! Set the score.
   mScore = score;
-  // Set the score
+
+  //! Update metadata.
   if (rFile->property(NAO_SCORE).isValid())
     rFile->setProperty(NAO_SCORE, Nepomuk::Variant(mScore));
   else
@@ -864,9 +849,12 @@ void MediaItem::setRating(double rating)
   {
     rFile = new Nepomuk::Resource(mUrl);
   }
-  
+
+  //! Set the rating.
   mRating = rating;
-  // Set the rating
+
+  //! Update metadata.
+  //BEGIN
   if (rFile->property(XESAM_RATING).isValid())
     rFile->setProperty(XESAM_RATING, Nepomuk::Variant(mRating));
   else
@@ -876,6 +864,7 @@ void MediaItem::setRating(double rating)
     rFile->setProperty(XESAM_AUTORATING, Nepomuk::Variant(mRating));
   else
     rFile->addProperty(XESAM_AUTORATING, Nepomuk::Variant(mRating));
+  //END
 
   if(!mByDemand)
   {
@@ -906,9 +895,11 @@ void MediaItem::setTags(QStringList tags)
   {
     rFile = new Nepomuk::Resource(mUrl);
   }
-  
+
+  //! Set the tags.
   mTags = tags;
-  // Set the rating
+
+  //! Update metadata.
   if (rFile->property(NAO_TAG).isValid())
     rFile->setProperty(NAO_TAG, Nepomuk::Variant(mTags));
   else
@@ -926,11 +917,14 @@ void MediaItem::setTitle(int title)
   if(!mByDemand)
   {
     rFile = new Nepomuk::Resource(mUrl);
-    id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());
+    id3File = new TagLib::FileRef(mUrl.toUtf8());
   }
-  
+
+  //! Set the title.
   mTitle = title;
-  // Set the rating
+
+  //! Update metadata.
+  //BEGIN
   if (rFile->property(NIE_TITLE).isValid())
     rFile->setProperty(NIE_TITLE, Nepomuk::Variant(mTitle));
   else
@@ -941,6 +935,7 @@ void MediaItem::setTitle(int title)
   else
     rFile->addProperty(NID3_TITLE, Nepomuk::Variant(mTitle));
   id3File->tag()->setTitle(mTitle.toStdString().c_str());
+  //END
 
   if(!mByDemand)
   {
@@ -961,10 +956,14 @@ void MediaItem::setYear(int year)
   if(!mByDemand)
   {
     rFile = new Nepomuk::Resource(mUrl);
-    id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());
+    id3File = new TagLib::FileRef(mUrl.toUtf8());
   }
+
+  //! Set the year.
   mYear = year;
-  // Set the rating
+
+  //! Update metadata.
+  //BEGIN
   if (rFile->property(NID3_ORIGINALRELASEYEAR).isValid())
     rFile->setProperty(NID3_ORIGINALRELASEYEAR, Nepomuk::Variant(mYear));
   else
@@ -975,6 +974,7 @@ void MediaItem::setYear(int year)
   else
     rFile->addProperty(NID3_RECORDINGYEAR, Nepomuk::Variant(mYear));
   id3File->tag()->setYear(mYear);
+  //END
 
   if(!mByDemand)
   {

@@ -493,7 +493,7 @@ border-radius: 5px;
           <number>1</number>
          </property>
          <item>
-          <widget class="QLabel" name="trackActualTime">
+          <widget class="QLabel" name="trackCurrentTime">
            <property name="text">
             <string notr="true">00:00</string>
            </property>
@@ -645,7 +645,7 @@ background-color: #000;
 }</string>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="nowPlayingPage"/>
           <widget class="QWidget" name="informationPage"/>

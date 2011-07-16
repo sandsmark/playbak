@@ -43,6 +43,7 @@ PlaybaKSliderWidget::PlaybaKSliderWidget(QWidget* parent): QAbstractSlider(paren
     //  else if(mode == 0)
     //    setMaximum(120);
     setMouseTracking(true);
+    mediaObject = 0x0l;
 }
 
 void PlaybaKSliderWidget::setMode(Mode mode)
@@ -53,6 +54,25 @@ void PlaybaKSliderWidget::setMode(Mode mode)
 PlaybaKSliderWidget::Mode PlaybaKSliderWidget::mode()
 {
   return mMode;
+}
+
+void PlaybaKSliderWidget::setMediaObject(Phonon::MediaObject* source)
+{
+  if (source != 0x0l) {
+    // Desconectamos la viaja conexión
+    if (mediaObject)
+      disconnect(mediaObject,SIGNAL(tick(qint64)),this,SLOT(updateTick(qint64)));
+    // Apuntamos al nuevo objeto
+    mediaObject = source;
+    mediaObject->setTickInterval(500);
+    // Conectamos la nueva señal
+    connect(mediaObject,SIGNAL(tick(qint64)),this,SLOT(updateTick(qint64)));
+  }    
+}
+
+void PlaybaKSliderWidget::updateTick(qint64 value)
+{
+  setValue(value);
 }
 
 void PlaybaKSliderWidget::paintEvent(QPaintEvent* ev)
@@ -240,9 +260,11 @@ void PlaybaKSliderWidget::mouseMoveEvent(QMouseEvent* ev)
         else if ( mMouseVal > minimum())
             mValue = maximum();
         //if(Settings::interface_seekwhilemoving())
-        //emit valueChanged(_value);
+        setValue(mValue);
+
+//         emit valueChanged(mValue);
     }
-    //lineFade->start(40);
+//     lineFade->start(40);
     update();
 }
 void PlaybaKSliderWidget::mousePressEvent(QMouseEvent* ev)
@@ -254,12 +276,14 @@ void PlaybaKSliderWidget::mousePressEvent(QMouseEvent* ev)
         if ( mMouseVal >= minimum() && mMouseVal <= maximum())
         {
             mValue = mMouseVal;
-            //emit valueChanged(_value);
         }
         else if ( mMouseVal < minimum())
             mValue = minimum();
         else if ( mMouseVal > minimum())
             mValue = maximum();
+        setValue(mValue);
+
+//         emit valueChanged(mValue);
         update();
     }
 }
@@ -268,7 +292,8 @@ void PlaybaKSliderWidget::mouseReleaseEvent(QMouseEvent* ev)
     //QWidget::mouseReleaseEvent();
     if (ev->button() == Qt::LeftButton) {
         mPressed = false;
-        emit valueChanged( mValue);
+        setValue(mValue);
+//         emit valueChanged( mValue);
     }
 }
 void PlaybaKSliderWidget::wheelEvent(QWheelEvent* e)
@@ -291,8 +316,9 @@ void PlaybaKSliderWidget::wheelEvent(QWheelEvent* e)
             mValue = minimum();
         else if (newValue > minimum())
             mValue = maximum();
+        setValue(mValue);
+//         emit valueChanged( mValue );
         update();
-        emit valueChanged( mValue);
     }
 }
 
@@ -309,13 +335,13 @@ void PlaybaKSliderWidget::enterEvent(QEvent* )
     mOver = true;
     mEffects->start(40);
 }
-void PlaybaKSliderWidget::setValue(int v)
+void PlaybaKSliderWidget::setValue(qint64 v)
 {
     if (!mPressed)
     {
         mValue = v;
         update();
-//         emit valueChanged(v);
+        emit valueChanged(int(v));
     }
 }
 int PlaybaKSliderWidget::value()

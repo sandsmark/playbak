@@ -35,7 +35,7 @@
 #include <qfile.h>
 #include <qfileinfo.h>
 
-PlaylistAudioItemWidget::PlaylistAudioItemWidget(KUrl mediaItem,QWidget *parent) :
+PlaylistAudioItemWidget::PlaylistAudioItemWidget(QString mediaItem,QWidget *parent) :
     PlaylistAbstractMediaItem(parent),
     ui(new Ui::PlaylistAudioItemWidget)
 {
@@ -93,7 +93,7 @@ ui(new Ui::PlaylistAudioItemWidget)
 //   t.start();
   mMediaItem = &mediaItem;
   ui->setupUi(this);
-//   qDebug(QString::number(t.elapsed()).toAscii());
+
   static int  sMinHeight(ui->mTopWidget->sizeHint().height());
   static int  sMaxHeight(ui->mContent->sizeHint().height());
   static int  sMinWidth(ui->mTimeLabel->sizeHint().width() + ui->mExpandButton->sizeHint().width());
@@ -208,9 +208,7 @@ void PlaylistAudioItemWidget::loadMetadata()
      * Load Album image
      */
     if ((ui->mExtra->layout() != 0x0L) && (!ui->mExtra->layout()->children().isEmpty())){
-      qDebug("Posiblemente falle aqui.");
       PlaylistAudioItemExtra *extra =  qobject_cast< PlaylistAudioItemExtra* >(ui->mExtra->layout()->children().at(0));
-      qDebug("No fallo");
       qobject_cast< PlaylistAudioItemExtra* >(extra)->ui->mAlbum->setText(((AudioMediaItem*)(mMediaItem))->album());
       qobject_cast< PlaylistAudioItemExtra* >(extra)->ui->mArtist->setText(((AudioMediaItem*)(mMediaItem))->artist());
       qobject_cast< PlaylistAudioItemExtra* >(extra)->ui->mRatingLabel->setText(QString::number(((AudioMediaItem*)(mMediaItem))->rating()));

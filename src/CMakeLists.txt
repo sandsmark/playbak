@@ -1,6 +1,8 @@
-set(playbak_SRCS  
+add_subdirectory( icons )
+
+set(playbak_SRCS
    main.cpp
-   mainwindow.cpp
+   mainwidow.cpp
    ui/widgets/MediaInfoPage.cpp
    ui/widgets/MediaInfoInteractivePage.cpp
    ui/widgets/PlaybakSliderWidget.cpp
@@ -25,8 +27,6 @@ set(playbak_SRCS
    ComposedMediaItemData.cpp
    MediaPlaylist.cpp
    VideoMediaItem.cpp
-   NetworkManager.cpp
-   YoutubeManager.cpp
  )
 
 SET(playbak_UIS
@@ -42,6 +42,7 @@ find_package(Nepomuk REQUIRED)
 find_package(Taglib REQUIRED)
 
 find_package(Qt4 REQUIRED)
+
 # Is not obligatory, is recomended
 # This read the C and CXX flags (are diferents in diferents compilers)
 find_package(OpenMP)
@@ -70,5 +71,6 @@ install(TARGETS playbak ${INSTALL_TARGETS_DEFAULT_ARGS} )
 ########### install files ###############
 
 install( FILES playbak.desktop  DESTINATION ${XDG_APPS_INSTALL_DIR} )
+kde4_add_app_icon(playbak_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/icons/hi*-app-playbak.png")
 install( FILES playbak.kcfg  DESTINATION  ${KCFG_INSTALL_DIR} )
 install( FILES playbakui.rc  DESTINATION  ${DATA_INSTALL_DIR}/playbak )

@@ -35,7 +35,7 @@ class PlaylistAudioItemWidget : public PlaylistAbstractMediaItem
   Q_OBJECT
   friend class MainWindow;
 public:
-    explicit PlaylistAudioItemWidget(KUrl mediaItem, QWidget* parent = 0);
+    explicit PlaylistAudioItemWidget(QString mediaItem, QWidget* parent = 0);
     explicit PlaylistAudioItemWidget(AudioMediaItem &mediaItem, QWidget* parent = 0);
     ~PlaylistAudioItemWidget();
 signals:

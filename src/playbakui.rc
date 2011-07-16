@@ -3,7 +3,7 @@
  <MenuBar alreadyVisited="1">
   <Menu name="file">
    <text>&amp;File</text>
-    <Action name="Load Playlist"/>
+    <Action name="LoadPlaylist"/>
     <Action name="file_quit"/>
   </Menu>
   <Menu name="settings">

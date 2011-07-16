@@ -66,13 +66,11 @@ private:
         //! Indicates if the palyer is mute.
         bool mMute;
 signals:
-        void addedItem();
-        void removedItem();
         void tick(qint64);
-        void totalTime(int);
+        void totalTime(qint64);
         void trackChanged();
 public:
-        //! Returns an media item from specific position at playlist.
+        //! Returns a media item from specific position at playlist.
         /*!
          * Sinonymous: MediaItem* mediaItem(const int position);
          */
@@ -80,8 +78,6 @@ public:
          * \param position the position at playlist.
          */
         virtual MediaItem* operator[] ( const int position );
-
-
 
         //! Count media items in playlist.
         virtual int count();
@@ -101,17 +97,22 @@ public:
          */
         virtual MediaItem* mediaItem ( const int position );
 
+        /*!
+         *
+         */
+        virtual Phonon::MediaObject* mediaObject();
+
         //! Return the playlist play mode.
         virtual Mode::MediaPlaylistMode mode();
 
         //! Return the media's total time.
-        qint64 totalTime();
+        qint64 currentTotalTime();
 public slots:
-        //! Add an media item to playlist.
+        //! Add media items to playlist.
         /*!
         * \param mediaItem the media to add.
         */
-        virtual void addMediaItem ( MediaItem* mediaItem );
+        virtual void addItems(QList<MediaItem*> *items);
 
         //! Play the track at specific position.
         /*!

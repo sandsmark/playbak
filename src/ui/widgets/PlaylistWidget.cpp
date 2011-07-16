@@ -40,7 +40,6 @@ PlaylistWidget::PlaylistWidget(QWidget *parent) :
     ui->mVerticalScrollBar->setMaximum(0);
     connect(ui->mVerticalScrollBar,SIGNAL(valueChanged(int)),this,SLOT(moveContent(int)));
     mShiftPressed = false;
-    connect(this,SIGNAL(connectItemSlotsFor(PlaylistAbstractMediaItem*)),this,SLOT(connectItemSlots(PlaylistAbstractMediaItem*)));
   }
 
 PlaylistWidget::~PlaylistWidget()
@@ -48,27 +47,30 @@ PlaylistWidget::~PlaylistWidget()
     delete ui;
 }
 
-void PlaylistWidget::addItem(QStringList items){
-  // In parallel
+void PlaylistWidget::addItems(QList<MediaItem*> *items){
+  // TODO In parallel
   
   int startFrom = ui->mContent->children().size();
-  QTime t;
-  t.start();
-  for(int i = 0; i < items.size();++i)
+  for(int i = 0; i < items->size();++i)
   {
-    
-    MediaItem *mediaItem = new MediaItem(items[i],true);
-    
     // We create the corresponded PlaylistItem acord the type
     //We use the mime type to see the file type
-    if (!mediaItem->mimetype().isEmpty())
+    if (!(*items)[i]->mimetype().isEmpty())
     {
       // If is an audio, we create an PlaylistAudioItemWidget
-      if (mediaItem->mimetype().contains("audio",Qt::CaseInsensitive))
+      if (
+            // Audio normal
+            ((*items)[i]->mimetype().contains("audio",Qt::CaseInsensitive)) or
+            // Streaming
+            ((*items)[i]->mimetype().contains("stream",Qt::CaseInsensitive)) or
+            ((*items)[i]->mimetype().contains("mpegurl",Qt::CaseInsensitive)) or
+            ((*items)[i]->mimetype().contains("octeta-stream",Qt::CaseInsensitive))
+         )
       {
-        AudioMediaItem *audioMediaItem = new AudioMediaItem(*mediaItem);
-//         AudioMediaItem *audioMediaItem = new AudioMediaItem(items[i],true);
+        AudioMediaItem *audioMediaItem = new AudioMediaItem(*(*items)[i]);
+
         PlaylistAudioItemWidget *mediaItem_new = new PlaylistAudioItemWidget(*audioMediaItem,this);
+
         mediaItem_new->setParent(ui->mContent);
         mediaItem_new->move(0,mContentHeight);
         mediaItem_new->mParentChildPos = ui->mContent->children().size() - 1;
@@ -77,24 +79,18 @@ void PlaylistWidget::addItem(QStringList items){
             ui->mVerticalScrollBar->setMaximum(mContentHeight - ui->mContent->height());
         else
             ui->mVerticalScrollBar->setMaximum(0);
+        
         mContentHeight += mediaItem_new->height();
 
         connect(mediaItem_new,SIGNAL(play(int)),this,SIGNAL(play(int)));
         connect(mediaItem_new,SIGNAL(resized(int)),this,SLOT(reorganize(int)));
         connect(mediaItem_new,SIGNAL(removed(int)),this,SLOT(removeItem(int)));
         connect(mediaItem_new,SIGNAL(selected(int)),this,SLOT(selectManager(int)));
-        
-//         connect(mediaItem_new,SIGNAL(removed(int)),this,SIGNAL(removeItem(int)));
-
-        emit itemAdded(mediaItem_new->audioMediaItem());//FIXME Mover
-
-        // We verifi if we need an separator (album name, artist name, rating, etc)
-        // Create the PlaylistAudioItemWidget and add it to the playlist (this)
       }
-      else if (mediaItem->mimetype().contains("video",Qt::CaseInsensitive))
+      else if ((*items)[i]->mimetype().contains("video",Qt::CaseInsensitive))
       {
       }
-      else if (mediaItem->mimetype().contains("image",Qt::CaseInsensitive))
+      else if ((*items)[i]->mimetype().contains("image",Qt::CaseInsensitive))
       {
       }
     }
@@ -113,23 +109,7 @@ void PlaylistWidget::addItem(QStringList items){
   if (ui->mContent->children().size() > startFrom)
     for (int i = startFrom; i < ui->mContent->children().size(); ++i)
       static_cast< QWidget* >(ui->mContent->children().at(i))->show();
-  qDebug(QString::number(t.elapsed()).toAscii());
-//       qobject_cast< QWidget* >(ui->mContent->children().at(i))->show();
-  /*
-  item->setParent(ui->mContent);
-  item->move(0,mContentHeight);
-  item->mParentChildPos = ui->mContent->children().size() - 1;
-  mContentHeight += item->height();
-  if ( (mContentHeight - ui->mContent->height()) > 0 )
-    ui->mVerticalScrollBar->setMaximum(mContentHeight - ui->mContent->height());
-  else
-    ui->mVerticalScrollBar->setMaximum(0);
-  connect(item,SIGNAL(resized(int)),this,SLOT(reorganize(int)));
-  connect(item,SIGNAL(removed(int)),this,SLOT(removeItem(int)));
-  connect(item,SIGNAL(selected(int)),this,SLOT(selectManager(int)));
-  /**/
 }
-
 
 void PlaylistWidget::clearPlaylist()
 {

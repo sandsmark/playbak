@@ -41,11 +41,8 @@ class PlaylistWidget : public QWidget
 public:
     explicit PlaylistWidget(QWidget *parent = 0);
     ~PlaylistWidget();
-    void addItem(QStringList items);
+    void addItems(QList<MediaItem*> *items);
 signals:
-    //! Emited when a MediaItem is added.
-    void itemAdded(MediaItem*);
-    
     //! Emited when the Playlist is resized.
     void resized();
     

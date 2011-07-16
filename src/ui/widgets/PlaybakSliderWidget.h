@@ -21,6 +21,7 @@
 #define PLAYBAKSLIDERWIDGET_H
 
 #include <QtGui/QSlider>
+#include <phonon/MediaObject>
 
 /**
 * This class provides a QWidget similar to QSlider.
@@ -43,11 +44,12 @@ public:
 //public:
     PlaybaKSliderWidget(QWidget* parent = 0);
     virtual int value();
-    virtual void setValue(int);
+    virtual void setValue(qint64);
     Mode mode();
     void setMode(Mode mode);
+    void setMediaObject(Phonon::MediaObject* source);
 private:
-    int mValue;
+    qint64 mValue;
     Mode mMode;
     qreal mOpacity;
     //int lineOpacity;
@@ -61,6 +63,8 @@ private:
     int mVpos;
     QPixmap* mBackground;
     QPixmap* mBar;
+    /// The object asociated to
+    Phonon::MediaObject* mediaObject;
 protected:
     virtual void paintEvent(QPaintEvent* ev);
     virtual void enterEvent(QEvent* );
@@ -71,6 +75,8 @@ protected:
     virtual void wheelEvent(QWheelEvent* e);
 private slots:
     void timeout();
+public slots:
+    void updateTick(qint64 value);
 };
 
 #endif // PLAYBAKSLIDERWIDGET_H

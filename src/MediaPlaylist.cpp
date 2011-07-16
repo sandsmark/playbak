@@ -26,6 +26,7 @@ MediaPlaylist::MediaPlaylist() :
   QObject()
 {
   mMode = Mode::NORMAL;
+  mMute = false;
   mCurrent = -1;
   mOutputWidget = 0x0l;
   mVideoPlayer = 0x0l;
@@ -41,7 +42,7 @@ void MediaPlaylist::play(int position){
 }
 
 void MediaPlaylist::setTick( int tick){
-  mVideoPlayer->seek(tick);
+  mVideoPlayer->seek((qint64)tick);
 }
 
 MediaItem* MediaPlaylist::operator[](const int position)
@@ -49,9 +50,10 @@ MediaItem* MediaPlaylist::operator[](const int position)
   return mItemList[position];
 }
 
-void MediaPlaylist::addMediaItem(MediaItem* mediaItem)
+void MediaPlaylist::addItems(QList<MediaItem*> *items)
 {
-  mItemList.append( mediaItem );
+  mItemList.append( *items );
+  
   if(mCurrent <  0){
     mCurrent = 0;
     QEventLoop loop;
@@ -59,10 +61,7 @@ void MediaPlaylist::addMediaItem(MediaItem* mediaItem)
     connect(mVideoPlayer->mediaObject(), SIGNAL(stateChanged(Phonon::State,Phonon::State)),&loop,SLOT(quit()));
     mVideoPlayer->stop();
     loop.exec();
-    emit trackChanged();
   }
-
-  emit addedItem();
 }
 
 int MediaPlaylist::count()
@@ -88,12 +87,19 @@ MediaItem* MediaPlaylist::mediaItem(const int position)
   return mItemList[position];
 }
 
+Phonon::MediaObject* MediaPlaylist::mediaObject()
+{
+  if (mVideoPlayer)
+    return mVideoPlayer->mediaObject();
+  return 0x0L;
+}
+
 MediaPlaylist::Mode::MediaPlaylistMode MediaPlaylist::mode()
 {
   return mMode;
 }
 
-qint64 MediaPlaylist::totalTime(){
+qint64 MediaPlaylist::currentTotalTime(){
   return mVideoPlayer->totalTime();
 }
 
@@ -120,7 +126,7 @@ void MediaPlaylist::remove(const int position)
 void MediaPlaylist::setVolume(qreal volume){
   if (mVideoPlayer == 0x0L)
     return;
-  
+
   if (volume > 1.0)
     volume = 1.0;
   else if (volume < 0.0)
@@ -139,9 +145,12 @@ void MediaPlaylist::play()
 
   QEventLoop loop;
   mVideoPlayer->play(Phonon::MediaSource(mediaItem()->url().toLocalFile()));
+
+  //! This value is Ok. A lower value make the application slower. 500 is Ok too.
+  mVideoPlayer->mediaObject()->setTickInterval(1000);
   connect(mVideoPlayer->mediaObject(), SIGNAL(stateChanged(Phonon::State,Phonon::State)),&loop,SLOT(quit()));
   loop.exec();
-  emit totalTime(int(mVideoPlayer->totalTime()));
+//   emit totalTime(mVideoPlayer->totalTime());
   emit trackChanged();
 }
 
@@ -186,8 +195,6 @@ void MediaPlaylist::select(const int position)
 
 void MediaPlaylist::selectNext()
 {
-  // FIXME:  En realidad depende del modo
-  // Si avanzamos desde el ultimo, saltamos al primero
   if (mItemList.count() == 0)
   {
     mCurrent = -1;
@@ -206,7 +213,7 @@ void MediaPlaylist::selectNext()
     mCurrent = qrand() %  mItemList.count();      
   }
   
-  emit trackChanged();
+//   emit trackChanged();
 }
 
 void MediaPlaylist::selectPrevious()
@@ -230,7 +237,7 @@ void MediaPlaylist::selectPrevious()
     mCurrent = qrand() %  mItemList.count();
   }
 
-  emit trackChanged();
+//   emit trackChanged();
 }
 
 bool MediaPlaylist::isMute()
@@ -243,14 +250,14 @@ void MediaPlaylist::setCurrent(const int current)
   // Si la canción no existe, seleccionamos el primero
   if ((mCurrent = current) > mItemList.count())
     mCurrent = 0;
-  emit trackChanged();
+//   emit trackChanged();
 }
 
 void MediaPlaylist::setCurrent(MediaItem* media)
 {
   if ( (mCurrent = mItemList.indexOf(media)) < 0 )
     mCurrent = 0;
-  emit trackChanged();
+//   emit trackChanged();
 }
 
 void MediaPlaylist::setMode(const Mode::MediaPlaylistMode mode)
@@ -270,10 +277,12 @@ void MediaPlaylist::setMute(const bool mute)
 void MediaPlaylist::setOutputWidget(QWidget *outputWidget)
 {
   if (!mVideoPlayer){
-    mVideoPlayer = new Phonon::VideoPlayer(outputWidget);
+    mVideoPlayer = new Phonon::VideoPlayer(Phonon::VideoCategory,outputWidget);
     mVideoPlayer->mediaObject()->setTickInterval(100);
     connect(mVideoPlayer,SIGNAL(finished()),this,SLOT(playNext()));
     connect(mVideoPlayer->mediaObject(),SIGNAL(tick(qint64)),this,SIGNAL(tick(qint64)));
+    connect(mVideoPlayer->mediaObject(), SIGNAL(totalTimeChanged(qint64)),this, SIGNAL(totalTime(qint64)));
+//     connect(mVideoPlayer->mediaObject(), SIGNAL(currentSourceChanged(Phonon::MediaSource)),this, SIGNAL(trackChanged()));
   }
 }
 

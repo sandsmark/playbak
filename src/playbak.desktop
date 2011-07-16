@@ -1,4 +1,5 @@
 [Desktop Entry]
+Value=1.0
 Name=playbak
 Name[ca]=playbak
 Name[ca@valencia]=playbak
@@ -45,6 +46,8 @@ Exec=playbak %i -caption "%c"
 Icon=playbak
 Type=Application
 X-DocPath=playbak/index.html
+X-KDE-Keywords=music,video,image
+Categories=Qt;KDE;AudioVideo;Audio;Player;
 GenericName=A KDE4 Multimedia Player
 GenericName[ca]=Una aplicació del KDE4
 GenericName[ca@valencia]=Una aplicació del KDE4
