@@ -80,11 +80,7 @@ MediaItem* MediaPlaylist::operator[](const int position)
 
 void MediaPlaylist::addItems(QList<MediaItem*> *items)
 {
-  int parent_pos;
-  if (mItemList.size())
-    parent_pos = mItemList.size() - 1;
-  else
-    parent_pos = 0;
+  int parent_pos = mItemList.size();
   mItemList.append( *items );
   int i = 0;
   foreach(MediaItem *item, *items) {
@@ -152,6 +148,7 @@ void MediaPlaylist::addItems(QList<MediaItem*> *items)
       }
       ++i;
     }
+    qDebug("parentpos: " + QString::number(parent_pos).toAscii());
     ++parent_pos;
   }
   

@@ -64,10 +64,10 @@ PlaylistAudioItemWidget::PlaylistAudioItemWidget(QString mediaItem,QWidget *pare
     ui->mExpandButton->setIcon(*(*mExpandButtonIconIt));
     
     resize(parent->width(),minimumHeight());
-    qDebug("--H:" + QString::number(height()).toAscii());
+//     qDebug("--H:" + QString::number(height()).toAscii());
     
     ui->mContent->resize(width(),ui->mContent->height());
-    qDebug("--mContent H:" + QString::number(ui->mContent->height()).toAscii());
+//     qDebug("--mContent H:" + QString::number(ui->mContent->height()).toAscii());
     
     mExpandAnimation = new QPropertyAnimation(this,"size");
     mExpandAnimation->setDuration(750);
@@ -83,7 +83,7 @@ PlaylistAudioItemWidget::PlaylistAudioItemWidget(QString mediaItem,QWidget *pare
     connect(mExpandButtonAnimation,SIGNAL(finished()),this,SLOT(toggleButtonAnimation()));
     
     ui->mExpandButton->setMaximumWidth(0);
-    qDebug("Creado: " + QString::number(height()).toAscii());
+//     qDebug("Creado: " + QString::number(height()).toAscii());
     
 }
 
@@ -104,10 +104,10 @@ ui(new Ui::PlaylistAudioItemWidget)
   setMaximumHeight(sMaxHeight);
 
   ui->mTopWidget->resize(ui->mTopWidget->width(),sMinHeight);
-  qDebug("--mTopWidget H:" + QString::number(ui->mTopWidget->height()).toAscii());
+//   qDebug("--mTopWidget H:" + QString::number(ui->mTopWidget->height()).toAscii());
 
-  qDebug("Minimo: " + QString::number(sMinHeight).toAscii());
-  qDebug("Tamaño: " + QString::number(ui->mTopWidget->height()).toAscii());
+//   qDebug("Minimo: " + QString::number(sMinHeight).toAscii());
+//   qDebug("Tamaño: " + QString::number(ui->mTopWidget->height()).toAscii());
 
   // When the metadata is loaded/changed, we change the labels
   connect(mMediaItem,SIGNAL(metadataChanged()),this,SLOT(loadMetadata()));
@@ -125,10 +125,10 @@ ui(new Ui::PlaylistAudioItemWidget)
   ui->mExpandButton->setIcon(*(*mExpandButtonIconIt));
   
   resize(parent->width(),minimumHeight());
-  qDebug("--H:" + QString::number(height()).toAscii());
+//   qDebug("--H:" + QString::number(height()).toAscii());
   
   ui->mContent->resize(width(),ui->mContent->height());
-  qDebug("--mContent H:" + QString::number(ui->mContent->height()).toAscii());
+//   qDebug("--mContent H:" + QString::number(ui->mContent->height()).toAscii());
   
   mExpandAnimation = new QPropertyAnimation(this,"size");
   mExpandAnimation->setDuration(750);
@@ -145,7 +145,7 @@ ui(new Ui::PlaylistAudioItemWidget)
   
   ui->mExpandButton->setMaximumWidth(0);
 
-  qDebug("Minimo: " + QString::number(height()).toAscii());
+//   qDebug("Minimo: " + QString::number(height()).toAscii());
 }
 
 void PlaylistAudioItemWidget::firstConstructPlaylistAudioItemWidget()
@@ -247,7 +247,7 @@ void PlaylistAudioItemWidget::createExtra(){
   mExtraHeight = extra->sizeHint().height();
   ui->mExtra->layout()->addWidget(extra);
   ui->mExtra->resize(width(),extra->sizeHint().height());
-  qDebug("--mExtra H:" + QString::number(ui->mExtra->height()).toAscii());
+//   qDebug("--mExtra H:" + QString::number(ui->mExtra->height()).toAscii());
   disconnect(ui->mExpandButton,SIGNAL(clicked()), this, SLOT(createExtra()));
 
   mExpandAnimation->setStartValue(QSize(width(), minimumHeight()));
@@ -324,7 +324,7 @@ void PlaylistAudioItemWidget::emitRemoved(){
 void PlaylistAudioItemWidget::resizeEvent ( QResizeEvent *event ){
   mLastHeight = event->oldSize().height();
   ui->mContent->resize(parentWidget()->width(), mExtraHeight + minimumHeight());
-  qDebug("--mContent H:" + QString::number(ui->mContent->height()).toAscii());
+//   qDebug("--mContent H:" + QString::number(ui->mContent->height()).toAscii());
   mExpandAnimation->setStartValue( QSize(parentWidget()->width(),mExpandAnimation->startValue().toSize().height()) );
   mExpandAnimation->setEndValue( QSize(parentWidget()->width(),mExpandAnimation->endValue().toSize().height()) );
   // Emitimos la señal redimencionado si cambia el alto y si ya está dentro de un playlist
