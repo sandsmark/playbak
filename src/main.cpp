@@ -42,13 +42,13 @@ int main(int argc, char **argv)
     // NOTE: (Andrés): I not use KUniqueApplication bacause break the interfece (don't wort the interfece, the buttons and etc)
     QSharedMemory shared("Playbak Shared Memory");
     // If we can not create the sared memory is because one instance of the aplications created it
-    if(shared.create(1,QSharedMemory::ReadWrite)==false)
-    {
-      std::cout << "===========================\n";
-      std::cout << "PlaybaK is already running.\n";
-      std::cout << "===========================\n";
-      return 0;      
-    }
+//     if(shared.create(1,QSharedMemory::ReadWrite)==false)
+//     {
+//       std::cout << "===========================\n";
+//       std::cout << "PlaybaK is already running.\n";
+//       std::cout << "===========================\n";
+//       return 0;      
+//     }
   
     KAboutData about("playbak", 0, ki18n("PlaybaK"), version, ki18n(description),
                      KAboutData::License_GPL_V3, ki18n("(C) 2010 PlaybaK Development Team"), KLocalizedString(), 0, "%{EMAIL}");

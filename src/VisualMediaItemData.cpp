@@ -19,6 +19,10 @@
 
 #include <VisualMediaItemData.h>
 
+VisualMediaItemData::VisualMediaItemData(KUrl file) {
+  
+}
+
 int VisualMediaItemData::brightness()
 {
   return mBrightness;

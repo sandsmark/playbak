@@ -26,6 +26,8 @@
 #include <PlayableMediaItemData.h>
 #include <VisualMediaItemData.h>
 
+#include <KDE/KUrl>
+
 //! The video media item's class.
 class VideoMediaItem : public PlayableMediaItemData,
                        public VisualMediaItemData,
@@ -43,7 +45,13 @@ class VideoMediaItem : public PlayableMediaItemData,
         REMIXMUSIC         /*!< Remix music video. */
       };
     };
-    VideoMediaItem(KUrl url);
+    VideoMediaItem(KUrl url, bool byDemand = false);
+
+    VideoMediaItem(const MediaItem& copy_mediaitem);
+
+    VideoMediaItem(const VideoMediaItem& copy);
+  protected slots:
+    virtual void loadVideoMediaItemMetadata();
   private:  
     //! The video media item's editor.
     /**
@@ -80,6 +88,43 @@ class VideoMediaItem : public PlayableMediaItemData,
     
     //! Returns the video media item's tagline.
     QString tagline();
+  //! Abstracts in VisualMediaItemData.
+  public:
+    //! Set the visual media item's brightness.
+    /*!
+     * \param brightness the brightness.
+     */
+    virtual int setBrightness(int brightness) {return 0;};
+
+    //! Set the visual media item's contrast.
+    /*!
+     * \param contrast the contrast.
+     */
+    virtual int setContrast(int contrast) {return 0;};
+
+    //! Set the visual media item's height.
+    /*!
+     * \param height the height.
+     */
+    virtual int setHeight(int height) {return 0;};
+
+    //! Set the visual media item's hue.
+    /*!
+     * \param hue the hue.
+     */
+    virtual int setHue(int hue) {return 0;};
+
+    //! Set the visual media item's saturation.
+    /*!
+     * \param saturation the saturation.
+     */
+    virtual int setSaturation(int saturation) {return 0;};
+
+    //! Set the visual media item's width.
+    /*!
+     * \param width the width.
+     */
+    virtual int setWidth(int width) {return 0;};
   public:
     //! Set the video media item's editor.
     /*!

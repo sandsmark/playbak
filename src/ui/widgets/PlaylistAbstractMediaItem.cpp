@@ -54,16 +54,25 @@ PlaylistAbstractMediaItem::~PlaylistAbstractMediaItem()
   delete ui;
 }
 
+void PlaylistAbstractMediaItem::play()
+{
+  emit play(mParentChildPos);
+}
+
 void PlaylistAbstractMediaItem::mouseDoubleClickEvent(QMouseEvent *){
   emit play(mParentChildPos);
+}
+
+QSize PlaylistAbstractMediaItem::sizeHint()
+{
+  return size();
 }
 
 void PlaylistAbstractMediaItem::resizeEvent ( QResizeEvent *event ){
   mLastHeight = event->oldSize().height();
   QWidget::resizeEvent(event);
-  if (mParentChildPos != -1 && event->oldSize().height() != height()){
+  if (mParentChildPos != -1 && event->oldSize().height() != height())
     emit resized(mParentChildPos);
-  }
 }
 
 #include "PlaylistAbstractMediaItem.moc"

@@ -89,38 +89,47 @@ ui(new Ui::MainWindow)
         connect(mip2, SIGNAL(ratingChanged(int)), mip1, SLOT(setRating(int)));
         
         //! Create and add the PlaylistWidget to the gui
-        QHBoxLayout *playListLayout;
-        playListLayout = new QHBoxLayout();
-        ui->playlistList->setLayout(playListLayout);
-        mPlaylistWidget = new PlaylistWidget();
-        playListLayout->addWidget(mPlaylistWidget);
+//         QHBoxLayout *playListLayout;
+//         playListLayout = new QHBoxLayout;
+//         ui->playlist->setLayout(playListLayout);
+//         ui->playlist->setLayout(playListLayout);
+//         ui->playlist = new MediaPlaylist();
+//         ui->playlistList = ui->playlist;
+//         playListLayout->addWidget(ui->playlist);
 
-        //TODO Cunado se reproduzca un video, establecer mMediaPlaylist.setOutputWidget(ui->nowPlayingPage);
-        mMediaPlaylist.setOutputWidget(0x0L);
-        mMediaPlaylist.setMode(MediaPlaylist::Mode::LOOP_PLAYLIST);
+//         TODO Cunado se reproduzca un video, establecer ui->playlist->setOutputWidget(ui->nowPlayingPage);
+        ui->playlist->setOutputWidget(ui->nowPlayingPage);
+//         ui->playlist->setOutputWidget(0x0L);
+        ui->playlist->setMode(MediaPlaylist::Mode::LOOP_PLAYLIST);
         
         connect(ui->volumeBar,        SIGNAL(valueChanged(int)),     this,            SLOT(setVolume(int)));
-        connect(mPlaylistWidget,      SIGNAL(play(int)),             &mMediaPlaylist, SLOT(play(int)));
-        connect(mPlaylistWidget,      SIGNAL(itemAdded(MediaItem*)), &mMediaPlaylist, SLOT(addMediaItem(MediaItem*)));
-        connect(&mMediaPlaylist,      SIGNAL(tick(qint64)),          this,            SLOT(progressBarValueChanged(qint64)));
-        connect(&mMediaPlaylist,      SIGNAL(trackChanged()),        this,            SLOT(trackChanged()));
-        connect(&mMediaPlaylist,      SIGNAL(totalTime(qint64)),     this,            SLOT(setProgressBarMaximum(qint64)));
+//         connect(ui->playlist,      SIGNAL(play(int)),             &ui->playlist, SLOT(play(int)));
+//         connect(ui->playlist,      SIGNAL(itemAdded(MediaItem*)), &ui->playlist, SLOT(addMediaItem(MediaItem*)));
+        connect(ui->playlist,      SIGNAL(tick(qint64)),          this,            SLOT(progressBarValueChanged(qint64)));
+        connect(ui->playlist,      SIGNAL(trackChanged()),        this,            SLOT(trackChanged()));
+        connect(ui->playlist,      SIGNAL(totalTime(qint64)),     this,            SLOT(setProgressBarMaximum(qint64)));
         connect(ui->muteSwitch,       SIGNAL(clicked()),             this,            SLOT(toggleMute()));
         connect(ui->playMedia,        SIGNAL(clicked()),             this,            SLOT(playPause()));
-        connect(ui->nextMedia,        SIGNAL(clicked()),             &mMediaPlaylist, SLOT(playNext()));
-        connect(ui->prevMedia,        SIGNAL(clicked()),             &mMediaPlaylist, SLOT(playPrevious()));
+        connect(ui->nextMedia,        SIGNAL(clicked()),             ui->playlist, SLOT(playNext()));
+        connect(ui->prevMedia,        SIGNAL(clicked()),             ui->playlist, SLOT(playPrevious()));
         connect(ui->addMediaItem,     SIGNAL(clicked()),             this,            SLOT(addFiles()));
-        connect(ui->trackProgressBar, SIGNAL(valueChanged(int)),     &mMediaPlaylist, SLOT(setTick(int)));
-        connect(ui->removeMediaItem,  SIGNAL(clicked()),             mPlaylistWidget, SLOT(removeSelecteds()));
-        connect(mPlaylistWidget,      SIGNAL(removedItem(int)),      &mMediaPlaylist, SLOT(remove(int)));
-        connect(ui->clearPlaylist,    SIGNAL(clicked()),             mPlaylistWidget, SLOT(clearPlaylist()));
+        connect(ui->trackProgressBar, SIGNAL(valueChanged(int)),     ui->playlist, SLOT(setTick(int)));
+//         connect(ui->removeMediaItem,  SIGNAL(clicked()),             ui->playlist, SLOT(removeSelecteds()));
+//         connect(ui->playlist,      SIGNAL(removedItem(int)),      &ui->playlist, SLOT(remove(int)));
+//         connect(ui->clearPlaylist,    SIGNAL(clicked()),             ui->playlist, SLOT(clearPlaylist()));
         connect(ui->savePlaylist,     SIGNAL(clicked()),             this,            SLOT(savePlaylist()));
         connect(ui->playMode,         SIGNAL(clicked()),             this,            SLOT(togglePlaylistMode()));
         
+//         connect(ui->playlistScrollArea,      SIGNAL(),     ui->playlistScrollArea,            SLOT());
+//         connect(ui->playlist,      SIGNAL(sizeChanged(qint64))),     ui->playlistScrollArea,            SLOT());
+
+                
         ui->volumeBar->setMinimum(0);
         ui->volumeBar->setMaximum(100);
         ui->volumeBar->setValue(100);
         setVolume(ui->volumeBar->value());
+        
+//         ui->playlistScrollArea->setWidget(ui->playlist);
 
 //         readProperties(this->autoSaveConfigGroup())
         
@@ -142,53 +151,54 @@ ui(new Ui::MainWindow)
 }
 
 void MainWindow::playPause(){
-  if (mMediaPlaylist.state() == Phonon::PlayingState){
+  if (ui->playlist->state() == Phonon::PlayingState){
     ui->playMedia->setIcon(KIcon("media-playback-pause"));
   } else {
     ui->playMedia->setIcon(KIcon("media-playback-start"));
   }
-  mMediaPlaylist.playPause();
+  ui->playlist->playPause();
 }
 
 void MainWindow::toggleMute(){
-  if (mMediaPlaylist.isMute()){
+  if (ui->playlist->isMute()){
     ui->muteSwitch->setIcon(KIcon("player-volume"));
-    mMediaPlaylist.setMute(false);
+    ui->playlist->setMute(false);
   } else {
     ui->muteSwitch->setIcon(KIcon("player-volume-muted"));
-    mMediaPlaylist.setMute();
+    ui->playlist->setMute();
   }
 
 }
 
 void MainWindow::togglePlaylistMode(){
-  switch(mMediaPlaylist.mode())
+  switch(ui->playlist->mode())
   {
     case MediaPlaylist::Mode::NORMAL:
       ui->playMode->setIcon(KIcon("media-playlist-repeat"));
       ui->playMode->setToolTip(tr("Repeat media"));
-      mMediaPlaylist.setMode(MediaPlaylist::Mode::LOOP_MEDIA);
+      ui->playlist->setMode(MediaPlaylist::Mode::LOOP_MEDIA);
       break;
     case MediaPlaylist::Mode::LOOP_MEDIA:
       ui->playMode->setIcon(KIcon("media-playlist-repeat"));
       ui->playMode->setToolTip(tr("Repeat playlist"));
-      mMediaPlaylist.setMode(MediaPlaylist::Mode::LOOP_PLAYLIST);
+      ui->playlist->setMode(MediaPlaylist::Mode::LOOP_PLAYLIST);
       break;
     case MediaPlaylist::Mode::LOOP_PLAYLIST:
       ui->playMode->setIcon(KIcon("media-playlist-shuffle"));
       ui->playMode->setToolTip(tr("Random media"));
-      mMediaPlaylist.setMode(MediaPlaylist::Mode::SHUFFLE_ALL);
+      ui->playlist->setMode(MediaPlaylist::Mode::SHUFFLE_ALL);
       break;
     case MediaPlaylist::Mode::SHUFFLE_ALL:
       ui->playMode->setIcon(KIcon("view-media-playlist"));
       ui->playMode->setToolTip(tr("Normal mode"));
-      mMediaPlaylist.setMode(MediaPlaylist::Mode::NORMAL);
+      ui->playlist->setMode(MediaPlaylist::Mode::NORMAL);
       break;
   }
 }
 
 void MainWindow::setVolume(int value){
-  mMediaPlaylist.setVolume((qreal)(value) / 100.0);
+  qDebug(QString::number(value).toAscii());
+  ui->playlist->setVolume((qreal)(value) / 100.0);
 }
 
 
@@ -207,8 +217,8 @@ void MainWindow::trackChanged(){
 
   //! Set the current track lenght time label's value.
   //BEGIN
-  qint64 value = mMediaPlaylist.currentTotalTime() / 1000;
-  setProgressBarMaximum(mMediaPlaylist.currentTotalTime());
+  qint64 value = ui->playlist->currentTotalTime() / 1000;
+  setProgressBarMaximum(ui->playlist->currentTotalTime());
   qint64 min = value / 60;
   qint64 sec = value % 60;
   QString minString;
@@ -230,13 +240,13 @@ void MainWindow::trackChanged(){
   //! Pass the new current track to the media info widget.
   //BEGIN
   if ( MediaInfoPage *w = qobject_cast< MediaInfoPage* >(ui->mediaInfo->widget(0)))
-    w->setMediaItem(mMediaPlaylist.mediaItem());
+    w->setMediaItem(ui->playlist->mediaItem());
   if (MediaInfoInteractivePage *w = qobject_cast< MediaInfoInteractivePage* >(ui->mediaInfo->widget(1)))
-    w->setMediaItem(mMediaPlaylist.mediaItem());
+    w->setMediaItem(ui->playlist->mediaItem());
   //END
 
   //! Pass the new current track to the track progress bar widget.
-  ui->trackProgressBar->setMediaObject(mMediaPlaylist.mediaObject());
+  ui->trackProgressBar->setMediaObject(ui->playlist->mediaObject());
 }
 
 //TODO Que admita horas.
@@ -273,7 +283,7 @@ void MainWindow::progressBarValueChanged(qint64 value){
 }
 
 void MainWindow::setProgressBarMaximum(qint64 value){
-  qint64 l_value = mMediaPlaylist.currentTotalTime() / 1000;
+  qint64 l_value = ui->playlist->currentTotalTime() / 1000;
   qint64 min = l_value / 60;
   qint64 sec = l_value % 60;
   QTime total = QTime(0,min,sec);
@@ -309,8 +319,8 @@ void MainWindow::loadPlaylist(){
 
     mMediaItems.append(partialMediaItemsList);
 
-    mPlaylistWidget->addItems( &partialMediaItemsList );
-    mMediaPlaylist.addItems( &partialMediaItemsList );
+    ui->playlist->addItems( &partialMediaItemsList );
+    ui->playlist->addItems( &partialMediaItemsList );
     
   }
 }
@@ -322,9 +332,9 @@ void MainWindow::savePlaylist(){
   {
     QFile file(fileName);
     file.open(QIODevice::Truncate | QIODevice::WriteOnly);
-    for(int i = 0; i < mMediaPlaylist.count(); ++i)
+    for(int i = 0; i < ui->playlist->count(); ++i)
     {
-      QByteArray row(mMediaPlaylist.mediaItem(i)->url().toEncoded());
+      QByteArray row(ui->playlist->mediaItem(i)->url().toEncoded());
       row.append("\n");
       file.write(row);
     }
@@ -399,7 +409,7 @@ void MainWindow::setupActions()
     //         mStatusNotifierItem->setContextMenu(contextMenu);
 
     // It adds the action in the menu bar, created on playbakui.rc model.
-    KStandardAction::quit ( qApp, SLOT ( closeAllWindows() ), actionCollection() );
+    KStandardAction::quit ( this, SLOT ( queryClose() ), actionCollection() );
 //     KStandardAction::quit ( qApp, SLOT ( queryClose() ), actionCollection() );
     KStandardAction::preferences ( this, SLOT ( showSettingsDialog() ), actionCollection() );
     KStandardAction::keyBindings(this, SLOT(showShortcutsSettingsDialog()), actionCollection());
@@ -411,12 +421,18 @@ void MainWindow::setupActions()
 }
 
 void MainWindow::closeAllWindows(){
-  queryClose();
+  if (QObject::sender() != 0x0L) {
+    queryClose();
+  }
 }
 
 bool MainWindow::queryClose() {
-  hide();
-  return false;
+  return true;
+//   if (QObject::sender() != 0x0L) {
+//     return queryExit();
+//   }
+//   hide();
+//   return false;
 }
 
 bool MainWindow::queryExit() {
@@ -439,7 +455,7 @@ void MainWindow::showShortcutsSettingsDialog() {
 }
 
 void MainWindow::addFiles(){
-  QStringList files = KFileDialog::getOpenFileNames(KGlobalSettings::desktopPath(), "audio/aac audio/ac3 audio/midi audio/mp3 audio/ogg audio/wav audio/x-scpls audio/x-mpegurl", this);
+  QStringList files = KFileDialog::getOpenFileNames(KGlobalSettings::desktopPath(), "application/x-matroska video/mpeg-4 video/mpeg video/quicktime video/x-la-asf video/x-ms-asf audio/aac audio/ac3 audio/midi audio/mp3 audio/ogg audio/wav audio/x-scpls audio/x-mpegurl", this);
   QList<MediaItem*> partialMediaItemsList;
   int filesQuant = files.size();
   for(int i = 0; i < filesQuant; ++i)
@@ -447,16 +463,15 @@ void MainWindow::addFiles(){
 
   mMediaItems.append(partialMediaItemsList);
 
-  mPlaylistWidget->addItems( &partialMediaItemsList );
-  mMediaPlaylist.addItems( &partialMediaItemsList );
+  ui->playlist->addItems( &partialMediaItemsList );
 }
 
 void MainWindow::saveProperties( KConfigGroup *config) {
   QString entry;
-  config->writeEntry( "items number", mMediaPlaylist.count());
-  for (int i = 0; i < mMediaPlaylist.count();++i)  {
+  config->writeEntry( "items number", ui->playlist->count());
+  for (int i = 0; i < ui->playlist->count();++i)  {
     entry = QString("item") + QString::number(i);
-    config->writeEntry( entry, mMediaPlaylist.mediaItem(i)->url().toLocalFile() );
+    config->writeEntry( entry, ui->playlist->mediaItem(i)->url().toLocalFile() );
   }
 }
 

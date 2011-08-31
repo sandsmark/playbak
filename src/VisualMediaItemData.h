@@ -20,9 +20,13 @@
 #ifndef PLAYBAK_VISUALMEDIAITEMDATA_H
 #define PLAYBAK_VISUALMEDIAITEMDATA_H
 
+#include <KDE/KUrl>
+
 //! The visual media item's class.
 class VisualMediaItemData
 {
+  public:
+    VisualMediaItemData(KUrl file);
   private:
     //! The visual media item's brightness.
     /**
@@ -81,6 +85,7 @@ class VisualMediaItemData
     
     //! Returns the visual media item's width.
     int width();
+  // NOTE Why returns int?
   public:
     //! Set the visual media item's brightness.
     /*!

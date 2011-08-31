@@ -1,0 +1,2 @@
+   * Soprano - Support for the Nepomuk semantic desktop system
+   * Shared desktop ontologies - Support for the Nepomuk semantic desktop system

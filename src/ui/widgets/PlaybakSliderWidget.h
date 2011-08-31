@@ -44,7 +44,6 @@ public:
 //public:
     PlaybaKSliderWidget(QWidget* parent = 0);
     virtual int value();
-    virtual void setValue(qint64);
     Mode mode();
     void setMode(Mode mode);
     void setMediaObject(Phonon::MediaObject* source);
@@ -76,6 +75,7 @@ protected:
 private slots:
     void timeout();
 public slots:
+    virtual void setValue(qint64);
     void updateTick(qint64 value);
 };
 

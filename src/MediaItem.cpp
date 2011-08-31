@@ -39,7 +39,7 @@
 #include <MediaItem.h>
 #include <Ontologies.h>
 
-MediaItem::MediaItem(const MediaItem& copy): CollectionItem(copy)
+MediaItem::MediaItem(const MediaItem& copy): CollectionItem(CollectionItem::Type::MIX) //CollectionItem(copy)
 {
   mByDemand = copy.mByDemand;
   mUrl      = copy.mUrl;
@@ -73,7 +73,7 @@ MediaItem::MediaItem(const MediaItem& copy): CollectionItem(copy)
   mYear  = copy.mYear;
 }
 
-MediaItem::MediaItem(QString url, bool byDemand) :
+MediaItem::MediaItem(KUrl url, bool byDemand) :
   mUrl(url),
   CollectionItem(CollectionItem::Type::MIX) // TODO: Temporal el MIX
 {
@@ -83,19 +83,18 @@ MediaItem::MediaItem(QString url, bool byDemand) :
 
   rFile = 0x0L;
   variant = 0x0L;
-  id3File = new TagLib::FileRef(mUrl.toUtf8());;
+  id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());;
   
   firstConstructMediaItem();
 }
 
 void MediaItem::firstConstructMediaItem()
 {
-
   if (mByDemand)
   {
     rFile = new Nepomuk::Resource(mUrl);
     variant = new Nepomuk::Variant;
-    id3File = new TagLib::FileRef(mUrl.toUtf8());
+    id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());
   }
   else
     loadMediaItemMetadata();
@@ -108,7 +107,7 @@ void MediaItem::loadMediaItemMetadata()
   {
     rFile = new Nepomuk::Resource(mUrl);
     variant = new Nepomuk::Variant;
-    id3File = new TagLib::FileRef(mUrl.toUtf8());
+    id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());
   }
 
   // TODO: Verify if is a valid media (image, video or music)
@@ -171,7 +170,7 @@ void MediaItem::loadMediaItemMetadata()
     else
     {
       QImage img;
-      img.load(mUrl);
+      img.load(mUrl.toLocalFile());
 
       if (!img.isNull())
         setMimetype("image/"); // TODO: load the full mimetype
@@ -425,7 +424,7 @@ QString MediaItem::mimetype()
       else
       {
         QImage img;
-        img.load(mUrl);
+        img.load(mUrl.toLocalFile());
         if (!img.isNull())
           setMimetype("image/");
       }
@@ -494,7 +493,7 @@ QString MediaItem::title()
         mTitle = id3File->tag()->title().toCString();
         rFile->setProperty(NID3_TITLE, Nepomuk::Variant(mTitle) );
         rFile->setProperty(NIE_TITLE, Nepomuk::Variant(mTitle) );
-        
+
         if (!mTitle.isEmpty())
           return mTitle;
 
@@ -514,7 +513,7 @@ QString MediaItem::title()
   return mTitle;
 }
 
-KUrl MediaItem::url()
+KUrl MediaItem::url() const
 {
   return mUrl;
 }
@@ -645,7 +644,7 @@ void MediaItem::setArtist(QString artist)
   if(!mByDemand)
   {
     rFile = new Nepomuk::Resource(mUrl);
-    id3File = new TagLib::FileRef(mUrl.toUtf8());
+    id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());
   }
   //! Rewrite the artist
   mArtist = artist;
@@ -917,7 +916,7 @@ void MediaItem::setTitle(int title)
   if(!mByDemand)
   {
     rFile = new Nepomuk::Resource(mUrl);
-    id3File = new TagLib::FileRef(mUrl.toUtf8());
+    id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());
   }
 
   //! Set the title.
@@ -956,7 +955,7 @@ void MediaItem::setYear(int year)
   if(!mByDemand)
   {
     rFile = new Nepomuk::Resource(mUrl);
-    id3File = new TagLib::FileRef(mUrl.toUtf8());
+    id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());
   }
 
   //! Set the year.

@@ -87,7 +87,7 @@ void AudioMediaItem::loadAudioMediaItemMetadata() {
   if (variant == 0x0L)
     variant = new Nepomuk::Variant;;
   if (id3File == 0x0L)
-    id3File = new TagLib::FileRef(mUrl.toUtf8());;
+    id3File = new TagLib::FileRef(mUrl.toLocalFile().toUtf8());;
   
   //! Because is on demand we don't load nothing
   if (mByDemand)

@@ -3,6 +3,7 @@ set(playbak_SRCS
    mainwidow.cpp
    ui/widgets/MediaInfoPage.cpp
    ui/widgets/MediaInfoInteractivePage.cpp
+   ui/widgets/MediaPlaylist.cpp
    ui/widgets/PlaybakSliderWidget.cpp
    ui/widgets/PlaybaKFadingButton.cpp
    ui/widgets/PlaybaKGlowTextButton.cpp
@@ -12,7 +13,9 @@ set(playbak_SRCS
    ui/widgets/PlaylistAudioItemExtra.cpp
    ui/widgets/PlaylistAudioItemWidget.cpp
    ui/widgets/PlaylistItemWidget.cpp
-   ui/widgets/PlaylistWidget.cpp
+   ui/widgets/PlaylistVideoItemExtra.cpp
+   ui/widgets/PlaylistVideoItemWidget.cpp
+  
    MediaItem.cpp
    AlbumMediaItemData.cpp
    AudioMediaItem.cpp
@@ -23,7 +26,6 @@ set(playbak_SRCS
    ArtisticalMediaItemData.cpp
    Collection.cpp
    ComposedMediaItemData.cpp
-   MediaPlaylist.cpp
    VideoMediaItem.cpp
  )
 
@@ -33,13 +35,17 @@ SET(playbak_UIS
    ui/widgets/PlaylistAbstractMediaItem.ui
    ui/widgets/PlaylistAudioItemExtra.ui
    ui/widgets/PlaylistAudioItemWidget.ui
-   ui/widgets/PlaylistWidget.ui
+   ui/widgets/PlaylistVideoItemExtra.ui
+   ui/widgets/PlaylistVideoItemWidget.ui
 )
+
+SET(CMAKE_MODULE_PATH /usr/share/apps/cmake/modules)
 
 find_package(Nepomuk REQUIRED)
 find_package(Taglib REQUIRED)
 
 find_package(Qt4 REQUIRED)
+find_package(KDE4 REQUIRED)
 
 # Is not obligatory, is recomended
 # This read the C and CXX flags (are diferents in diferents compilers)
@@ -52,6 +58,8 @@ SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 add_subdirectory( ui )
 
 include_directories( ${KDE4_INCLUDES} ${QT_INCLUDES} ${NEPOMUK_INCLUDES} ui/widgets include)
+
+
 
 kde4_add_ui_files(playbak_SRCS ${playbak_UIS})
 

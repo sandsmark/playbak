@@ -41,6 +41,8 @@ class PlaylistAbstractMediaItem : public PlaylistItemWidget
 public:
     explicit PlaylistAbstractMediaItem(QWidget *parent = 0);
     virtual ~PlaylistAbstractMediaItem();
+public:
+    QSize sizeHint();
 public slots:
     //! Contract the extra info.
     virtual void contract()  = 0;
@@ -57,6 +59,9 @@ protected slots:
     virtual void toggleButtonAnimation() = 0;
     //! Expand or contract the extra info.
     virtual void expandContract() = 0;
+    
+    //!
+    virtual void play();
 protected:
     virtual void mouseDoubleClickEvent(QMouseEvent *);
     virtual void resizeEvent ( QResizeEvent *event );
@@ -69,7 +74,7 @@ signals:
     //! Is emited when the item is called to play.
     void play(int);
     //! Is emited when the item is resized.
-    void resized(int);
+    void resized(int row);
     //! Is emited when the the more info's button is pressed.
     /**
       * NOTE Maybe moreInfo(int). See emitMoreInfo().

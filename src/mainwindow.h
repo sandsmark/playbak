@@ -32,7 +32,7 @@
 #include <MediaInfoPage.h>
 #include <MediaPlaylist.h>
 #include <PlaybaKAnimatedSliderWidget.h>
-#include <PlaylistWidget.h>
+#include <MediaPlaylist.h>
 
 #include <ui_prefs_base.h>
 
@@ -88,13 +88,13 @@ private:
   KAction *mLoadPlaylist;
 
   //! The Playlist widget.
-  PlaylistWidget *mPlaylistWidget;
+  MediaPlaylist *mPlaylistWidget;
 
   //! Status notifier.
   KStatusNotifierItem *mStatusNotifierItem;
 
   //! The media playlist manager. This is the logical manager, no the visual manager.
-  MediaPlaylist mMediaPlaylist;
+//   MediaPlaylist *mMediaPlaylist;
 
   //! Setup all the actions like play media, load playlist, etc
   void setupActions();
@@ -122,11 +122,6 @@ protected:
    */
   virtual void readProperties(const KConfigGroup *config);
 
-  //! 'Captures' the close action and hide the application in the systray.
-  virtual bool queryClose();
-
-  //! 'Captures' the close action, save the actual state of the application and exit.
-  virtual bool queryExit();
 protected slots:
   //! Close all application's windows.
   /*!
@@ -135,6 +130,12 @@ protected slots:
    */
   void closeAllWindows();
 public slots:
+  //! 'Captures' the close action and hide the application in the systray.
+  virtual bool queryClose();
+
+  //! 'Captures' the close action, save the actual state of the application and exit.
+  virtual bool queryExit();
+  
   //! Displays the 'Open Files' dialog.
   void addFiles();
   

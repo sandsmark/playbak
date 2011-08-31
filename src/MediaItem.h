@@ -62,7 +62,7 @@ class MediaItem : public CollectionItem
     /*!
      * \param url the media item source url.
      */
-    MediaItem(QString url, bool byDemand = false);
+    MediaItem(KUrl url, bool byDemand = false);
     virtual ~MediaItem()
     {
     }
@@ -191,7 +191,7 @@ private slots:
      * Nepomuk direction:
      * nie:url: http://www.semanticdesktop.org/ontologies/2007/01/19/nie#url
      */
-    QString    mUrl;
+    KUrl    mUrl;
     
     //! The media item's year.
     /*!
@@ -279,7 +279,7 @@ private slots:
     QString title();
     
     //! Returns the media item's url.
-    KUrl    url();
+    KUrl    url() const;
     
     //! Returns the media item's year.
     int     year();

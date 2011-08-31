@@ -25,14 +25,16 @@
 
 #include <MediaItem.h>
 
-class PlaylistWidget;
+class MediaPlaylist;
 class PlaylistAudioItemWidget;
+class PlaylistVideoItemWidget;
 
 class PlaylistItemWidget : public QWidget
 {
     Q_OBJECT
-    friend class PlaylistWidget;
+    friend class MediaPlaylist;
     friend class PlaylistAudioItemWidget;
+    friend class PlaylistVideoItemWidget;
 public:
     Q_PROPERTY(bool selected READ getSelected WRITE setSelected)
 public: // Q_PROPERTY
