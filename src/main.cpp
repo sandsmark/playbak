@@ -33,7 +33,7 @@
 static const char description[] =
     I18N_NOOP("A KDE 4 Multimedia Player");
 
-static const char version[] = "%{VERSION}";
+static const char version[] = "0.0.8";
 
 int main(int argc, char **argv)
 {
