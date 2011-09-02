@@ -1,6 +1,6 @@
 set(playbak_SRCS
    main.cpp
-   mainwidow.cpp
+   mainwindow.cpp
    ui/widgets/MediaInfoPage.cpp
    ui/widgets/MediaInfoInteractivePage.cpp
    ui/widgets/MediaPlaylist.cpp
