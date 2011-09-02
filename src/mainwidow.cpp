@@ -114,7 +114,7 @@ ui(new Ui::MainWindow)
         connect(ui->prevMedia,        SIGNAL(clicked()),             ui->playlist, SLOT(playPrevious()));
         connect(ui->addMediaItem,     SIGNAL(clicked()),             this,            SLOT(addFiles()));
         connect(ui->trackProgressBar, SIGNAL(valueChanged(int)),     ui->playlist, SLOT(setTick(int)));
-//         connect(ui->removeMediaItem,  SIGNAL(clicked()),             ui->playlist, SLOT(removeSelecteds()));
+        connect(ui->removeMediaItem,  SIGNAL(clicked()),             ui->playlist, SLOT(removeSelecteds()));
 //         connect(ui->playlist,      SIGNAL(removedItem(int)),      &ui->playlist, SLOT(remove(int)));
 //         connect(ui->clearPlaylist,    SIGNAL(clicked()),             ui->playlist, SLOT(clearPlaylist()));
         connect(ui->savePlaylist,     SIGNAL(clicked()),             this,            SLOT(savePlaylist()));
@@ -365,6 +365,11 @@ void MainWindow::showSettingsDialog()
     dialog->addPage ( baseSettingsDlg, i18n ( "General" ), "preferences-other" );
     dialog->setAttribute ( Qt::WA_DeleteOnClose );
     dialog->show();
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *e){
+  qDebug("Press");
+  KXmlGuiWindow::keyPressEvent(e);
 }
 
 void MainWindow::setupActions()

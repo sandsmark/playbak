@@ -184,6 +184,8 @@ private slots:
 
   //! Show the settings dialog.
   void showSettingsDialog();
+  
+  void keyPressEvent(QKeyEvent *e);
 };
 
 #endif // MAINWINDOW_H

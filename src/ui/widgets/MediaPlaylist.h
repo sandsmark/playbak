@@ -72,6 +72,11 @@ private:
         //! Indicates if the palyer is mute.
         bool mMute;
         
+        //! Indicates if the Control key is pressed.
+        bool mKeyControlPressed;
+        
+        //! Indicates if the Shift key is pressed.
+        bool mKeyShiftPressed;
         
 private: // GUI        
         //! Here the playlist's items should be rendered.
@@ -141,7 +146,7 @@ public:
         //! Return the media's total time.
         qint64 currentTotalTime();
 public slots:
-        virtual void updatePositionsFrom(int row);
+        virtual void updatePositionsFrom(int position);
         
         virtual void sincronizeWithScroll(int value);
 
@@ -150,6 +155,13 @@ public slots:
         * \param mediaItem the media to add.
         */
         virtual void addItems(QList<MediaItem*> *items);
+        
+        
+        
+        virtual void removeItem(int position);
+        
+        //! Remove the selected items from the playlist.
+        virtual void removeSelecteds();
 
         //! Play the track at specific position.
         /*!
@@ -209,15 +221,11 @@ public slots:
         //! Play or pause the current media item.
         virtual void playPause();
 
-        //! Select a media item at specific position in playlist.
+        //! When a MediaItem is selected this method manage the selected items status.
         /*!
-         * This only select a media item, no play it. This is, only set the
-         * mCurrent value.
+         * \param position The MediaItem's position in the playlist.
          */
-        /*!
-         * \param position the media's position.
-         */
-        virtual void select ( const int position );
+        virtual void select( const int position );
 
         //! Select the next media item at playlist.
         /*!
@@ -285,6 +293,8 @@ public:
         virtual int volume();
 private:
         void resizeEvent(QResizeEvent *);
+        void keyPressEvent(QKeyEvent *e);
+        void keyReleaseEvent(QKeyEvent *e);
         int virtualHeight();
 public:
         //! The media playlist's constructor.
