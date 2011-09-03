@@ -105,6 +105,7 @@ void PlaybaKGlowTextButton::changeBluredText()
 void PlaybaKGlowTextButton::leaveEvent(QEvent* )
 {
   //QWidget::leaveEvent();
+  timeLine->stop();
   timeLine->setDirection(QTimeLine::Backward);
   timeLine->start();
 }
@@ -112,6 +113,7 @@ void PlaybaKGlowTextButton::leaveEvent(QEvent* )
 void PlaybaKGlowTextButton::enterEvent(QEvent* )
 {
   //QWidget::enterEvent();
+  timeLine->stop();
   timeLine->setDirection(QTimeLine::Forward);
-    timeLine->start();
+  timeLine->start();
 }

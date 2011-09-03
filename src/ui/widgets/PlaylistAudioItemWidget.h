@@ -49,12 +49,16 @@ public:
   public slots:
     //! Contract the extra info zone.
     virtual void contract() {}
+    
     //! Expand the extra info zone.
     virtual void expand() {}
+    
     //! Mark as selected the audio media item.
     virtual void select() {}
+    
     //! Mark as unselected the audio media item.
     virtual void unselect() {}
+    
 public slots:
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
@@ -66,16 +70,22 @@ protected slots:
      * does click in the 'more's button'.
      */
     void createExtra();
+    
     //! Execute the expand-contract extra info' zone animation.
     virtual void expandContract();
+    
     //! Emit the moreinfo signal.
     virtual void emitMoreInfo();
+    
     //! Emit the removed signal.
     virtual void emitRemoved();
+    
     //! Load the metadata
     void loadMetadata();
+    
     //! Toggle the extra info's animation.
     virtual void toggleAnimation();
+    
     //! Toggle the extra info button's animation direction.
     virtual void toggleButtonAnimation();
 protected:

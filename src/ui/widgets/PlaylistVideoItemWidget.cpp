@@ -88,8 +88,6 @@ PlaylistVideoItemWidget::PlaylistVideoItemWidget(VideoMediaItem& mediaItem, QWid
 PlaylistAbstractMediaItem(parent),
 ui(new Ui::PlaylistVideoItemWidget)
 {
-//   QTime t;
-//   t.start();
   mMediaItem = &mediaItem;
   ui->setupUi(this);
 
@@ -208,17 +206,13 @@ void PlaylistVideoItemWidget::loadMetadata()
      */
     if ((ui->mExtra->layout() != 0x0L) && (!ui->mExtra->layout()->children().isEmpty())){
       PlaylistVideoItemExtra *extra =  qobject_cast< PlaylistVideoItemExtra* >(ui->mExtra->layout()->children().at(0));
-//       qobject_cast< PlaylistVideoItemExtra* >(extra)->ui->mAlbum->setText(((VideoMediaItem*)(mMediaItem))->album());
       qobject_cast< PlaylistVideoItemExtra* >(extra)->ui->mName->setText(((VideoMediaItem*)(mMediaItem))->title());
-//       qobject_cast< PlaylistVideoItemExtra* >(extra)->ui->mRatingLabel->setText(QString::number(((VideoMediaItem*)(mMediaItem))->rating()));
-//       qobject_cast< PlaylistVideoItemExtra* >(extra)->ui->mTrack->setText(QString::number(((VideoMediaItem*)(mMediaItem))->trackNumber()));
     }
   }
 }
 
 bool PlaylistVideoItemWidget::event(QEvent *e){
   if(e->type() == QEvent::MouseButtonPress){
-//    setSelected(true);
     emit selected(mParentChildPos);
     return true;
   }
@@ -249,14 +243,12 @@ void PlaylistVideoItemWidget::createExtra(){
 
   if (++mExpandButtonIconIt == mExpandButtonIcon->end() )
     mExpandButtonIconIt = mExpandButtonIcon->begin();
+  
   ui->mExpandButton->setIcon(**mExpandButtonIconIt);
 
   mExpandAnimation->start();
 
-//   qobject_cast< const PlaylistVideoItemExtra* >(extra)->ui->mAlbum->setText(((VideoMediaItem*)(mMediaItem))->album());
   qobject_cast< const PlaylistVideoItemExtra* >(extra)->ui->mName->setText(((VideoMediaItem*)(mMediaItem))->title());
-//   qobject_cast< const PlaylistVideoItemExtra* >(extra)->ui->mRatingLabel->setText(QString::number(((VideoMediaItem*)(mMediaItem))->rating()));
-//   qobject_cast< const PlaylistVideoItemExtra* >(extra)->ui->mTrack->setText(QString::number(((VideoMediaItem*)(mMediaItem))->trackNumber()));
   /*
    * TODO:
    * Load extra information like top artist
@@ -270,7 +262,7 @@ void PlaylistVideoItemWidget::contextMenuEvent(QContextMenuEvent *e){
   menu.addAction(play);
   menu.addAction(remove);
   connect(remove,SIGNAL(triggered()),this,SLOT(emitRemoved()));
-  connect(play,SIGNAL(triggered()),this,SIGNAL(play()));
+  connect(play,SIGNAL(triggered()),this,SLOT(play()));
   menu.exec(e->globalPos());
 }
 
@@ -313,8 +305,7 @@ void PlaylistVideoItemWidget::resizeEvent ( QResizeEvent *event ){
   ui->mContent->resize(parentWidget()->width(), mExtraHeight + minimumHeight());
   mExpandAnimation->setStartValue( QSize(parentWidget()->width(),mExpandAnimation->startValue().toSize().height()) );
   mExpandAnimation->setEndValue( QSize(parentWidget()->width(),mExpandAnimation->endValue().toSize().height()) );
-  // Emitimos la señal redimencionado si cambia el alto y si ya está dentro de un playlist
-  // emitimos solo cuando cambia el alto ya que el ancho lo cambia el padre (el playlist)
+
   if (mParentChildPos != -1 && event->oldSize().height() != height())
     emit resized(mParentChildPos);
 }

@@ -150,13 +150,20 @@ public:
         //! Return the media's total time.
         qint64 currentTotalTime();
 public slots:
-//         virtual void toggleFullScreen(QMouseEvent *e);
-  
+        //! Clear the playlist.
         virtual void clearPlaylist();
   
+        //! Reset the playlist's items's position from the given position.
+        /*!
+         * \param position the media's position.
+         */
         virtual void updatePositionsFrom(int position);
         
-        virtual void sincronizeWithScroll(int value);
+        //! Sincronize the playlist's offset with the scrollbar's value.
+        /*!
+         * \param value the 
+         */
+        virtual void sincronizeWithScroll();
 
         //! Add media items to playlist.
         /*!
@@ -164,8 +171,7 @@ public slots:
         */
         virtual void addItems(QList<MediaItem*> *items);
         
-        
-        
+        //! Remove an item at the given position from the playlist.
         virtual void removeItem(int position);
         
         //! Remove the selected items from the playlist.
@@ -173,7 +179,7 @@ public slots:
 
         //! Play the track at specific position.
         /*!
-         * \param position the media position.
+         * \param position the media's position.
          */
         virtual void play ( int position );
 

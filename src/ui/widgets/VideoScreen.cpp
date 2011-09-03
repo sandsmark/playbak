@@ -64,15 +64,11 @@ void VideoScreen::keyPressEvent(QKeyEvent* e)
       toggleFullScreen();
       break;
   }
-  
-  
-//     QWidget::keyPressEvent(e);
 }
 
 VideoScreen::VideoScreen(QWidget* parent) :
   QWidget(parent)
 {
-//   setEnabled(true);
 }
 
 #include "../include/VideoScreen.moc"

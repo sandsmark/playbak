@@ -40,11 +40,13 @@ public:
 public: // Q_PROPERTY
     bool getSelected(){return mSelected;}
     void setSelected(bool value){mSelected = value;}
+    
     explicit PlaylistItemWidget(QWidget *parent = 0);
     ~PlaylistItemWidget();
 public slots:
     //! Mark this media item as selected.
     virtual void select() = 0;
+    
     //! Mark this media item as unselected.
     virtual void unselect() = 0;
 protected slots:
@@ -56,14 +58,17 @@ signals:
      * The parameter is the position in the playlist.
      */
     void selected(int);
+    
     //! Is emited the item is unselected.
     void unselected();
+    
     //! Is emited when the item may be removed from the playlist.
     /*!
      * Note the item is not self removed from the playlist.
      * The parameter is the position in the playlist.
      */
     void removed(int);
+    
     //! Is emited when the item is added.
     /*!
      * NOTE: not implemented yet and is not usefull.
@@ -76,14 +81,18 @@ protected:
      * This value is necessary to the Playlist's scrollbar.
      */
     int  mLastHeight;
+    
     //! Indicates if the media item is selected.
     bool mSelected;
+    
     //! The position in the Playlist parent.
     /*!
      * When a media item is added to a Playlist, the Playlist set this value.
      * The default value is -1.
      */
     int  mParentChildPos;
+    
+    //! The media item.
     MediaItem *mMediaItem;
 };
 

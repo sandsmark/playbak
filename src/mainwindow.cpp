@@ -78,16 +78,16 @@ ui(new Ui::MainWindow)
         setupActions();
 
         //! The top rating and info pages (stars and info)
-        mip1 = new MediaInfoPage(ui->mediaInfo);
-        mip2 = new MediaInfoInteractivePage(ui->mediaInfo);
-        ui->mediaInfo->insertWidget(0, mip1);
-        ui->mediaInfo->insertWidget(1, mip2);
+        mMediaInfoPage1 = new MediaInfoPage(ui->mediaInfo);
+        mMediaInfoPage2 = new MediaInfoInteractivePage(ui->mediaInfo);
+        ui->mediaInfo->insertWidget(0, mMediaInfoPage1);
+        ui->mediaInfo->insertWidget(1, mMediaInfoPage2);
         ui->mediaInfo->setCurrentIndex(0);
 
-        connect(mip1, SIGNAL(mouseOver()), SLOT(showMediaInfoPage2()));
-        connect(mip1, SIGNAL(mouseLeave()), SLOT(showMediaInfoPage1()));
-        connect(mip2, SIGNAL(mouseLeave()), SLOT(showMediaInfoPage1()));
-        connect(mip2, SIGNAL(ratingChanged(int)), mip1, SLOT(setRating(int)));
+        connect(mMediaInfoPage1, SIGNAL(mouseOver()), SLOT(showMediaInfoPage2()));
+        connect(mMediaInfoPage1, SIGNAL(mouseLeave()), SLOT(showMediaInfoPage1()));
+        connect(mMediaInfoPage2, SIGNAL(mouseLeave()), SLOT(showMediaInfoPage1()));
+        connect(mMediaInfoPage2, SIGNAL(ratingChanged(int)), mMediaInfoPage1, SLOT(setRating(int)));
         
         //! Create and add the PlaylistWidget to the gui
         
@@ -95,17 +95,12 @@ ui(new Ui::MainWindow)
         mVideoPlayerLayout->setMargin(0);
         ui->nowPlayingPage->setLayout(mVideoPlayerLayout);
 
-//         TODO Cunado se reproduzca un video, establecer ui->playlist->setOutputWidget(ui->nowPlayingPage);
-//         ui->mainWidgetPager->addWidget(ui->nowPlayingPage);
-//         ui->mainWidgetPager->setCurrentWidget(ui->nowPlayingPage);
-        
+        //! Set the Phonon's video player's output widget.
         ui->playlist->setOutputWidget(ui->nowPlayingPage);
-//         ui->playlist->setOutputWidget(0x0L);
         ui->playlist->setMode(MediaPlaylist::Mode::LOOP_PLAYLIST);
-//         ui->nowPlayingPage->
         
         
-        connect(ui->nowPlayingPage,   SIGNAL(toggleFullScreen(QMouseEvent* )),    ui->playlist,    SLOT(toggleFullScreen(QMouseEvent*)));
+//         connect(ui->nowPlayingPage,   SIGNAL(toggleFullScreen(QMouseEvent* )),    ui->playlist,    SLOT(toggleFullScreen(QMouseEvent*)));
         connect(ui->volumeBar,        SIGNAL(valueChanged(int)),     this,            SLOT(setVolume(int)));
 //         connect(ui->playlist,      SIGNAL(play(int)),             &ui->playlist, SLOT(play(int)));
 //         connect(ui->playlist,      SIGNAL(itemAdded(MediaItem*)), &ui->playlist, SLOT(addMediaItem(MediaItem*)));
@@ -127,13 +122,12 @@ ui(new Ui::MainWindow)
 //         connect(ui->playlistScrollArea,      SIGNAL(),     ui->playlistScrollArea,            SLOT());
 //         connect(ui->playlist,      SIGNAL(sizeChanged(qint64))),     ui->playlistScrollArea,            SLOT());
 
-                
+        //! Prepare
         ui->volumeBar->setMinimum(0);
         ui->volumeBar->setMaximum(100);
         ui->volumeBar->setValue(100);
         setVolume(ui->volumeBar->value());
         
-//         ui->playlistScrollArea->setWidget(ui->playlist);
 
 //         readProperties(this->autoSaveConfigGroup())
         
@@ -142,9 +136,9 @@ ui(new Ui::MainWindow)
 
 //         mConfig = KGlobal::config().data();
         mConfig = kapp->sessionConfig();
-        mGroup = new KConfigGroup(mConfig,"PlaybaK Session");
-//         mGroup = &mConfig->group("PlaybaK");
-        readProperties(mGroup);
+        mConfigGroup = new KConfigGroup(mConfig,"PlaybaK Session");
+//         mConfigGroup = &mConfig->group("PlaybaK");
+        readProperties(mConfigGroup);
 
         //! Creates global shortcuts configuration.
         mGlobalConfig = new KConfigGroup(KGlobal::config()->group(actionCollection()->configGroup()));
@@ -360,70 +354,50 @@ void MainWindow::showSettingsDialog()
         return;
     }
 
-    dialog = new KConfigDialog ( this, "settings", Settings::self() );
-    dialog->setFaceType ( KPageDialog::List );
+    mConfigDialog = new KConfigDialog ( this, "settings", Settings::self() );
+    mConfigDialog->setFaceType ( KPageDialog::List );
     QWidget *baseSettingsDlg = new QWidget;
     ui_prefs_base.setupUi ( baseSettingsDlg );
-    dialog->addPage ( baseSettingsDlg, i18n ( "General" ), "preferences-other" );
-    dialog->setAttribute ( Qt::WA_DeleteOnClose );
-    dialog->show();
+    mConfigDialog->addPage ( baseSettingsDlg, i18n ( "General" ), "preferences-other" );
+    mConfigDialog->setAttribute ( Qt::WA_DeleteOnClose );
+    mConfigDialog->show();
 }
-
-// void MainWindow::keyPressEvent(QKeyEvent *e){
-//   switch(e->key()){
-//     case Qt::Key_Escape:
-//       if (ui->nowPlayingPage->isFullScreen())
-//         ui->nowPlayingPage->toggleFullScreen();
-//       break;
-//     case Qt::Key_F:
-//       if (!ui->nowPlayingPage->isFullScreen())
-//         ui->nowPlayingPage->toggleFullScreen();
-//       break;
-//   }
-// }
-
-
-
 
 void MainWindow::setupActions()
 {
-    mLoadPlaylist = new KAction(tr("loadplaylist"), this);
-    mLoadPlaylist->setText(tr("Load Playlist"));
-    mLoadPlaylist->setObjectName("LoadPlaylist");
-    mLoadPlaylist->setGlobalShortcut( KShortcut(), KAction::ActiveShortcut );
-    connect(mLoadPlaylist,SIGNAL(triggered()),this,SLOT(loadPlaylist()));
-    actionCollection()->addAction("LoadPlaylist",mLoadPlaylist);
+    mLoadPlaylistAction = new KAction(tr("loadplaylist"), this);
+    mLoadPlaylistAction->setText(tr("Load Playlist"));
+    mLoadPlaylistAction->setObjectName("LoadPlaylist");
+    mLoadPlaylistAction->setGlobalShortcut( KShortcut(), KAction::ActiveShortcut );
+    connect(mLoadPlaylistAction,SIGNAL(triggered()),this,SLOT(loadPlaylist()));
+    actionCollection()->addAction("LoadPlaylist",mLoadPlaylistAction);
 
-    mPlayPause = new KAction(KIcon("media-playback-start"),tr("Play media"),this);
-    mPlayPause->setText(tr("Play media"));
-    mPlayPause->setIcon(KIcon("media-playback-start"));
-    mPlayPause->setObjectName("PlayPause");
-    mPlayPause->setGlobalShortcut( KShortcut( Qt::META + Qt::Key_MediaPlay ) );
-//     mPlayPause->setGlobalShortcut( KShortcut(), KAction::ActiveShortcut );
-    connect(mPlayPause,SIGNAL(triggered()),ui->playMedia,SLOT(click()));
-    actionCollection()->addAction("PlayPauseMedia",mPlayPause);
-    mNext = new KAction(KIcon("media-skip-forward"),tr("Next media"),this);
-    mNext->setText(tr("Next media"));
-    mNext->setIcon(KIcon("media-skip-forward"));
-    mNext->setObjectName("NextMedia");
-    mNext->setGlobalShortcut( KShortcut( Qt::META + Qt::Key_MediaNext ) );
-    connect(mNext,SIGNAL(triggered()),ui->nextMedia,SLOT(click()));
-    actionCollection()->addAction("NexMedia",mNext);
-    mPrev = new KAction(KIcon("edia-skip-backward"),tr("Previous media"),this);
-    mPrev->setText(tr("Previous media"));
-    mPrev->setIcon(KIcon("media-skip-backward"));
-    mPrev->setObjectName("PreviousMedia");
-    mPrev->setGlobalShortcut( KShortcut( Qt::META + Qt::Key_MediaPrevious ) );
-    actionCollection()->addAction("Previousmedia",mPrev);
+    mPlayPauseAction = new KAction(KIcon("media-playback-start"),tr("Play media"),this);
+    mPlayPauseAction->setText(tr("Play media"));
+    mPlayPauseAction->setIcon(KIcon("media-playback-start"));
+    mPlayPauseAction->setGlobalShortcut( KShortcut( Qt::META + Qt::Key_MediaPlay ) );
+    connect( mPlayPauseAction,SIGNAL(triggered()),ui->playMedia,SLOT(click()));
+    actionCollection()->addAction("PlayPauseMedia",mPlayPauseAction);
+    mNextAction = new KAction(KIcon("media-skip-forward"),tr("Next media"),this);
+    mNextAction->setText(tr("Next media"));
+    mNextAction->setIcon(KIcon("media-skip-forward"));
+    mNextAction->setGlobalShortcut( KShortcut( Qt::META + Qt::Key_MediaNext ) );
+    connect(mNextAction,SIGNAL(triggered()),ui->nextMedia,SLOT(click()));
+    actionCollection()->addAction("NextMedia",mNextAction);
+    mPrevAction = new KAction(KIcon("edia-skip-backward"),tr("Previous media"),this);
+    mPrevAction->setText(tr("Previous media"));
+    mPrevAction->setIcon(KIcon("media-skip-backward"));
+    mPrevAction->setGlobalShortcut( KShortcut( Qt::META + Qt::Key_MediaPrevious ) );
+    actionCollection()->addAction("PreviousMedia",mPrevAction);
     
     mStatusNotifierItem = new KStatusNotifierItem(this);
     mStatusNotifierItem->setCategory(KStatusNotifierItem::ApplicationStatus);
     mStatusNotifierItem->setToolTipTitle("PlaybaK");
     mStatusNotifierItem->setTitle("PlaybaK");
     mStatusNotifierItem->setIconByName("media-playback-start");
-    mStatusNotifierItem->contextMenu()->addAction(mPlayPause);
-    mStatusNotifierItem->contextMenu()->addAction(mNext);
-    mStatusNotifierItem->contextMenu()->addAction(mPrev);
+    mStatusNotifierItem->contextMenu()->addAction( mPlayPauseAction);
+    mStatusNotifierItem->contextMenu()->addAction(mNextAction);
+    mStatusNotifierItem->contextMenu()->addAction(mPrevAction);
     //         mStatusNotifierItem->setContextMenu(contextMenu);
 
     // It adds the action in the menu bar, created on playbakui.rc model.
@@ -446,11 +420,6 @@ void MainWindow::closeAllWindows(){
 
 bool MainWindow::queryClose() {
   return true;
-//   if (QObject::sender() != 0x0L) {
-//     return queryExit();
-//   }
-//   hide();
-//   return false;
 }
 
 bool MainWindow::queryExit() {
@@ -458,7 +427,7 @@ bool MainWindow::queryExit() {
 //   saveProperties(&kapp->sessionConfig()->group("PlaybaK"));
 // saveProperties(&KGlobal::config().operator->()->group("PlaybaK"));
 
-saveProperties(mGroup);
+saveProperties(mConfigGroup);
   return true;
 }
 

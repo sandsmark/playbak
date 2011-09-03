@@ -55,57 +55,51 @@ private:
   Ui::MainWindow *ui;
 
   //! These 'static' media info widget.
-  MediaInfoPage *mip1;
+  MediaInfoPage *mMediaInfoPage1;
 
   //! These 'dynamic' media info widget.
-  MediaInfoInteractivePage *mip2;
+  MediaInfoInteractivePage *mMediaInfoPage2;
   /**
     * NOTE This is ONLY an idea, but we don't think implement it for a long time.
     */
   //BEGIN
-  QWidget *playlistDockTitleBar;
-  QWidget *controlsDockTitleBar;
-  QWidget *nullPlaylistDockTitleBar;
-  QWidget *nullControlsDockTitleBar;
+  QWidget *mPlaylistDockTitleBar;
+  QWidget *mControlsDockTitleBar;
+  QWidget *mNullPlaylistDockTitleBar;
+  QWidget *mNullControlsDockTitleBar;
   //END
 
   //! The config dialog.
-  KConfigDialog *dialog;
+  KConfigDialog *mConfigDialog;
 
   //! The Playback's GLOBAL config.
   KConfigGroup *mGlobalConfig;
 
   //! Play/Pause action.
-  KAction *mPlayPause;
+  KAction *mPlayPauseAction;
 
   //! Next track action.
-  KAction *mNext;
+  KAction *mNextAction;
 
   //! Previous track action.
-  KAction *mPrev;
+  KAction *mPrevAction;
 
   //! Load playlist action.
-  KAction *mLoadPlaylist;
-
-  //! The Playlist widget.
-//   MediaPlaylist *mPlaylistWidget;
+  KAction *mLoadPlaylistAction;
 
   //! Status notifier.
   KStatusNotifierItem *mStatusNotifierItem;
-
-  //! The media playlist manager. This is the logical manager, no the visual manager.
-//   MediaPlaylist *mMediaPlaylist;
 
   //! The Playback's configuration interface.
   KConfig *mConfig;
 
   //! The Playback's LOCAL config. This is useful to restore sessions.
-  KConfigGroup *mGroup;
+  KConfigGroup *mConfigGroup;
 
   //! The media items.
   QList<MediaItem*> mMediaItems;
   
-  //! Video player layout.
+  //! Videoplayer's layout.
   QHBoxLayout *mVideoPlayerLayout;
 
 protected:
@@ -170,7 +164,6 @@ public slots:
 
   //! Toggle the playlist mode. Repeat all, repeat one, random, etc
   void togglePlaylistMode();
-//         void openMedia();
 
   //! Load a playlist.
   void loadPlaylist();
@@ -188,10 +181,7 @@ private slots:
   void showShortcutsSettingsDialog();
 
   //! Show the settings dialog.
-  void showSettingsDialog();
-protected:
-//   virtual void keyPressEvent(QKeyEvent *e);
-  
+  void showSettingsDialog();  
 };
 
 #endif // MAINWINDOW_H

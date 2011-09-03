@@ -41,7 +41,9 @@ MediaPlaylist::MediaPlaylist(QWidget* parent) :
   mVideoPlayer = 0x0l;
   
   mCanvas = new QWidget;
-  
+  mCanvas->setObjectName("MediaPlaylistCanvas");
+  setStyleSheet("#MediaPlaylistCanvas{background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #fff, stop:1 #D2D2D2);}");
+
   mScrollBar = new QScrollBar;
   mScrollBar->setMaximum(0);
   mScrollBar->setMinimum(0);
@@ -49,11 +51,11 @@ MediaPlaylist::MediaPlaylist(QWidget* parent) :
   mScrollBar->setPageStep(125);
   
   mLayout = new QHBoxLayout;
-  this->setLayout(mLayout);
   mLayout->addWidget(mCanvas);
   mLayout->addWidget(mScrollBar);
   mLayout->setSpacing(0);
   mLayout->setContentsMargins(0,0,0,0);
+  this->setLayout(mLayout);
   
   mScrollAnimation = new QPropertyAnimation(mScrollBar,"value");
   mScrollAnimation->setDuration(500);
@@ -61,7 +63,7 @@ MediaPlaylist::MediaPlaylist(QWidget* parent) :
   mScrollAnimation->setEndValue(0);
   mScrollAnimation->setEasingCurve(QEasingCurve::OutQuart);
   
-  connect(mScrollBar, SIGNAL(valueChanged(int)), this, SLOT(sincronizeWithScroll(int)));
+  connect(mScrollBar, SIGNAL(valueChanged(int)), this, SLOT(sincronizeWithScroll()));
   
   setEnabled(true);
 }
@@ -92,7 +94,7 @@ void MediaPlaylist::addItems(QList<MediaItem*> *items)
   foreach(MediaItem *item, *items) {
     if (!item->mimetype().isEmpty()){
       if (
-            // Audio normal
+            // Normal audio
             item->mimetype().contains("audio",Qt::CaseInsensitive) ||
             // Streaming
             item->mimetype().contains("stream",Qt::CaseInsensitive) ||
@@ -107,7 +109,7 @@ void MediaPlaylist::addItems(QList<MediaItem*> *items)
         widget->move(0, widgetPos );
         widget->mParentChildPos = parent_pos;
         
-        // Solo redimencionamos mCanvas cuando la altura virtual del playlist es mayor a su alto.
+        // Only resize mCanvas when the playlist's virtual height is greater than it's height.
         if(virtualHeight() > mCanvas->size().height())
           mCanvas->resize(mCanvas->size().width(), virtualHeight());
         
@@ -120,7 +122,7 @@ void MediaPlaylist::addItems(QList<MediaItem*> *items)
         connect(widget, SIGNAL(removed(int)),
                 this, SLOT(removeItem(int)));
         
-        // Adaptamos el scrollbar al tamaño virtual de la lista de reproducción. Ver virtualHeight()
+        // We fix the scrollbar's height to the playlist's virtual height.
         if ((virtualHeight() - this->size().height()) > 0)
           mScrollBar->setMaximum(virtualHeight() - mScrollBar->size().height());
         else
@@ -224,7 +226,7 @@ void MediaPlaylist::wheelEvent(QWheelEvent* e)
 
 
 void MediaPlaylist::removeItem(int position){
-//   If the item is out of the range, we do nothing
+  // If the item is out of range, returns.
   if ( ( position < 0 ) ||
        ( position > mCanvas->children().size()) )
     return;
@@ -238,9 +240,10 @@ void MediaPlaylist::removeItem(int position){
       l_item->mParentChildPos--;
     }
   }
+
   /*
-   * Si es el primer elemento el que hay que mover y su posición es mayor o igual a cero,
-   * movemos el elemento para arriba (la posición 0,0), solo movemos el siguiente, si hay siguiente
+   * If it's the first element that we should move, and it's position is greater or equal to zero,
+   * we move up the element (the [0,0] position). But we only move the next if next exist.
    */
   if ((position == 0) && (mCanvas->children().size() > 1)) {
     w = qobject_cast< PlaylistAbstractMediaItem* >(mCanvas->children().at(1));
@@ -250,7 +253,6 @@ void MediaPlaylist::removeItem(int position){
   QPoint p = w->pos();
   w->setParent(0x0L);
   w->destroy();
-//   delete w;
   mItemList.removeAt(position);
 
   updatePositionsFrom(0);
@@ -274,16 +276,6 @@ void MediaPlaylist::removeSelecteds()
       }
   }
 }
-
-// void MediaPlaylist::toggleFullScreen(QMouseEvent *e)
-// {
-//   mVideoPlayer->videoWidget()->;
-//   if (mVideoPlayer->videoWidget()->isFullScreen())
-//     mVideoPlayer->videoWidget()->setFullScreen(false);
-//   else
-//     mVideoPlayer->videoWidget()->setFullScreen(true);
-// }
-
 
 void MediaPlaylist::clearPlaylist()
 {
@@ -316,18 +308,18 @@ void MediaPlaylist::updatePositionsFrom(int position)
     current++;
   }
   
-  // Solo redimencionamos mCanvas cuando la altura virtual del playlist es mayor a su alto.
+  // Only resize mCanvas when the playlist's virtual height is greater than it's height.
   if(virtualHeight() > mCanvas->size().height())
     mCanvas->resize(mCanvas->size().width(), virtualHeight());
   
-  // Actualizamos el tamaño del scrollbar
+  // We fix the scrollbar's height to the playlist's virtual height.
   if ((virtualHeight() - this->size().height()) > 0)
     mScrollBar->setMaximum(virtualHeight() - mScrollBar->size().height());
   else
     mScrollBar->setMaximum(0);
 }
 
-void MediaPlaylist::sincronizeWithScroll(int value)
+void MediaPlaylist::sincronizeWithScroll()
 {
   mCanvas->move(mCanvas->pos().x(),-mScrollBar->value());
 }
@@ -341,25 +333,15 @@ void MediaPlaylist::resizeEvent(QResizeEvent *)
     child->resize(mCanvas->width(), child->height());
   }
   
-  // Actualizamos el tamaño del scrollbar
+  // Only resize mCanvas when the playlist's virtual height is greater than it's height.
+  if(virtualHeight() > mCanvas->size().height())
+    mCanvas->resize(mCanvas->size().width(), virtualHeight());
+  
+  // We fix the scrollbar's height to the playlist's virtual height.
   if ((virtualHeight() - this->size().height()) > 0)
     mScrollBar->setMaximum(virtualHeight() - mScrollBar->size().height());
   else
     mScrollBar->setMaximum(0);
-  
-  // Solo redimencionamos mCanvas cuando la altura virtual del playlist es mayor a su alto.
-  if(virtualHeight() > mCanvas->size().height())
-    mCanvas->resize(mCanvas->size().width(), virtualHeight());
-  
-//   mVideoPlayer->videoWidget()->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-//   Phonon::VideoWidget *v = mVideoPlayer->videoWidget();
-//   mVideoPlayer->videoWidget()->setGeometry(0,0, mVideoPlayer->parentWidget()->size().width(), mVideoPlayer->parentWidget()->size().height());
-//   mVideoPlayer->videoWidget()->resize(mVideoPlayer->parentWidget()->size());
-    
-//     mVideoPlayer->parentWidget()->resize(mVideoPlayer->parentWidget()->parentWidget()->width(),
-//                                          mVideoPlayer->parentWidget()->parentWidget()->height());
-//     mVideoPlayer->resize(mVideoPlayer->parentWidget()->width(),
-//                          mVideoPlayer->parentWidget()->height());
 }
 
 // El tamaño virtual del playlist es 'la posición y del último item + su altura'.
@@ -453,11 +435,10 @@ void MediaPlaylist::play()
   QEventLoop loop;
   mVideoPlayer->play(Phonon::MediaSource(mediaItem()->url().toLocalFile()));
 
-  //! This value is Ok. A lower value make the application slower. 500 is Ok too.
+  // This value is OK. A lower value makes the application slower. 500 is OK too.
   mVideoPlayer->mediaObject()->setTickInterval(1000);
   connect(mVideoPlayer->mediaObject(), SIGNAL(stateChanged(Phonon::State,Phonon::State)),&loop,SLOT(quit()));
   loop.exec();
-//   emit totalTime(mVideoPlayer->totalTime());
   emit trackChanged();
 }
 
@@ -527,8 +508,6 @@ void MediaPlaylist::selectNext()
   } else if (mMode == Mode::SHUFFLE_ALL) {
     mCurrent = qrand() %  mItemList.count();      
   }
-  
-//   emit trackChanged();
 }
 
 void MediaPlaylist::selectPrevious()
@@ -551,8 +530,6 @@ void MediaPlaylist::selectPrevious()
   } else if (mMode == Mode::SHUFFLE_ALL) {
     mCurrent = qrand() %  mItemList.count();
   }
-
-//   emit trackChanged();
 }
 
 bool MediaPlaylist::isMute()
@@ -562,17 +539,16 @@ bool MediaPlaylist::isMute()
 
 void MediaPlaylist::setCurrent(const int current)
 {
-  // Si la canción no existe, seleccionamos el primero
+  // If the next track not exist, we select the first one.
   if ((mCurrent = current) > mItemList.count())
     mCurrent = 0;
-//   emit trackChanged();
 }
 
 void MediaPlaylist::setCurrent(MediaItem* media)
 {
+  // NOTE What happens if there are not elements in the playlist?
   if ( (mCurrent = mItemList.indexOf(media)) < 0 )
     mCurrent = 0;
-//   emit trackChanged();
 }
 
 void MediaPlaylist::setMode(const Mode::MediaPlaylistMode mode)
@@ -595,23 +571,10 @@ void MediaPlaylist::setOutputWidget(QWidget *outputWidget)
     mVideoPlayer = new Phonon::VideoPlayer(Phonon::VideoCategory,outputWidget);
     mVideoPlayer->mediaObject()->setTickInterval(100);
     outputWidget->layout()->addWidget(mVideoPlayer->videoWidget());
-//     mPlayerLayout = new QHBoxLayout(mVideoPlayer->videoWidget());
-//     mPlayerLayout->setGeometry(QRect(0,0, outputWidget->size().width(), outputWidget->size().height()));;
-//     mPlayerLayout->re
-//     outputWidget->setLayout(mPlayerLayout);
-//     mVideoPlayer->videoWidget()->setGeometry(0,0, outputWidget->size().width(), outputWidget->size().height());
-//     mVideoPlayer->videoWidget()->resize(outputWidget->size());
-//     mVideoPlayer->videoWidget()->setScaleMode(Phonon::VideoWidget::ScaleAndCrop);
-//     mVideoPlayer->videoWidget()->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    
-//     mVideoPlayer->parentWidget()->resize(mVideoPlayer->parentWidget()->parentWidget()->width(),
-//                                          mVideoPlayer->parentWidget()->parentWidget()->height());
-//     mVideoPlayer->resize(outputWidget->width(),
-//                          outputWidget->height());    
+
     connect(mVideoPlayer,SIGNAL(finished()),this,SLOT(playNext()));
     connect(mVideoPlayer->mediaObject(),SIGNAL(tick(qint64)),this,SIGNAL(tick(qint64)));
     connect(mVideoPlayer->mediaObject(), SIGNAL(totalTimeChanged(qint64)),this, SIGNAL(totalTime(qint64)));
-//     connect(mVideoPlayer->mediaObject(), SIGNAL(currentSourceChanged(Phonon::MediaSource)),this, SIGNAL(trackChanged()));
   }
 }
 

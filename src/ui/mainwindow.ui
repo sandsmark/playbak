@@ -590,9 +590,9 @@ border-radius: 5px;
           </property>
           <property name="styleSheet">
            <string notr="true">PlaybaKFrameWidget {
-qproperty-topColor: 0.25;
-qproperty-bottomColor: 0.05;
-qproperty-borderColor: 0.20;
+qproperty-topColor: 0.3;
+qproperty-bottomColor: 0.1;
+qproperty-borderColor: 0.2;
 qproperty-radius: 4;
 }</string>
           </property>
@@ -644,11 +644,9 @@ qproperty-radius: 4;
         <item>
          <widget class="QStackedWidget" name="mainWidgetPager">
           <property name="styleSheet">
-           <string notr="true">#sdfsdkfhds {
-color: #f4f4f4;
+           <string notr="true">color: #f4f4f4;
 border: none;
 background-color: black;
-}
 </string>
           </property>
           <property name="currentIndex">
@@ -708,16 +706,7 @@ background-color: black;
            <property name="spacing">
             <number>0</number>
            </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>8</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>0</number>
            </property>
            <item>
