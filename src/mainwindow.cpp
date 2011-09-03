@@ -116,7 +116,7 @@ ui(new Ui::MainWindow)
         connect(ui->trackProgressBar, SIGNAL(valueChanged(int)),     ui->playlist, SLOT(setTick(int)));
         connect(ui->removeMediaItem,  SIGNAL(clicked()),             ui->playlist, SLOT(removeSelecteds()));
 //         connect(ui->playlist,      SIGNAL(removedItem(int)),      &ui->playlist, SLOT(remove(int)));
-//         connect(ui->clearPlaylist,    SIGNAL(clicked()),             ui->playlist, SLOT(clearPlaylist()));
+        connect(ui->clearPlaylist,    SIGNAL(clicked()),             ui->playlist, SLOT(clearPlaylist()));
         connect(ui->savePlaylist,     SIGNAL(clicked()),             this,            SLOT(savePlaylist()));
         connect(ui->playMode,         SIGNAL(clicked()),             this,            SLOT(togglePlaylistMode()));
         

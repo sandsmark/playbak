@@ -113,6 +113,8 @@ void MediaPlaylist::addItems(QList<MediaItem*> *items)
                 this,   SLOT(play(int)));
         connect(widget, SIGNAL(selected(int)),
                 this,   SLOT(select(int)));
+        connect(widget, SIGNAL(removed(int)),
+                this, SLOT(removeItem(int)));
         
         // Adaptamos el scrollbar al tamaño virtual de la lista de reproducción. Ver virtualHeight()
         if ((virtualHeight() - this->size().height()) > 0)
@@ -138,6 +140,10 @@ void MediaPlaylist::addItems(QList<MediaItem*> *items)
                 this,   SLOT(updatePositionsFrom(int)));
         connect(widget, SIGNAL(play(int)),
                 this,   SLOT(play(int)));
+        connect(widget, SIGNAL(selected(int)),
+                this,   SLOT(select(int)));
+        connect(widget, SIGNAL(removed(int)),
+                this, SLOT(removeItem(int)));
         
         if ((virtualHeight() - this->size().height()) > 0)
           mScrollBar->setMaximum(virtualHeight() - mScrollBar->size().height());
@@ -185,6 +191,17 @@ void MediaPlaylist::removeItem(int position){
        ( position > mCanvas->children().size()) )
     return;
   PlaylistAbstractMediaItem *w;
+  QObject *item;
+  for(int i = position + 1; i < mCanvas->children().size(); i++ )
+  {
+    item = mCanvas->children().at(i);
+    PlaylistItemWidget *l_item;
+    if ( l_item = qobject_cast< PlaylistItemWidget* >(item)){
+      qDebug() << l_item->mParentChildPos;
+      l_item->mParentChildPos--;
+      qDebug() << l_item->mParentChildPos;
+    }
+  }
   /*
    * Si es el primer elemento el que hay que mover y su posición es mayor o igual a cero,
    * movemos el elemento para arriba (la posición 0,0), solo movemos el siguiente, si hay siguiente
@@ -197,6 +214,7 @@ void MediaPlaylist::removeItem(int position){
   QPoint p = w->pos();
   w->setParent(0x0L);
   w->destroy();
+//   delete w;
   mItemList.removeAt(position);
 
   updatePositionsFrom(0);
@@ -207,20 +225,43 @@ void MediaPlaylist::removeSelecteds()
   if (  mCanvas->children().size() == 0 )
     return;
   QObject *item;
-  int remove_count = 0;
-  foreach(item, mCanvas->children())
+//   int remove_count = 0;
+//   foreach(item, mCanvas->children())
+  for(int i = 0; i < mCanvas->children().size(); )
   {
+    item = mCanvas->children().at(i);
     PlaylistItemWidget *l_item;
     if ( l_item = qobject_cast< PlaylistItemWidget* >(item))
       if (l_item->getSelected()){
-        removeItem(l_item->mParentChildPos);
-        remove_count++;
+        removeItem(i);
+//         remove_count++;
       }
       else {
-        l_item->mParentChildPos -= remove_count;
+        i++;
       }
+//       else {
+//         l_item->mParentChildPos -= remove_count;
+//       }
       
   }
+}
+
+void MediaPlaylist::clearPlaylist()
+{
+  qDebug() << "clearPlaylist";
+  int size = mCanvas->children().size();
+  PlaylistAbstractMediaItem *w;
+  for (int i = 0; i < size; i++ ) {
+    removeItem(mCanvas->children().size() - 1);
+//     w = qobject_cast< PlaylistAbstractMediaItem* >(mCanvas->children().at(0));
+//     w->setParent(0x0L);
+//     w->destroy();
+//     delete w;
+  }
+  mItemList.clear();
+  if (!(mVideoPlayer->isPlaying() || mVideoPlayer->isPaused()))
+    mVideoPlayer->load(Phonon::MediaSource(""));
+  mCurrent = -1;
 }
 
 

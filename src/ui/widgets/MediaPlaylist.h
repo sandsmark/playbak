@@ -146,6 +146,8 @@ public:
         //! Return the media's total time.
         qint64 currentTotalTime();
 public slots:
+        virtual void clearPlaylist();
+  
         virtual void updatePositionsFrom(int position);
         
         virtual void sincronizeWithScroll(int value);

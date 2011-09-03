@@ -19,3 +19,5 @@ ui_*
 *_automoc.*
 src/playbak
 src/ui/widgets/.kdev_include_paths
+doc/index.cache.bz2
+*.kate*
