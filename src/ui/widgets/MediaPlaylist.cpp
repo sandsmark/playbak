@@ -38,10 +38,7 @@ MediaPlaylist::MediaPlaylist(QWidget* parent) :
   mOutputWidget = 0x0l;
   mVideoPlayer = 0x0l;
   
-//   steps = 250;
-
   mCanvas = new QWidget;
-//   mCanvas->setStyleSheet("background:red;");
   
   mScrollBar = new QScrollBar;
   mScrollBar->setMaximum(0);
@@ -55,9 +52,16 @@ MediaPlaylist::MediaPlaylist(QWidget* parent) :
   mLayout->addWidget(mScrollBar);
   mLayout->setSpacing(0);
   mLayout->setContentsMargins(0,0,0,0);
-//   this->set;
+  
+  mScrollAnimation = new QPropertyAnimation(mScrollBar,"value");
+  mScrollAnimation->setDuration(500);
+  mScrollAnimation->setStartValue(0);
+  mScrollAnimation->setEndValue(0);
+  mScrollAnimation->setEasingCurve(QEasingCurve::OutQuart);
   
   connect(mScrollBar, SIGNAL(valueChanged(int)), this, SLOT(sincronizeWithScroll(int)));
+  
+  setEnabled(true);
 }
 
 MediaPlaylist::~MediaPlaylist()
@@ -85,14 +89,12 @@ void MediaPlaylist::addItems(QList<MediaItem*> *items)
   int i = 0;
   foreach(MediaItem *item, *items) {
     if (!item->mimetype().isEmpty()){
-//       QListWidget::addItem(item->title());
-
       if (
             // Audio normal
-            item->mimetype().contains("audio",Qt::CaseInsensitive) or
+            item->mimetype().contains("audio",Qt::CaseInsensitive) ||
             // Streaming
-            item->mimetype().contains("stream",Qt::CaseInsensitive) or
-            item->mimetype().contains("mpegurl",Qt::CaseInsensitive) or
+            item->mimetype().contains("stream",Qt::CaseInsensitive) ||
+            item->mimetype().contains("mpegurl",Qt::CaseInsensitive) ||
             item->mimetype().contains("octeta-stream",Qt::CaseInsensitive)
          )
       {
@@ -151,12 +153,9 @@ void MediaPlaylist::addItems(QList<MediaItem*> *items)
           mScrollBar->setMaximum(0);
       
         widget->show();
-        
-
       }
       ++i;
     }
-    qDebug("parentpos: " + QString::number(parent_pos).toAscii());
     ++parent_pos;
   }
   
@@ -171,7 +170,6 @@ void MediaPlaylist::addItems(QList<MediaItem*> *items)
 }
 
 void MediaPlaylist::keyPressEvent(QKeyEvent *e){
-  qDebug("Press");
   if (e->key() | Qt::Key_Shift)
     mKeyShiftPressed = true;
   if (e->key() | Qt::Key_Control)
@@ -185,6 +183,44 @@ void MediaPlaylist::keyReleaseEvent(QKeyEvent *e){
     mKeyShiftPressed = false;
 }
 
+void MediaPlaylist::wheelEvent(QWheelEvent* e)
+{
+  int numDegrees;
+  if(mScrollAnimation->state() == QAbstractAnimation::Running)
+    numDegrees= e->delta() / 2;
+  else
+    numDegrees = e->delta() / 4;
+  
+  int start, end;
+  start = mScrollBar->value();
+  end = mScrollBar->value() - numDegrees;
+
+  if ( (mScrollAnimation->state() == QAbstractAnimation::Running) &&
+      (((mScrollAnimation->startValue().toInt() > mScrollAnimation->endValue().toInt()) &&
+        (start < end ) ) ||
+      ((mScrollAnimation->startValue().toInt() < mScrollAnimation->endValue().toInt()) &&
+        (start > end ) ) )
+      )
+  {
+
+    mScrollAnimation->stop();
+    mScrollAnimation->setStartValue(start);
+    mScrollAnimation->setEndValue(end);
+    mScrollAnimation->start();
+  }
+  else {
+    int rest = mScrollAnimation->endValue().toInt()  - mScrollAnimation->currentValue().toInt();
+    end = end + rest;
+    mScrollAnimation->stop();
+    mScrollAnimation->setStartValue(start);
+    mScrollAnimation->setEndValue(end);
+    mScrollAnimation->start();
+  }
+
+  QWidget::wheelEvent(e);
+}
+
+
 void MediaPlaylist::removeItem(int position){
 //   If the item is out of the range, we do nothing
   if ( ( position < 0 ) ||
@@ -197,9 +233,7 @@ void MediaPlaylist::removeItem(int position){
     item = mCanvas->children().at(i);
     PlaylistItemWidget *l_item;
     if ( l_item = qobject_cast< PlaylistItemWidget* >(item)){
-      qDebug() << l_item->mParentChildPos;
       l_item->mParentChildPos--;
-      qDebug() << l_item->mParentChildPos;
     }
   }
   /*
@@ -225,8 +259,6 @@ void MediaPlaylist::removeSelecteds()
   if (  mCanvas->children().size() == 0 )
     return;
   QObject *item;
-//   int remove_count = 0;
-//   foreach(item, mCanvas->children())
   for(int i = 0; i < mCanvas->children().size(); )
   {
     item = mCanvas->children().at(i);
@@ -234,30 +266,20 @@ void MediaPlaylist::removeSelecteds()
     if ( l_item = qobject_cast< PlaylistItemWidget* >(item))
       if (l_item->getSelected()){
         removeItem(i);
-//         remove_count++;
       }
       else {
         i++;
       }
-//       else {
-//         l_item->mParentChildPos -= remove_count;
-//       }
-      
   }
 }
 
 void MediaPlaylist::clearPlaylist()
 {
-  qDebug() << "clearPlaylist";
   int size = mCanvas->children().size();
   PlaylistAbstractMediaItem *w;
-  for (int i = 0; i < size; i++ ) {
+  for (int i = 0; i < size; i++ )
     removeItem(mCanvas->children().size() - 1);
-//     w = qobject_cast< PlaylistAbstractMediaItem* >(mCanvas->children().at(0));
-//     w->setParent(0x0L);
-//     w->destroy();
-//     delete w;
-  }
+  
   mItemList.clear();
   if (!(mVideoPlayer->isPlaying() || mVideoPlayer->isPaused()))
     mVideoPlayer->load(Phonon::MediaSource(""));
@@ -267,19 +289,19 @@ void MediaPlaylist::clearPlaylist()
 
 void MediaPlaylist::updatePositionsFrom(int position)
 {
-  if ( ( position < 0 ) ||
-       ( position > mCanvas->children().size()) )
+  if ( ( position < 0 ) || ( position > mCanvas->children().size()) )
     return;
+  
+  int current = 0;
   QWidget *item = 0x0L;
-  int actual = 0;
   QWidget *lastChild = 0x0L;
   foreach(QObject* object, mCanvas->children()){
-    if (0 < position < actual){
+    if (0 < position < current){
       item = qobject_cast< QWidget* >(object);
       item->move(0, lastChild->pos().y() + lastChild->height() );
     }
     lastChild = qobject_cast< QWidget* >(object);
-    actual++;
+    current++;
   }
   
   // Solo redimencionamos mCanvas cuando la altura virtual del playlist es mayor a su alto.
@@ -299,7 +321,8 @@ void MediaPlaylist::sincronizeWithScroll(int value)
 }
 
 
-void MediaPlaylist::resizeEvent(QResizeEvent *) {
+void MediaPlaylist::resizeEvent(QResizeEvent *)
+{
   QWidget *child = 0x0L;
   foreach(QObject* object, mCanvas->children()){
     child = qobject_cast< QWidget* >(object);

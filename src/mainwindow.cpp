@@ -197,7 +197,6 @@ void MainWindow::togglePlaylistMode(){
 }
 
 void MainWindow::setVolume(int value){
-  qDebug(QString::number(value).toAscii());
   ui->playlist->setVolume((qreal)(value) / 100.0);
 }
 
@@ -367,10 +366,12 @@ void MainWindow::showSettingsDialog()
     dialog->show();
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *e){
-  qDebug("Press");
-  KXmlGuiWindow::keyPressEvent(e);
+bool MainWindow::eventFilter(QObject* obj, QEvent* ev)
+{
+    return true;
+    return QObject::eventFilter(obj, ev);
 }
+
 
 void MainWindow::setupActions()
 {

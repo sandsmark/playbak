@@ -34,6 +34,7 @@
 #include <QResizeEvent>
 #include <qscrollbar.h>
 #include <qscrollarea.h>
+#include <qpropertyanimation.h>
 
 //! The media playlist's class.
 class MediaPlaylist : public QWidget
@@ -77,6 +78,8 @@ private:
         
         //! Indicates if the Shift key is pressed.
         bool mKeyShiftPressed;
+        
+        QPropertyAnimation *mScrollAnimation;
         
 private: // GUI        
         //! Here the playlist's items should be rendered.
@@ -297,6 +300,7 @@ private:
         void resizeEvent(QResizeEvent *);
         void keyPressEvent(QKeyEvent *e);
         void keyReleaseEvent(QKeyEvent *e);
+        void wheelEvent ( QWheelEvent * e );
         int virtualHeight();
 public:
         //! The media playlist's constructor.
