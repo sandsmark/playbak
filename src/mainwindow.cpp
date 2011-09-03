@@ -35,6 +35,7 @@
 #include <KDE/KStatusNotifierItem>
 
 #include <PlaybaKFadingButton.h>
+// #include "VideoScreen.h"
 
 #include <mainwindow.h>
 #include <settings.h>
@@ -89,34 +90,37 @@ ui(new Ui::MainWindow)
         connect(mip2, SIGNAL(ratingChanged(int)), mip1, SLOT(setRating(int)));
         
         //! Create and add the PlaylistWidget to the gui
-//         QHBoxLayout *playListLayout;
-//         playListLayout = new QHBoxLayout;
-//         ui->playlist->setLayout(playListLayout);
-//         ui->playlist->setLayout(playListLayout);
-//         ui->playlist = new MediaPlaylist();
-//         ui->playlistList = ui->playlist;
-//         playListLayout->addWidget(ui->playlist);
+        
+        mVideoPlayerLayout = new QHBoxLayout;
+        mVideoPlayerLayout->setMargin(0);
+        ui->nowPlayingPage->setLayout(mVideoPlayerLayout);
 
 //         TODO Cunado se reproduzca un video, establecer ui->playlist->setOutputWidget(ui->nowPlayingPage);
+//         ui->mainWidgetPager->addWidget(ui->nowPlayingPage);
+//         ui->mainWidgetPager->setCurrentWidget(ui->nowPlayingPage);
+        
         ui->playlist->setOutputWidget(ui->nowPlayingPage);
 //         ui->playlist->setOutputWidget(0x0L);
         ui->playlist->setMode(MediaPlaylist::Mode::LOOP_PLAYLIST);
+//         ui->nowPlayingPage->
         
+        
+        connect(ui->nowPlayingPage,   SIGNAL(toggleFullScreen(QMouseEvent* )),    ui->playlist,    SLOT(toggleFullScreen(QMouseEvent*)));
         connect(ui->volumeBar,        SIGNAL(valueChanged(int)),     this,            SLOT(setVolume(int)));
 //         connect(ui->playlist,      SIGNAL(play(int)),             &ui->playlist, SLOT(play(int)));
 //         connect(ui->playlist,      SIGNAL(itemAdded(MediaItem*)), &ui->playlist, SLOT(addMediaItem(MediaItem*)));
-        connect(ui->playlist,      SIGNAL(tick(qint64)),          this,            SLOT(progressBarValueChanged(qint64)));
-        connect(ui->playlist,      SIGNAL(trackChanged()),        this,            SLOT(trackChanged()));
-        connect(ui->playlist,      SIGNAL(totalTime(qint64)),     this,            SLOT(setProgressBarMaximum(qint64)));
+        connect(ui->playlist,         SIGNAL(tick(qint64)),          this,            SLOT(progressBarValueChanged(qint64)));
+        connect(ui->playlist,         SIGNAL(trackChanged()),        this,            SLOT(trackChanged()));
+        connect(ui->playlist,         SIGNAL(totalTime(qint64)),     this,            SLOT(setProgressBarMaximum(qint64)));
         connect(ui->muteSwitch,       SIGNAL(clicked()),             this,            SLOT(toggleMute()));
         connect(ui->playMedia,        SIGNAL(clicked()),             this,            SLOT(playPause()));
-        connect(ui->nextMedia,        SIGNAL(clicked()),             ui->playlist, SLOT(playNext()));
-        connect(ui->prevMedia,        SIGNAL(clicked()),             ui->playlist, SLOT(playPrevious()));
+        connect(ui->nextMedia,        SIGNAL(clicked()),             ui->playlist,    SLOT(playNext()));
+        connect(ui->prevMedia,        SIGNAL(clicked()),             ui->playlist,    SLOT(playPrevious()));
         connect(ui->addMediaItem,     SIGNAL(clicked()),             this,            SLOT(addFiles()));
-        connect(ui->trackProgressBar, SIGNAL(valueChanged(int)),     ui->playlist, SLOT(setTick(int)));
-        connect(ui->removeMediaItem,  SIGNAL(clicked()),             ui->playlist, SLOT(removeSelecteds()));
+        connect(ui->trackProgressBar, SIGNAL(valueChanged(int)),     ui->playlist,    SLOT(setTick(int)));
+        connect(ui->removeMediaItem,  SIGNAL(clicked()),             ui->playlist,    SLOT(removeSelecteds()));
 //         connect(ui->playlist,      SIGNAL(removedItem(int)),      &ui->playlist, SLOT(remove(int)));
-        connect(ui->clearPlaylist,    SIGNAL(clicked()),             ui->playlist, SLOT(clearPlaylist()));
+        connect(ui->clearPlaylist,    SIGNAL(clicked()),             ui->playlist,    SLOT(clearPlaylist()));
         connect(ui->savePlaylist,     SIGNAL(clicked()),             this,            SLOT(savePlaylist()));
         connect(ui->playMode,         SIGNAL(clicked()),             this,            SLOT(togglePlaylistMode()));
         
@@ -144,9 +148,8 @@ ui(new Ui::MainWindow)
 
         //! Creates global shortcuts configuration.
         mGlobalConfig = new KConfigGroup(KGlobal::config()->group(actionCollection()->configGroup()));
-
-//         readProperties(&kapp->sessionConfig()->group("PlaybaK"));
-//           readProperties(&KGlobal::config().operator->()->group("PlaybaK"));
+        
+  ui->nowPlayingPage->setFocus(Qt::NoFocusReason);
         
 }
 
@@ -366,11 +369,20 @@ void MainWindow::showSettingsDialog()
     dialog->show();
 }
 
-bool MainWindow::eventFilter(QObject* obj, QEvent* ev)
-{
-    return true;
-    return QObject::eventFilter(obj, ev);
-}
+// void MainWindow::keyPressEvent(QKeyEvent *e){
+//   switch(e->key()){
+//     case Qt::Key_Escape:
+//       if (ui->nowPlayingPage->isFullScreen())
+//         ui->nowPlayingPage->toggleFullScreen();
+//       break;
+//     case Qt::Key_F:
+//       if (!ui->nowPlayingPage->isFullScreen())
+//         ui->nowPlayingPage->toggleFullScreen();
+//       break;
+//   }
+// }
+
+
 
 
 void MainWindow::setupActions()

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>821</width>
-    <height>526</height>
+    <width>848</width>
+    <height>611</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -558,6 +558,12 @@ border-radius: 5px;
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="QFrame" name="frame">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="styleSheet">
         <string notr="true">padding-left: -2px; padding-bottom: -2px; padding-top: -2px;</string>
        </property>
@@ -638,16 +644,24 @@ qproperty-radius: 4;
         <item>
          <widget class="QStackedWidget" name="mainWidgetPager">
           <property name="styleSheet">
-           <string notr="true">#nowPlayingPage {
+           <string notr="true">#sdfsdkfhds {
 color: #f4f4f4;
 border: none;
-background-color: #000;
-}</string>
+background-color: black;
+}
+</string>
           </property>
           <property name="currentIndex">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="nowPlayingPage"/>
+          <widget class="VideoScreen" name="nowPlayingPage">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
           <widget class="QWidget" name="informationPage"/>
           <widget class="QWidget" name="collectionPage"/>
           <widget class="QWidget" name="internetPage"/>
@@ -1070,6 +1084,12 @@ QLabel {
    <class>MediaPlaylist</class>
    <extends>QWidget</extends>
    <header>ui/widgets/MediaPlaylist.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VideoScreen</class>
+   <extends>QWidget</extends>
+   <header>VideoScreen.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

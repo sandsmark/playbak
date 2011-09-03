@@ -81,6 +81,7 @@ private:
         
         QPropertyAnimation *mScrollAnimation;
         
+        
 private: // GUI        
         //! Here the playlist's items should be rendered.
         QWidget *mCanvas;
@@ -149,6 +150,8 @@ public:
         //! Return the media's total time.
         qint64 currentTotalTime();
 public slots:
+//         virtual void toggleFullScreen(QMouseEvent *e);
+  
         virtual void clearPlaylist();
   
         virtual void updatePositionsFrom(int position);

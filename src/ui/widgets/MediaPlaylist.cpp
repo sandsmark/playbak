@@ -27,6 +27,8 @@
 #include <PlaylistVideoItemWidget.h>
 #include <qlabel.h>
 
+#include <Phonon/VideoWidget>
+
 #include <iostream>
 
 MediaPlaylist::MediaPlaylist(QWidget* parent) :
@@ -273,6 +275,16 @@ void MediaPlaylist::removeSelecteds()
   }
 }
 
+// void MediaPlaylist::toggleFullScreen(QMouseEvent *e)
+// {
+//   mVideoPlayer->videoWidget()->;
+//   if (mVideoPlayer->videoWidget()->isFullScreen())
+//     mVideoPlayer->videoWidget()->setFullScreen(false);
+//   else
+//     mVideoPlayer->videoWidget()->setFullScreen(true);
+// }
+
+
 void MediaPlaylist::clearPlaylist()
 {
   int size = mCanvas->children().size();
@@ -338,6 +350,16 @@ void MediaPlaylist::resizeEvent(QResizeEvent *)
   // Solo redimencionamos mCanvas cuando la altura virtual del playlist es mayor a su alto.
   if(virtualHeight() > mCanvas->size().height())
     mCanvas->resize(mCanvas->size().width(), virtualHeight());
+  
+//   mVideoPlayer->videoWidget()->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+//   Phonon::VideoWidget *v = mVideoPlayer->videoWidget();
+//   mVideoPlayer->videoWidget()->setGeometry(0,0, mVideoPlayer->parentWidget()->size().width(), mVideoPlayer->parentWidget()->size().height());
+//   mVideoPlayer->videoWidget()->resize(mVideoPlayer->parentWidget()->size());
+    
+//     mVideoPlayer->parentWidget()->resize(mVideoPlayer->parentWidget()->parentWidget()->width(),
+//                                          mVideoPlayer->parentWidget()->parentWidget()->height());
+//     mVideoPlayer->resize(mVideoPlayer->parentWidget()->width(),
+//                          mVideoPlayer->parentWidget()->height());
 }
 
 // El tamaño virtual del playlist es 'la posición y del último item + su altura'.
@@ -572,6 +594,20 @@ void MediaPlaylist::setOutputWidget(QWidget *outputWidget)
   if (!mVideoPlayer){
     mVideoPlayer = new Phonon::VideoPlayer(Phonon::VideoCategory,outputWidget);
     mVideoPlayer->mediaObject()->setTickInterval(100);
+    outputWidget->layout()->addWidget(mVideoPlayer->videoWidget());
+//     mPlayerLayout = new QHBoxLayout(mVideoPlayer->videoWidget());
+//     mPlayerLayout->setGeometry(QRect(0,0, outputWidget->size().width(), outputWidget->size().height()));;
+//     mPlayerLayout->re
+//     outputWidget->setLayout(mPlayerLayout);
+//     mVideoPlayer->videoWidget()->setGeometry(0,0, outputWidget->size().width(), outputWidget->size().height());
+//     mVideoPlayer->videoWidget()->resize(outputWidget->size());
+//     mVideoPlayer->videoWidget()->setScaleMode(Phonon::VideoWidget::ScaleAndCrop);
+//     mVideoPlayer->videoWidget()->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    
+//     mVideoPlayer->parentWidget()->resize(mVideoPlayer->parentWidget()->parentWidget()->width(),
+//                                          mVideoPlayer->parentWidget()->parentWidget()->height());
+//     mVideoPlayer->resize(outputWidget->width(),
+//                          outputWidget->height());    
     connect(mVideoPlayer,SIGNAL(finished()),this,SLOT(playNext()));
     connect(mVideoPlayer->mediaObject(),SIGNAL(tick(qint64)),this,SIGNAL(tick(qint64)));
     connect(mVideoPlayer->mediaObject(), SIGNAL(totalTimeChanged(qint64)),this, SIGNAL(totalTime(qint64)));

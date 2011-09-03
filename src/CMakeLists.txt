@@ -15,7 +15,8 @@ set(playbak_SRCS
    ui/widgets/PlaylistItemWidget.cpp
    ui/widgets/PlaylistVideoItemExtra.cpp
    ui/widgets/PlaylistVideoItemWidget.cpp
-  
+   ui/widgets/VideoScreen.cpp
+
    MediaItem.cpp
    AlbumMediaItemData.cpp
    AudioMediaItem.cpp

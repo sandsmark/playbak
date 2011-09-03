@@ -88,16 +88,13 @@ private:
   KAction *mLoadPlaylist;
 
   //! The Playlist widget.
-  MediaPlaylist *mPlaylistWidget;
+//   MediaPlaylist *mPlaylistWidget;
 
   //! Status notifier.
   KStatusNotifierItem *mStatusNotifierItem;
 
   //! The media playlist manager. This is the logical manager, no the visual manager.
 //   MediaPlaylist *mMediaPlaylist;
-
-  //! Setup all the actions like play media, load playlist, etc
-  void setupActions();
 
   //! The Playback's configuration interface.
   KConfig *mConfig;
@@ -107,6 +104,9 @@ private:
 
   //! The media items.
   QList<MediaItem*> mMediaItems;
+  
+  //! Video player layout.
+  QHBoxLayout *mVideoPlayerLayout;
 
 protected:
 
@@ -121,7 +121,11 @@ protected:
    * \param config Where you want load it.
    */
   virtual void readProperties(const KConfigGroup *config);
-
+  
+private:
+  //! Setup all the actions like play media, load playlist, etc
+  void setupActions();
+  
 protected slots:
   //! Close all application's windows.
   /*!
@@ -129,6 +133,7 @@ protected slots:
    * If is specified that may minimize to systray, then do it, else close the application.
    */
   void closeAllWindows();
+  
 public slots:
   //! 'Captures' the close action and hide the application in the systray.
   virtual bool queryClose();
@@ -184,9 +189,9 @@ private slots:
 
   //! Show the settings dialog.
   void showSettingsDialog();
+protected:
+//   virtual void keyPressEvent(QKeyEvent *e);
   
-private:
-  bool eventFilter(QObject *obj, QEvent *ev);
 };
 
 #endif // MAINWINDOW_H
